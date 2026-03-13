@@ -537,7 +537,6 @@
         padding: 5px; 
         border-radius: 100px; 
         box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-        margin-left: 20px;
     }
 
     .mode-btn { 
@@ -582,10 +581,6 @@
     <div class="top-bar">
         <div style="display:flex; align-items:center;">
             <div class="crowns-container" id="crownGrid"></div>
-            <div class="mode-switch">
-                <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
-                <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
-            </div>
         </div>
         <img src="logo.png" alt="Mighty Pens" class="logo-img">
     </div>
@@ -623,11 +618,18 @@
                         <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
                         <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.9rem;"></div>
                     </div>
-                    <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <div class="mode-switch">
+                            <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
+                            <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
+                        </div>
+                        <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
+                    </div>
                 </div>
             </div>
         </div>
 
+        <!-- COL 3: SIDEBAR -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
