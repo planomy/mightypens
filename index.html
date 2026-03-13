@@ -135,7 +135,7 @@
 
     /* Image Logo */
     .logo-img {
-        max-width: 350px;
+        max-width: 480px; /* INCREASED LOGO SIZE HERE */
         height: auto;
         margin-right: 20px;
         margin-top: 10px;
@@ -155,8 +155,8 @@
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: 320px;
-        height: 400px;
+        width: 420px; /* INCREASED MASCOT WIDTH HERE */
+        height: 500px; /* INCREASED MASCOT HEIGHT HERE */
         flex-shrink: 0;
         z-index: 20;
     }
@@ -435,8 +435,8 @@
     @keyframes toastOut { to { opacity: 0; transform: translateY(-20px); } }
 
     @media (max-width: 1100px) {
-        .logo-img { max-width: 250px; }
-        .mascot-area { width: 250px; }
+        .logo-img { max-width: 350px; }
+        .mascot-area { width: 300px; height: 380px; }
         .bottom-bar { flex-wrap: wrap; }
     }
 </style>
