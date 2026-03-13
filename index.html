@@ -554,6 +554,61 @@
         color: white; 
     }
 
+    /* --- DISCRETE SAVE PILL & MODAL --- */
+    .discrete-btn {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.4);
+        color: var(--purple-dark);
+        border: none;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 900;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: all 0.2s;
+        z-index: 300;
+    }
+    .discrete-btn:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .save-modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.4);
+        backdrop-filter: blur(5px);
+        z-index: 3000;
+        display: none;
+        justify-content: center;
+        align-items: center;
+    }
+    .save-box {
+        background: white;
+        padding: 40px;
+        border-radius: 30px;
+        width: 90%;
+        max-width: 450px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        text-align: center;
+    }
+    .save-input {
+        width: 100%;
+        padding: 15px;
+        border-radius: 15px;
+        border: 2px solid #e2e8f0;
+        font-size: 1.1rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 15px;
+        font-family: monospace;
+        letter-spacing: 2px;
+    }
+
     @media (max-width: 1550px) { 
         .logo-img { width: 650px; } 
         .dashboard-grid { margin-top: -18vh; } 
@@ -567,6 +622,9 @@
 </head>
 <body>
 
+<!-- DISCRETE PROGRESS PILL -->
+<button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
+
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <path d="M 0 600 L 0 350 C 150 200 400 600 700 480 C 850 420 1000 550 1000 600 Z" fill="var(--coral-red)" />
 </svg>
@@ -576,6 +634,27 @@
 </svg>
 
 <div class="toastArea" id="toastArea"></div>
+
+<!-- SAVE/LOAD MODAL -->
+<div class="save-modal" id="saveModal">
+    <div class="save-box">
+        <h2 style="margin-top:0; color: var(--purple-main); font-weight: 900;">Mighty Code</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px;">
+            Write down this secret code to save your crowns. You can paste it on any computer to load your progress!
+        </p>
+        
+        <input type="text" id="displayCode" class="save-input" readonly value="MP-XXXXX-00A">
+        
+        <hr style="border:0; height:2px; background:#f1f5f9; margin: 30px 0;">
+        
+        <h3 style="margin-top:0; color: var(--text-main); font-weight: 900;">Load Progress</h3>
+        <input type="text" id="inputCode" class="save-input" placeholder="Paste code here...">
+        <div style="display:flex; gap: 10px;">
+            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem;" onclick="processLoadCode()">LOAD</button>
+            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem; background: #cbd5e1; color:#333; box-shadow:none;" onclick="toggleSaveModal(false)">CLOSE</button>
+        </div>
+    </div>
+</div>
 
 <div class="app-container">
     <div class="top-bar">
@@ -720,7 +799,7 @@
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
-    const stateKey = "mrCMightyPens_v14_full";
+    const stateKey = "mrCMightyPens_v15_secure";
     
     let appState = JSON.parse(localStorage.getItem(stateKey)) || {
         badges: {}, 
@@ -739,6 +818,70 @@
             appState.lastReset = new Date().toDateString();
         }
         localStorage.setItem(stateKey, JSON.stringify(appState)); 
+    }
+
+    /* --- SECURE SAVE LOGIC --- */
+    const codeMap = { 0:'X', 1:'Q', 2:'W', 3:'E', 4:'R', 5:'T' };
+    const revMap = { 'X':0, 'Q':1, 'W':2, 'E':3, 'R':4, 'T':5 };
+
+    function generateCode() {
+        let sum = 0;
+        let letters = "";
+        skillDefs.forEach(def => {
+            const lvl = appState.badges[def.id] || 0;
+            sum += lvl;
+            letters += codeMap[lvl];
+        });
+        const checksumChar = String.fromCharCode(65 + (sum % 26)); // Random looking letter A-Z
+        const sumStr = sum.toString().padStart(2, '0'); 
+        return `MP-${letters}-${sumStr}${checksumChar}`;
+    }
+
+    function processLoadCode() {
+        let codeStr = document.getElementById("inputCode").value.trim().toUpperCase();
+        const regex = /^MP-([XQWERT]{10})-(\d{2})([A-Z])$/;
+        const match = codeStr.match(regex);
+        
+        if (!match) {
+            showToast("❌ Invalid Mighty Code format!");
+            return;
+        }
+
+        const letters = match[1];
+        const sumStr = parseInt(match[2], 10);
+        const checkChar = match[3];
+
+        let calcSum = 0;
+        let newBadges = {};
+        for(let i=0; i<10; i++) {
+            const lvl = revMap[letters[i]];
+            calcSum += lvl;
+            newBadges[skillDefs[i].id] = lvl;
+        }
+
+        const calcCheckChar = String.fromCharCode(65 + (calcSum % 26));
+        
+        if (calcSum !== sumStr || calcCheckChar !== checkChar) {
+            showToast("❌ Invalid Code: Checksum failed!");
+            return;
+        }
+
+        appState.badges = newBadges;
+        save();
+        renderCrowns();
+        toggleSaveModal(false);
+        showToast("🔓 Progress Loaded Successfully!");
+        document.getElementById("inputCode").value = "";
+    }
+
+    function toggleSaveModal(show) {
+        const modal = document.getElementById("saveModal");
+        if(show) {
+            document.getElementById("displayCode").value = generateCode();
+            modal.style.display = "flex";
+        } else {
+            modal.style.display = "none";
+        }
     }
 
     /* --- LOGIC ENGINE --- */
