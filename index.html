@@ -783,15 +783,29 @@
 </div>
 
 <script>
-    /* --- DATA & CONFIG (FULL ARRAYS RESTORED) --- */
+    /* --- DATA & CONFIG --- */
+    
+    // 1. YOUR GOOGLE SHEET ID GOES HERE
+    // Example: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
+    const SHEET_ID = '13LNJewhxwfR8BkVVmwVEX_byitEXAyQuL7DjzirsDm8'; 
+
+    // 2. THE 52-WEEK TOPIC AUTO-PILOT
     const topics = [
-        "Bravery", "The Lie", "Overboard", "Secrets", "The Dare", 
-        "The Shortcut", "The Escape", "Lost", "The Storm", "The Knock", 
-        "The Discovery", "The Phone Call", "The Stranger", "The Promise", 
-        "The Warning", "The Last Bus", "The Map", "The Key"
+        "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
+        "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
+        "The Warning", "The Dare", "The Lie", "The Promise", "The Map", 
+        "The Last Bus", "The Code", "The Vault", "The Climb", "The Descent", 
+        "The Island", "The Ruins", "The Signal", "The Chase", "The Echo", 
+        "The Footsteps", "The Mirror", "The Box", "The Message", "The River", 
+        "The Forest", "The Cave", "The Fog", "The Bridge", "The Secret", 
+        "The Watcher", "The Return", "The Journey", "The Flight", "The Rescue", 
+        "The Alarm", "The Gate", "The Ticket", "The Compass", "The Lantern", 
+        "The Train", "The Letter", "The Window", "The Trap", "The Choice", 
+        "The Illusion", "The Arrival"
     ];
     
-    const lessonSets = [
+    // 3. FALLBACK LESSONS (Used if Google Sheet isn't linked yet)
+    let lessonSets = [
         { 
             example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", 
             author: "Sarah, Year 5", 
@@ -801,16 +815,6 @@
             example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", 
             author: "James, Year 6", 
             tip: "Start with an -ing word followed by three past-tense verbs for high energy!" 
-        },
-        { 
-            example: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", 
-            author: "Leo, Year 4", 
-            tip: "The Triple Descriptor: Use 'With' followed by three specific details." 
-        },
-        { 
-            example: "The fog swallowed the trees, turning the park into a ghostly maze.", 
-            author: "Amelie, Year 5", 
-            tip: "Use strong verbs like 'swallowed' to bring settings to life (Personification)." 
         }
     ];
 
@@ -826,6 +830,49 @@
         { id: "pacing", name: "Pacing" }, 
         { id: "vocabulary", name: "Vocabulary" }
     ];
+
+    /* --- GOOGLE SHEETS FETCH LOGIC --- */
+    async function loadGoogleSheetData() {
+        if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE' || !SHEET_ID) return;
+        
+        try {
+            // Google's public JSON endpoint for published sheets
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+            const response = await fetch(url);
+            const text = await response.text();
+            
+            // Clean up the JSONP wrapper Google adds
+            const json = JSON.parse(text.substr(47).slice(0, -2));
+            const rows = json.table.rows;
+            const newLessons = [];
+            
+            // Loop through rows (skipping header if it exists)
+            // Updated mapping based on your spreadsheet: Col A = Author, Col B = Example, Col C = Tip
+            rows.forEach((row, index) => {
+                if (row.c && index > 0) { 
+                    newLessons.push({
+                        author: row.c[0] && row.c[0].v ? row.c[0].v : "Anonymous",
+                        example: row.c[1] && row.c[1].v ? row.c[1].v : "Keep writing to be featured!",
+                        tip: row.c[2] && row.c[2].v ? row.c[2].v : "Keep practicing your skills!"
+                    });
+                } else if (index === 0 && row.c && row.c[0] && row.c[0].v && String(row.c[0].v).toLowerCase() !== 'author') {
+                     // Catch in case you didn't use header rows
+                     newLessons.push({
+                        author: row.c[0] && row.c[0].v ? row.c[0].v : "Anonymous",
+                        example: row.c[1] && row.c[1].v ? row.c[1].v : "Keep writing to be featured!",
+                        tip: row.c[2] && row.c[2].v ? row.c[2].v : "Keep practicing your skills!"
+                    });
+                }
+            });
+            
+            if (newLessons.length > 0) {
+                lessonSets = newLessons;
+                rotateLesson(); // Refresh immediately once data loads
+            }
+        } catch (error) {
+            console.error("Mighty Pens Error: Could not load Google Sheet.", error);
+        }
+    }
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
@@ -1083,11 +1130,19 @@
         }
     }
 
+    function getWeeklyTopic() {
+        const now = new Date();
+        const start = new Date(now.getFullYear(), 0, 1);
+        const days = Math.floor((now - start) / (24 * 60 * 60 * 1000));
+        const weekNumber = Math.floor(days / 7);
+        return topics[weekNumber % topics.length];
+    }
+
     function setMode(mode) {
         currentMode = mode;
         document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
         document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
-        document.getElementById("topicText").innerText = mode === 'mission' ? "Weekly Mission: The Storm" : "Practice Topic: " + topics[Math.floor(Math.random()*topics.length)];
+        document.getElementById("topicText").innerText = mode === 'mission' ? "Weekly Mission: " + getWeeklyTopic() : "Practice Topic: " + topics[Math.floor(Math.random()*topics.length)];
         renderCrowns();
     }
 
@@ -1125,6 +1180,13 @@
         }, 3500);
     }
     
+    function rotateLesson() {
+        const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
+        document.getElementById("starText").innerText = `"${set.example}"`;
+        document.getElementById("starAuthor").innerText = `- ${set.author}`;
+        document.getElementById("proTip").innerText = set.tip;
+    }
+
     document.getElementById("paragraph").addEventListener("input", function() {
         const words = this.value.trim() ? this.value.trim().split(/\s+/).length : 0;
         document.getElementById("wordCount").innerText = "Words: " + words;
@@ -1134,13 +1196,10 @@
     // INIT
     setMode('mission');
     renderCrowns();
+    rotateLesson();
+    loadGoogleSheetData(); // Fetches live data from your spreadsheet!
     
-    setInterval(() => {
-        const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
-        document.getElementById("starText").innerText = `"${set.example}"`;
-        document.getElementById("starAuthor").innerText = `- ${set.author}`;
-        document.getElementById("proTip").innerText = set.tip;
-    }, 20000);
+    setInterval(rotateLesson, 20000);
 </script>
 </body>
 </html>
