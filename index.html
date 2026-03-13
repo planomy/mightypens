@@ -237,7 +237,7 @@
         white-space: nowrap;
         opacity: 0;
         animation: topicDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s; 
-        cursor: pointer;
+        /* Clickable functionality removed */
     }
 
     @keyframes topicDrop {
@@ -262,6 +262,7 @@
     }
     textarea:focus { outline: none; border-color: #d8b4fe; }
 
+    /* LILAC BOX FIX: Match corners to parent */
     .editor-controls {
         background: #faf5ff; 
         padding: 18px 30px;
@@ -507,8 +508,8 @@
         <!-- COL 2: EDITOR -->
         <div class="editor-col">
             <div class="editor-box">
-                <!-- DROPPING TOPIC PILL -->
-                <div id="topicText" class="topic-pill" onclick="newTopic()">Topic: Loading...</div>
+                <!-- DROPPING TOPIC PILL (onclick removed) -->
+                <div id="topicText" class="topic-pill">Topic: Loading...</div>
 
                 <div class="result-overlay" id="resultOverlay">
                     <div id="resultText" style="font-size: 1.4rem; font-weight: 700; color: var(--purple-main); margin-bottom: 30px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
