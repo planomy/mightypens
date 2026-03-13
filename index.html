@@ -135,7 +135,7 @@
 
     /* Image Logo */
     .logo-img {
-        max-width: 480px; /* INCREASED LOGO SIZE HERE */
+        width: clamp(250px, 30vw, 600px); /* Responsive: Min 250px, Ideal 30% of screen, Max 600px */
         height: auto;
         margin-right: 20px;
         margin-top: 10px;
@@ -155,8 +155,8 @@
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: 420px; /* INCREASED MASCOT WIDTH HERE */
-        height: 500px; /* INCREASED MASCOT HEIGHT HERE */
+        width: clamp(250px, 25vw, 500px); /* Scales with screen width */
+        height: clamp(350px, 45vh, 650px); /* Scales with screen height */
         flex-shrink: 0;
         z-index: 20;
     }
@@ -170,8 +170,8 @@
 
     .speech-bubble {
         position: absolute;
-        top: 130px;
-        right: -80px;
+        top: 20%; /* Changed to percentage so it stays perfectly aligned as mascot scales */
+        right: -60px;
         left: auto;
         background: #4a4a4a;
         color: white;
