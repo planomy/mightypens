@@ -19,7 +19,7 @@
         --text-main: #1e293b;
         --text-muted: #64748b;
         --star-gold: #fbbf24;
-        --tip-accent: #f59e0b;
+        --tip-orange: #ffedcc; /* Faded orange background */
     }
 
     * { box-sizing: border-box; }
@@ -71,14 +71,14 @@
         flex-direction: column;
         height: 100vh;
         width: 100vw;
-        padding: 1% 40px 20px; 
+        padding: 1% 40px 20px; /* Aligned to topmost with padding */
     }
 
     .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        min-height: 140px;
+        min-height: 120px;
     }
 
     .crowns-container {
@@ -115,14 +115,14 @@
     }
     .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
 
-    /* Logo Higher and to the front */
+    /* Logo Pinned to Top */
     .logo-img {
         width: 850px; 
-        max-width: 45vw;
+        max-width: 42vw;
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -35px; /* Lifted high */
-        margin-right: -10px;
+        margin-top: -10px; /* High alignment */
+        margin-right: -15px;
         position: relative;
         z-index: 200;
     }
@@ -131,10 +131,10 @@
     .dashboard-grid {
         flex: 1;
         display: grid;
-        grid-template-columns: 1fr 2.5fr 1fr; 
+        grid-template-columns: 1fr 2.6fr 1fr; /* Strong center weighting */
         gap: 40px;
         align-items: center;
-        margin-top: -16vh; /* MOVED HIGHER: Significant lift into the upper-center zone */
+        margin-top: -22vh; /* MOVED HIGHER: Significant lift into the upper-center zone */
         max-width: 2000px;
         margin-left: auto;
         margin-right: auto;
@@ -178,26 +178,26 @@
         z-index: 30;
     }
 
-    /* SPEECH BUBBLE POINT POINTING LEFT TOWARDS MASCOT */
+    /* SPEECH BUBBLE POINT FACING MASCOT (POINTING LEFT) */
     .speech-bubble::after {
         content: '';
         position: absolute;
         top: 50%;
-        left: -12px; 
+        left: -12px; /* Anchor to the left side */
         transform: translateY(-50%);
         border-width: 8px 12px 8px 0;
         border-style: solid;
         border-color: transparent #333 transparent transparent;
     }
 
-    /* COL 2: EDITOR (The Paper) */
+    /* COL 2: EDITOR (Centered high) */
     .editor-box {
         background: #ffffff;
         border-radius: 40px;
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
         display: flex;
         flex-direction: column;
-        height: 62vh;
+        height: 60vh;
         overflow: hidden;
         border: 4px solid #fff;
         position: relative;
@@ -223,14 +223,14 @@
 
     .editor-controls {
         background: #faf5ff; 
-        padding: 20px 30px;
+        padding: 18px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-top: 2px solid #f3e8ff;
     }
 
-    /* COL 3: SIDEBAR STACK (Matched Sets) */
+    /* COL 3: SIDEBAR STACK */
     .sidebar-col {
         display: flex;
         flex-direction: column;
@@ -247,9 +247,14 @@
         transition: transform 0.3s;
     }
 
-    .info-card.star { transform: rotate(1.5deg); }
-    .info-card.tip { transform: rotate(-1.5deg); border-color: var(--tip-accent); }
-    .info-card:hover { transform: rotate(0deg) scale(1.02); }
+    .info-card.star { transform: rotate(1.5deg); z-index: 5; }
+    .info-card.tip { 
+        transform: rotate(-1.5deg); 
+        background: var(--tip-orange); /* RESTORED ORANGE BG */
+        border: 2px solid #fbd38d;
+        z-index: 4;
+    }
+    .info-card:hover { transform: rotate(0deg) scale(1.02); z-index: 10; }
 
     .card-header {
         display: flex;
@@ -260,17 +265,17 @@
         font-size: 1.2rem;
     }
     .star .card-header { color: var(--bg-orange); }
-    .tip .card-header { color: var(--tip-accent); }
+    .tip .card-header { color: #92400e; } /* Higher contrast for orange bg */
 
     .card-body {
         font-style: italic;
         font-size: 1.05rem;
-        color: var(--text-muted);
+        color: var(--text-main);
         line-height: 1.5;
         padding-left: 18px;
     }
-    .star .card-body { border-left: 5px solid var(--star-gold); }
-    .tip .card-body { border-left: 5px solid var(--tip-accent); font-style: normal; }
+    .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
+    .tip .card-body { border-left: 5px solid #d97706; font-style: normal; }
 
     .card-badge {
         position: absolute;
@@ -287,7 +292,7 @@
         color: white;
     }
     .star .card-badge { background: var(--star-gold); }
-    .tip .card-badge { background: var(--tip-accent); }
+    .tip .card-badge { background: var(--purple-main); }
 
     .card-footer {
         margin-top: 15px;
@@ -421,17 +426,18 @@
         padding: 14px 40px;
         font-weight: 800;
         box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        animation: toastDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        animation: toastDrop 0.4s forwards;
     }
     @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes toastOut { to { opacity: 0; transform: translateY(-30px); } }
 
     @media (max-width: 1550px) {
-        .logo-img { width: 600px; }
+        .logo-img { width: 650px; }
         .mascot-area { width: 380px; }
+        .dashboard-grid { margin-top: -18vh; }
     }
     @media (max-width: 1400px) {
-        .dashboard-grid { grid-template-columns: 1fr 2fr; }
+        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -14vh; }
         .sidebar-col { display: none; }
     }
 </style>
@@ -466,7 +472,7 @@
             </div>
         </div>
 
-        <!-- COL 2: EDITOR (Centered higher) -->
+        <!-- COL 2: EDITOR (LIFTED HIGHER) -->
         <div class="editor-col">
             <div class="editor-box">
                 <div class="result-overlay" id="resultOverlay">
@@ -496,11 +502,12 @@
                 <div class="card-footer" id="starAuthor">- Sarah, Year 5</div>
             </div>
 
+            <!-- RESTORED ORANGE BG CARD -->
             <div class="info-card tip">
                 <div class="card-badge">💡</div>
                 <div class="card-header">PRO LESSON</div>
                 <div class="card-body" id="proTip">Use an em-dash — like this — to add extra detail mid-sentence.</div>
-                <div class="card-footer" style="color: var(--tip-accent)">Try it now!</div>
+                <div class="card-footer" style="color: #92400e">Try it now!</div>
             </div>
         </div>
 
@@ -563,6 +570,13 @@
         }
     ];
 
+    const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
+    const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
+    const beWords = ["was","were","is","are","be","been","being"];
+    const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
+    const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
+    const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
+
     const skillDefs = [
         { id: "activeVerbs", name: "Active Verbs" },
         { id: "goodStarts", name: "Good Starts" },
@@ -601,13 +615,7 @@
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
         const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
-        const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
-        const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
-        const beWords = ["was","were","is","are","be","been","being"];
-        const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
-        const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
-        const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
-
+        
         const strongVerbCount = words.filter(w => /ed$|ing$/.test(w) && !beWords.includes(w) && !weakVerbs.includes(w)).length;
         const weakVerbCount = words.filter(w => weakVerbs.includes(w)).length;
         const badStartCount = sentences.filter(s => badStarts.includes((s.match(/[a-zA-Z']+/) || [""])[0].toLowerCase())).length;
