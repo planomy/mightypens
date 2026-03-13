@@ -785,9 +785,9 @@
 <script>
     /* --- DATA & CONFIG --- */
     
-    // 1. YOUR GOOGLE SHEET ID GOES HERE
-    // Example: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-    const SHEET_ID = '13LNJewhxwfR8BkVVmwVEX_byitEXAyQuL7DjzirsDm8'; 
+    // 1. YOUR GOOGLE SHEET PUBLISHED URL GOES HERE
+    // By using the 'pubhtml' link and fetching it as a CSV, we bypass the strict browser CORS issues!
+    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
 
     // 2. THE 52-WEEK TOPIC AUTO-PILOT
     const topics = [
@@ -804,7 +804,7 @@
         "The Illusion", "The Arrival"
     ];
     
-    // 3. FALLBACK LESSONS (Used if Google Sheet isn't linked yet)
+    // 3. FALLBACK LESSONS (Used if Google Sheet isn't linked yet or goes offline)
     let lessonSets = [
         { 
             example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", 
@@ -831,36 +831,54 @@
         { id: "vocabulary", name: "Vocabulary" }
     ];
 
-    /* --- GOOGLE SHEETS FETCH LOGIC --- */
+    /* --- GOOGLE SHEETS FETCH LOGIC (CORS-SAFE CSV PARSER) --- */
+    function parseCSV(text) {
+        const rows = [];
+        let row = [], inQuotes = false, val = '';
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') {
+                // If it's an escaped quote ("") inside quotes, keep one quote
+                if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
+                else inQuotes = !inQuotes;
+            } else if (c === ',' && !inQuotes) {
+                row.push(val.trim()); val = '';
+            } else if (c === '\n' && !inQuotes) {
+                row.push(val.trim()); rows.push(row); row = []; val = '';
+            } else if (c !== '\r') {
+                val += c;
+            }
+        }
+        if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
+        return rows;
+    }
+
     async function loadGoogleSheetData() {
-        if (SHEET_ID === 'YOUR_GOOGLE_SHEET_ID_HERE' || !SHEET_ID) return;
+        if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
         
         try {
-            // Google's public JSON endpoint for published sheets
-            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
-            const response = await fetch(url);
+            // We convert your published HTML link into a CSV export link to bypass strict browser CORS rules
+            let fetchUrl = GOOGLE_SHEET_URL;
+            if (fetchUrl.includes('/pubhtml')) {
+                fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
+            } else if (fetchUrl.includes('/edit')) {
+                fetchUrl = fetchUrl.replace(/\/edit.*$/, '/export?format=csv');
+            }
+
+            const response = await fetch(fetchUrl);
+            if (!response.ok) throw new Error("Failed to fetch Google Sheet");
             const text = await response.text();
             
-            // Clean up the JSONP wrapper Google adds
-            const json = JSON.parse(text.substr(47).slice(0, -2));
-            const rows = json.table.rows;
+            const rows = parseCSV(text);
             const newLessons = [];
             
-            // Loop through rows (skipping header if it exists)
-            // Updated mapping based on your spreadsheet: Col A = Author, Col B = Example, Col C = Tip
-            rows.forEach((row, index) => {
-                if (row.c && index > 0) { 
+            // Loop through rows (skipping header, checking for minimum data)
+            rows.forEach((r, index) => {
+                if (index > 0 && r.length >= 3 && r[0]) {
                     newLessons.push({
-                        author: row.c[0] && row.c[0].v ? row.c[0].v : "Anonymous",
-                        example: row.c[1] && row.c[1].v ? row.c[1].v : "Keep writing to be featured!",
-                        tip: row.c[2] && row.c[2].v ? row.c[2].v : "Keep practicing your skills!"
-                    });
-                } else if (index === 0 && row.c && row.c[0] && row.c[0].v && String(row.c[0].v).toLowerCase() !== 'author') {
-                     // Catch in case you didn't use header rows
-                     newLessons.push({
-                        author: row.c[0] && row.c[0].v ? row.c[0].v : "Anonymous",
-                        example: row.c[1] && row.c[1].v ? row.c[1].v : "Keep writing to be featured!",
-                        tip: row.c[2] && row.c[2].v ? row.c[2].v : "Keep practicing your skills!"
+                        author: r[0] || "Anonymous",
+                        example: r[1] || "Keep writing to be featured!",
+                        tip: r[2] || "Keep practicing your skills!"
                     });
                 }
             });
@@ -870,7 +888,7 @@
                 rotateLesson(); // Refresh immediately once data loads
             }
         } catch (error) {
-            console.error("Mighty Pens Error: Could not load Google Sheet.", error);
+            console.warn("Mighty Pens Info: Using fallback local lessons. (Could not fetch sheet due to privacy/CORS).", error);
         }
     }
 
@@ -985,7 +1003,6 @@
         document.getElementById("emailBtn").style.display = appState.emailSent ? "none" : "block";
     }
 
-    // FULL ANALYSIS FUNCTION RESTORED
     function analyse(text) {
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
@@ -1065,7 +1082,6 @@
         }
     }
 
-    // FULL FEEDBACK BLOCK RESTORED
     async function callAI(text) {
         const overlay = document.getElementById("resultOverlay");
         const resText = document.getElementById("resultText");
@@ -1098,7 +1114,6 @@
         }
     }
 
-    // FULL LEVEL UP LOGIC RESTORED
     function maybeLevelUp(text) {
         const metrics = analyse(text);
         const changed = [];
@@ -1158,7 +1173,6 @@
         showToast("Mission Sent to Mr C! 🚀");
     }
 
-    /* --- UI HELPERS --- */
     function toggleTools() { 
         document.getElementById("toolsMenu").classList.toggle("open"); 
     }
