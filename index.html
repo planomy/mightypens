@@ -19,7 +19,7 @@
         --text-main: #1e293b;
         --text-muted: #64748b;
         --star-gold: #fbbf24;
-        --tip-orange: #ffedcc; /* Faded orange for Pro Tip */
+        --tip-accent: #f59e0b;
     }
 
     * { box-sizing: border-box; }
@@ -43,6 +43,7 @@
         pointer-events: none;
     }
 
+    /* Red Hill Fix: Deeply curved path to prevent 'flat' look on big Macs */
     .bg-left {
         bottom: -5vh;
         left: -5vw;
@@ -71,7 +72,7 @@
         flex-direction: column;
         height: 100vh;
         width: 100vw;
-        padding: 2% 40px 20px; /* Using percentage for top padding */
+        padding: 1% 40px 20px; /* Reduced top padding to move elements up */
     }
 
     .top-bar {
@@ -115,14 +116,14 @@
     }
     .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
 
-    /* Logo aligned to top */
+    /* Logo Higher */
     .logo-img {
         width: 850px; 
         max-width: 45vw;
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: 0;
-        margin-right: 0;
+        margin-top: -30px; /* Pull it into the top margin */
+        margin-right: -10px;
         position: relative;
         z-index: 200;
     }
@@ -131,11 +132,11 @@
     .dashboard-grid {
         flex: 1;
         display: grid;
-        grid-template-columns: 1fr minmax(auto, 1000px) 1fr; /* Centering structure */
+        grid-template-columns: 1fr 2.5fr 1fr; /* Center-weighted for perfect centering */
         gap: 40px;
         align-items: center;
-        margin-top: -10vh; /* Higher lift for balance */
-        max-width: 1900px;
+        margin-top: -12vh; /* Lifted high to clear the bottom bar */
+        max-width: 2000px;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
@@ -165,7 +166,7 @@
 
     .speech-bubble {
         position: absolute;
-        top: 20%;
+        top: 22%;
         left: 80%;
         background: #333;
         color: white;
@@ -178,26 +179,26 @@
         z-index: 30;
     }
 
-    /* SPEECH BUBBLE POINT FACING MASCOT (pointing left) */
+    /* SPEECH BUBBLE POINT POINTING LEFT */
     .speech-bubble::after {
         content: '';
         position: absolute;
         top: 50%;
-        left: -12px; /* Anchor to the left side */
+        left: -12px; 
         transform: translateY(-50%);
-        border-width: 10px 12px 10px 0;
+        border-width: 8px 12px 8px 0;
         border-style: solid;
         border-color: transparent #333 transparent transparent;
     }
 
-    /* COL 2: EDITOR (The Paper) */
+    /* COL 2: EDITOR (Centered Paper) */
     .editor-box {
         background: #ffffff;
         border-radius: 40px;
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
         display: flex;
         flex-direction: column;
-        height: 60vh;
+        height: 62vh;
         overflow: hidden;
         border: 4px solid #fff;
         position: relative;
@@ -223,18 +224,18 @@
 
     .editor-controls {
         background: #faf5ff; 
-        padding: 18px 30px;
+        padding: 20px 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         border-top: 2px solid #f3e8ff;
     }
 
-    /* COL 3: SIDEBAR STACK */
+    /* COL 3: SIDEBAR STACK (Matched Sets) */
     .sidebar-col {
         display: flex;
         flex-direction: column;
-        gap: 25px;
+        gap: 30px;
     }
 
     .info-card {
@@ -247,14 +248,9 @@
         transition: transform 0.3s;
     }
 
-    .info-card.star { transform: rotate(1.5deg); z-index: 5; }
-    .info-card.tip { 
-        transform: rotate(-1.5deg); 
-        background: var(--tip-orange); /* Restore faded orange */
-        border: none;
-        z-index: 4;
-    }
-    .info-card:hover { transform: rotate(0deg) scale(1.02); z-index: 10; }
+    .info-card.star { transform: rotate(1.5deg); }
+    .info-card.tip { transform: rotate(-1.5deg); border-color: var(--tip-accent); }
+    .info-card:hover { transform: rotate(0deg) scale(1.02); }
 
     .card-header {
         display: flex;
@@ -262,20 +258,20 @@
         gap: 12px;
         margin-bottom: 12px;
         font-weight: 900;
-        font-size: 1.15rem;
+        font-size: 1.2rem;
     }
     .star .card-header { color: var(--bg-orange); }
-    .tip .card-header { color: #854d0e; } /* Brownish for readability on orange */
+    .tip .card-header { color: var(--tip-accent); }
 
     .card-body {
         font-style: italic;
         font-size: 1.05rem;
-        color: var(--text-main);
+        color: var(--text-muted);
         line-height: 1.5;
         padding-left: 18px;
     }
-    .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
-    .tip .card-body { border-left: 5px solid #ca8a04; font-style: normal; }
+    .star .card-body { border-left: 5px solid var(--star-gold); }
+    .tip .card-body { border-left: 5px solid var(--tip-accent); font-style: normal; }
 
     .card-badge {
         position: absolute;
@@ -292,7 +288,7 @@
         color: white;
     }
     .star .card-badge { background: var(--star-gold); }
-    .tip .card-badge { background: var(--purple-main); }
+    .tip .card-badge { background: var(--tip-accent); }
 
     .card-footer {
         margin-top: 15px;
@@ -334,14 +330,14 @@
         display: none;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 8px;
+        gap: 10px;
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(10px);
-        padding: 18px;
-        border-radius: 30px;
+        padding: 20px;
+        border-radius: 35px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.25);
         margin-bottom: 12px;
-        max-width: 1350px;
+        max-width: 1400px;
         width: 95vw;
     }
 
@@ -359,7 +355,7 @@
         position: relative;
         text-transform: uppercase;
         flex: 1 1 calc(10% - 10px);
-        min-width: 105px;
+        min-width: 110px;
         white-space: nowrap;
         transition: background 0.2s;
     }
@@ -426,26 +422,26 @@
         padding: 14px 40px;
         font-weight: 800;
         box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        animation: toastDrop 0.4s forwards;
+        animation: toastDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
     @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes toastOut { to { opacity: 0; transform: translateY(-30px); } }
 
     @media (max-width: 1550px) {
-        .logo-img { width: 550px; }
+        .logo-img { width: 600px; }
         .mascot-area { width: 380px; }
     }
     @media (max-width: 1400px) {
-        .dashboard-grid { grid-template-columns: 1fr 1.8fr; }
+        .dashboard-grid { grid-template-columns: 1fr 2fr; }
         .sidebar-col { display: none; }
     }
 </style>
 </head>
 <body>
 
-<!-- SVG BACKGROUND STAGING -->
+<!-- UPDATED RED HILL: Deeper curves to ensure it looks 'hill-like' on Mac -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 600 L 0 350 C 200 200 450 550 750 450 C 900 400 1000 550 1000 600 Z" fill="var(--coral-red)" />
+    <path d="M 0 600 L 0 350 C 150 200 400 600 700 480 C 850 420 1000 550 1000 600 Z" fill="var(--coral-red)" />
 </svg>
 
 <svg class="bg-shape bg-right-wave" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
@@ -481,7 +477,7 @@
                         <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
                     </div>
                 </div>
-                <textarea id="paragraph" placeholder="Type your story..."></textarea>
+                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
                 <div class="editor-controls">
                     <div style="display: flex; gap: 20px; align-items: center;">
                         <div id="topicText" style="font-weight: 900; color: var(--coral-red); cursor: pointer; font-size: 1.15rem;" onclick="newTopic()">Topic: Loading...</div>
@@ -492,7 +488,7 @@
             </div>
         </div>
 
-        <!-- COL 3: SIDEBAR STACK -->
+        <!-- COL 3: SIDEBAR STACK (Matched Set) -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
@@ -505,7 +501,7 @@
                 <div class="card-badge">💡</div>
                 <div class="card-header">PRO LESSON</div>
                 <div class="card-body" id="proTip">Use an em-dash — like this — to add extra detail mid-sentence.</div>
-                <div class="card-footer" style="color: #854d0e">Try it now!</div>
+                <div class="card-footer" style="color: var(--tip-accent)">Try it now!</div>
             </div>
         </div>
 
@@ -533,7 +529,7 @@
             <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Word Variety</strong>Vary your nouns and verbs to keep energy high.</div></button>
             <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Don't over-describe. Let the verbs do the work.</div></button>
         </div>
-        <button class="btn-submit" style="background: var(--text-main); font-size: 1rem; display:flex; align-items:center; gap:10px;" onclick="toggleTools()">
+        <button class="btn-submit" style="background: var(--text-main); font-size: 1.1rem; display:flex; align-items:center; gap:12px;" onclick="toggleTools()">
             <span>🛠️</span> Mr C's Tools & Tips
         </button>
     </div>
@@ -581,11 +577,11 @@
 
     /* --- LOGIC ENGINE --- */
     function getBadgeState() {
-        const saved = localStorage.getItem("mrCParagraphBadges_v10");
+        const saved = localStorage.getItem("mrCParagraphBadges_v11");
         if (saved) return JSON.parse(saved);
         const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
     }
-    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v10", JSON.stringify(state)); }
+    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v11", JSON.stringify(state)); }
 
     function renderCrowns() {
         const state = getBadgeState();
@@ -602,7 +598,6 @@
         }).join("");
     }
 
-    /* Analyze and Level Up Logic omitted for brevity but present in main index.html engine */
     function analyseWriting(text) {
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
@@ -651,9 +646,6 @@
             showToast(`👑 Skills Upgraded: ${changed.join(", ")}`);
         }
     }
-
-    /* --- INTERACTIONS --- */
-    let lastFeedbackData = "";
 
     async function getFeedback() {
         const text = document.getElementById("paragraph").value.trim();
