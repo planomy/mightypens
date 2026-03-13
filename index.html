@@ -23,7 +23,9 @@
         --tip-accent: #f59e0b;
     }
 
-    * { box-sizing: border-box; }
+    * { 
+        box-sizing: border-box; 
+    }
     
     html, body {
         margin: 0;
@@ -39,89 +41,94 @@
     /* --- BACKGROUND STAGING --- */
     .bg-shape {
         position: absolute;
-        z-index: 0;
-        opacity: 1;
+        z-index: 0; 
+        opacity: 1; 
         pointer-events: none;
     }
 
     .bg-left {
-        bottom: -5vh;
-        left: -5vw;
-        width: 65vw;
+        bottom: -5vh; 
+        left: -5vw; 
+        width: 65vw; 
         max-width: 1200px;
-        height: auto;
-        min-width: 750px;
+        height: auto; 
+        min-width: 750px; 
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
     .bg-right-wave {
-        top: -5vh;
-        right: -5vw;
-        width: 35vw;
+        top: -5vh; 
+        right: -5vw; 
+        width: 35vw; 
         max-width: 600px;
         height: auto; 
-        min-width: 350px;
+        min-width: 350px; 
         filter: drop-shadow(-15px 10px 25px rgba(200, 70, 0, 0.25));
     }
 
     /* --- APP LAYOUT --- */
     .app-container {
-        position: relative;
-        z-index: 10;
-        display: flex;
+        position: relative; 
+        z-index: 10; 
+        display: flex; 
         flex-direction: column;
-        height: 100vh;
-        width: 100vw;
+        height: 100vh; 
+        width: 100vw; 
         padding: 1% 40px 20px; 
     }
 
     .top-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        display: flex; 
+        justify-content: space-between; 
+        align-items: flex-start; 
         min-height: 140px;
     }
 
-    .crowns-container {
-        display: flex;
-        gap: 8px;
-        margin-top: 15px;
+    .crowns-container { 
+        display: flex; 
+        gap: 8px; 
+        margin-top: 15px; 
     }
 
-    .crown-wrapper {
-        position: relative;
-        width: 60px;
-        height: 50px;
+    .crown-wrapper { 
+        position: relative; 
+        width: 60px; 
+        height: 50px; 
     }
 
-    .crown-svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); transition: transform 0.2s; }
+    .crown-svg { 
+        width: 100%; 
+        height: 100%; 
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); 
+        transition: transform 0.2s; 
+    }
 
     .logo-img {
         width: 850px; 
-        max-width: 45vw;
+        max-width: 45vw; 
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
         margin-top: -35px; 
-        margin-right: -10px;
-        position: relative;
+        margin-right: -10px; 
+        position: relative; 
         z-index: 200;
     }
 
-    /* --- THE DASHBOARD GRID --- */
+    /* --- DASHBOARD GRID --- */
     .dashboard-grid {
-        flex: 1;
-        display: grid;
+        flex: 1; 
+        display: grid; 
         grid-template-columns: 1fr 2.5fr 1fr; 
-        gap: 40px;
-        align-items: center;
+        gap: 40px; 
+        align-items: center; 
         margin-top: -28vh; 
-        max-width: 2000px;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 2000px; 
+        margin-left: auto; 
+        margin-right: auto; 
         width: 100%;
     }
 
-    /* COL 1: MASCOT */
+    /* --- MASCOT SLIDE --- */
     .mascot-col {
         position: relative;
         display: flex;
@@ -131,339 +138,431 @@
     }
 
     .mascot-area {
-        position: relative;
+        position: relative; 
         width: 420px; 
         max-width: 24vw;
         transform: translate(-300px, -200px) rotate(-15deg);
-        opacity: 0;
-        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s;
+        opacity: 0; 
+        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
         z-index: 100;
     }
 
-    @keyframes mascotSlide {
-        to { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+    @keyframes mascotSlide { 
+        to { 
+            transform: translate(0, 0) rotate(0deg); 
+            opacity: 1; 
+        } 
     }
 
-    .mascot-img {
-        width: 100%;
-        height: auto;
-        display: block;
-        filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25));
+    .mascot-img { 
+        width: 100%; 
+        height: auto; 
+        display: block; 
+        filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25)); 
     }
 
-    /* FOG/SMOKE EFFECT */
+    /* --- FOG --- */
     .smoke-puff {
-        position: absolute;
-        bottom: 0px;
-        left: -50px;
-        width: 250px;
+        position: absolute; 
+        bottom: 0px; 
+        left: -50px; 
+        width: 250px; 
         height: 150px;
-        pointer-events: none;
-        opacity: 0;
-        z-index: 150;
+        pointer-events: none; 
+        opacity: 0; 
+        z-index: 150; 
         filter: blur(10px);
     }
 
-    .smoke-puff.animate {
-        animation: fogFade 2s ease-out forwards 1.5s; 
+    .smoke-puff.animate { 
+        animation: fogFade 2.5s ease-out forwards 1.5s; 
     }
 
-    @keyframes fogFade {
-        0% { transform: scale(0.3) translateY(20px); opacity: 0; }
-        20% { opacity: 0.8; }
-        100% { transform: scale(2) translateY(-60px); opacity: 0; }
+    @keyframes fogFade { 
+        0% { 
+            transform: scale(0.3) translateY(20px); 
+            opacity: 0; 
+        } 
+        20% { 
+            opacity: 0.8; 
+        } 
+        100% { 
+            transform: scale(2) translateY(-60px); 
+            opacity: 0; 
+        } 
     }
 
+    /* --- SPEECH BUBBLE --- */
     .speech-bubble {
-        position: absolute;
-        top: 22%;
-        left: 80%;
-        background: #333;
+        position: absolute; 
+        top: 22%; 
+        left: 80%; 
+        background: #333; 
         color: white;
-        padding: 14px 22px;
-        border-radius: 20px;
+        padding: 14px 22px; 
+        border-radius: 20px; 
         font-weight: 800;
-        font-size: clamp(0.9rem, 1.1vw, 1.1rem);
+        font-size: clamp(0.9rem, 1.1vw, 1.1rem); 
         white-space: nowrap;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
         z-index: 500; 
-        opacity: 0;
+        opacity: 0; 
         animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
     }
 
-    @keyframes bubblePop {
-        from { transform: scale(0) translateX(-20px); opacity: 0; }
-        to { transform: scale(1) translateX(0); opacity: 1; }
+    @keyframes bubblePop { 
+        from { 
+            transform: scale(0) translateX(-20px); 
+            opacity: 0; 
+        } 
+        to { 
+            transform: scale(1) translateX(0); 
+            opacity: 1; 
+        } 
     }
 
     .speech-bubble::after {
-        content: '';
-        position: absolute;
-        top: 50%;
+        content: ''; 
+        position: absolute; 
+        top: 50%; 
         left: -12px; 
         transform: translateY(-50%);
-        border-width: 8px 12px 8px 0;
-        border-style: solid;
+        border-width: 8px 12px 8px 0; 
+        border-style: solid; 
         border-color: transparent #333 transparent transparent;
     }
 
-    /* COL 2: EDITOR */
+    /* --- EDITOR --- */
     .editor-box {
-        background: #ffffff;
-        border-radius: 40px;
+        background: #ffffff; 
+        border-radius: 40px; 
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-        display: flex;
-        flex-direction: column;
-        height: 62vh;
+        display: flex; 
+        flex-direction: column; 
+        height: 62vh; 
         overflow: visible; 
-        border: 4px solid #fff;
-        position: relative;
+        border: 4px solid #fff; 
+        position: relative; 
         z-index: 10;
     }
 
     .topic-pill {
-        position: absolute;
-        top: -24px;
-        left: 50%;
+        position: absolute; 
+        top: -24px; 
+        left: 50%; 
         transform: translateX(-50%) translateY(-300px);
-        background: var(--coral-red);
-        color: white;
-        padding: 10px 30px;
+        background: var(--coral-red); 
+        color: white; 
+        padding: 10px 30px; 
         border-radius: 50px;
-        font-weight: 900;
-        font-size: 1.2rem;
+        font-weight: 900; 
+        font-size: 1.2rem; 
         box-shadow: 0 10px 20px rgba(255, 120, 110, 0.3);
-        z-index: 50;
-        white-space: nowrap;
-        opacity: 0;
+        z-index: 50; 
+        white-space: nowrap; 
+        opacity: 0; 
         animation: topicDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s; 
-        /* Clickable functionality removed */
     }
 
-    @keyframes topicDrop {
-        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    @keyframes topicDrop { 
+        to { 
+            transform: translateX(-50%) translateY(0); 
+            opacity: 1; 
+        } 
     }
 
     textarea {
-        flex: 1;
-        width: calc(100% - 60px);
+        flex: 1; 
+        width: calc(100% - 60px); 
         margin: 40px 30px 15px 30px; 
         border: 2px solid #f5f3ff;
-        border-radius: 28px;
-        padding: 35px;
-        font-family: inherit;
+        border-radius: 28px; 
+        padding: 35px; 
+        font-family: inherit; 
         font-size: clamp(1.3rem, 1.7vw, 1.8rem);
-        font-weight: 700;
-        line-height: 1.6;
-        resize: none;
+        font-weight: 700; 
+        line-height: 1.6; 
+        resize: none; 
         background: #ffffff;
-        box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08);
+        box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08); 
         transition: all 0.2s ease;
     }
-    textarea:focus { outline: none; border-color: #d8b4fe; }
 
-    /* LILAC BOX FIX: Match corners to parent */
+    textarea:focus { 
+        outline: none; 
+        border-color: #d8b4fe; 
+    }
+
     .editor-controls {
         background: #faf5ff; 
-        padding: 18px 30px;
-        display: flex;
+        padding: 18px 30px; 
+        display: flex; 
         justify-content: space-between;
-        align-items: center;
-        border-top: 2px solid #f3e8ff;
+        align-items: center; 
+        border-top: 2px solid #f3e8ff; 
         border-radius: 0 0 36px 36px;
     }
 
-    /* COL 3: SIDEBAR */
-    .sidebar-col {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
+    /* --- SIDEBAR --- */
+    .sidebar-col { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 30px; 
     }
 
     .info-card {
-        background: #fff;
-        padding: 28px;
-        border-radius: 35px;
+        background: #fff; 
+        padding: 28px; 
+        border-radius: 35px; 
         box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        position: relative;
-        border: 2px solid #fff;
+        position: relative; 
+        border: 2px solid #fff; 
         transition: transform 0.3s;
     }
 
-    .info-card.star { transform: rotate(1.5deg); }
+    .info-card.star { 
+        transform: rotate(1.5deg); 
+    }
+
     .info-card.tip { 
         transform: rotate(-1.5deg); 
         background: var(--tip-orange); 
-        border: 2px solid #fbd38d;
+        border: 2px solid #fbd38d; 
     }
 
-    .card-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 12px;
-        font-weight: 900;
-        font-size: 1.2rem;
+    .card-header { 
+        display: flex; 
+        align-items: center; 
+        gap: 12px; 
+        margin-bottom: 12px; 
+        font-weight: 900; 
+        font-size: 1.2rem; 
     }
+
     .star .card-header { color: var(--bg-orange); }
     .tip .card-header { color: #92400e; }
 
-    .card-body {
-        font-style: italic;
-        font-size: 1.05rem;
-        color: var(--text-main);
-        line-height: 1.5;
-        padding-left: 18px;
+    .card-body { 
+        font-style: italic; 
+        font-size: 1.05rem; 
+        color: var(--text-main); 
+        line-height: 1.5; 
+        padding-left: 18px; 
     }
+
     .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
     .tip .card-body { border-left: 5px solid #d97706; font-style: normal; }
 
     .card-badge {
-        position: absolute;
-        top: -15px;
-        right: -15px;
-        width: 55px;
+        position: absolute; 
+        top: -15px; 
+        right: -15px; 
+        width: 55px; 
         height: 55px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
         justify-content: center;
-        font-size: 1.6rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        font-size: 1.6rem; 
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
         color: white;
     }
+
     .star .card-badge { background: var(--star-gold); }
     .tip .card-badge { background: var(--purple-main); }
 
-    .card-footer {
-        margin-top: 15px;
-        font-weight: 800;
-        font-size: 0.95rem;
-        text-align: right;
-        color: var(--text-main);
+    .card-footer { 
+        margin-top: 15px; 
+        font-weight: 800; 
+        font-size: 0.95rem; 
+        text-align: right; 
+        color: var(--text-main); 
     }
 
     /* --- BUTTONS --- */
     .btn-submit {
-        background: var(--purple-main);
-        color: white;
-        font-weight: 900;
+        background: var(--purple-main); 
+        color: white; 
+        font-weight: 900; 
         padding: 16px 45px;
-        border-radius: 100px;
-        border: none;
-        cursor: pointer;
+        border-radius: 100px; 
+        border: none; 
+        cursor: pointer; 
         font-size: 1.2rem;
-        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25);
+        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25); 
         transition: transform 0.1s, background 0.2s;
     }
-    .btn-submit:hover { background: var(--purple-dark); transform: scale(1.02); }
 
-    /* --- BOTTOM TOOLKIT --- */
+    .btn-submit:hover:not(:disabled) { 
+        background: var(--purple-dark); 
+        transform: scale(1.02); 
+    }
+
+    .btn-submit:disabled { 
+        background: #cbd5e1; 
+        cursor: not-allowed; 
+        box-shadow: none; 
+    }
+
+    /* --- TOOLKIT --- */
     .toolkit-wrapper {
-        position: fixed;
-        bottom: 25px;
-        left: 50%;
+        position: fixed; 
+        bottom: 25px; 
+        left: 50%; 
         transform: translateX(-50%);
-        z-index: 150;
-        display: flex;
-        flex-direction: column;
+        z-index: 150; 
+        display: flex; 
+        flex-direction: column; 
         align-items: center;
     }
 
     .bottom-bar {
-        display: none;
-        justify-content: center;
-        flex-wrap: wrap;
+        display: none; 
+        justify-content: center; 
+        flex-wrap: wrap; 
         gap: 10px;
-        background: rgba(255, 255, 255, 0.98);
-        padding: 20px;
+        background: rgba(255, 255, 255, 0.98); 
+        padding: 20px; 
         border-radius: 35px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-        margin-bottom: 12px;
-        max-width: 1400px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25); 
+        margin-bottom: 12px; 
+        max-width: 1400px; 
         width: 95vw;
     }
 
-    .bottom-bar.open { display: flex; }
+    .bottom-bar.open { 
+        display: flex; 
+    }
 
     .tooltip-btn {
-        background: var(--purple-tooltip);
-        color: white;
-        border: none;
+        background: var(--purple-tooltip); 
+        color: white; 
+        border: none; 
         padding: 12px 20px;
-        border-radius: 20px;
-        font-weight: 900;
-        font-size: 0.85rem;
+        border-radius: 20px; 
+        font-weight: 900; 
+        font-size: 0.85rem; 
         cursor: help;
-        position: relative;
-        text-transform: uppercase;
+        position: relative; 
+        text-transform: uppercase; 
         flex: 1 1 calc(10% - 10px);
-        min-width: 110px;
-        white-space: nowrap;
+        min-width: 110px; 
+        white-space: nowrap; 
         transition: background 0.2s;
     }
 
     .tooltip-pop {
-        position: absolute;
-        bottom: calc(100% + 15px);
-        left: 50%;
+        position: absolute; 
+        bottom: calc(100% + 15px); 
+        left: 50%; 
         transform: translateX(-50%) translateY(10px);
-        width: max-content;
-        max-width: 280px;
-        white-space: normal;
+        width: max-content; 
+        max-width: 280px; 
+        white-space: normal; 
         background: white;
-        color: var(--text-main);
-        padding: 18px;
-        border-radius: 15px;
+        color: var(--text-main); 
+        padding: 18px; 
+        border-radius: 15px; 
         font-size: 0.95rem;
-        line-height: 1.5;
-        text-align: left;
-        text-transform: none;
+        line-height: 1.5; 
+        text-align: left; 
+        text-transform: none; 
         opacity: 0;
-        visibility: hidden;
-        transition: all 0.2s;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        pointer-events: none;
+        visibility: hidden; 
+        transition: all 0.2s; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
+        pointer-events: none; 
         z-index: 250;
     }
-    .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
-    /* Results Overlay */
-    .result-overlay {
-        position: absolute;
-        inset: 0;
-        background: rgba(255,255,255,0.98);
-        z-index: 300;
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 50px;
-        text-align: center;
+    .tooltip-btn:hover .tooltip-pop { 
+        opacity: 1; 
+        visibility: visible; 
+        transform: translateX(-50%) translateY(0); 
     }
 
-    /* Toasts */
-    .toastArea { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; }
+    .tooltip-pop strong { 
+        display: block; 
+        color: var(--purple-main); 
+        font-size: 1.1rem; 
+        margin-bottom: 6px; 
+    }
+
+    /* --- RESULTS & TOASTS --- */
+    .result-overlay {
+        position: absolute; 
+        inset: 0; 
+        background: rgba(255,255,255,0.98); 
+        z-index: 300;
+        display: none; 
+        flex-direction: column; 
+        justify-content: center; 
+        align-items: center;
+        padding: 50px; 
+        text-align: center; 
+        border-radius: 40px;
+    }
+
+    .toastArea { 
+        position: fixed; 
+        top: 30px; 
+        left: 50%; 
+        transform: translateX(-50%); 
+        display: flex; 
+        flex-direction: column; 
+        gap: 12px; 
+        z-index: 2000; 
+    }
+
     .toast {
-        background: #1e293b;
-        color: white;
-        border-radius: 100px;
-        padding: 14px 40px;
+        background: #1e293b; 
+        color: white; 
+        border-radius: 100px; 
+        padding: 14px 40px; 
         font-weight: 800;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
         animation: toastDrop 0.4s forwards;
     }
-    @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
-    @media (max-width: 1550px) {
-        .logo-img { width: 650px; }
-        .mascot-area { width: 380px; }
-        .dashboard-grid { margin-top: -18vh; }
+    @keyframes toastDrop { 
+        from { opacity: 0; transform: translateY(-30px); } 
+        to { opacity: 1; transform: translateY(0); } 
     }
-    @media (max-width: 1400px) {
-        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -12vh; }
-        .sidebar-col { display: none; }
+
+    /* --- TOGGLE SWITCH --- */
+    .mode-switch {
+        display: flex; 
+        gap: 10px; 
+        background: white; 
+        padding: 5px; 
+        border-radius: 100px; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        margin-left: 20px;
+    }
+
+    .mode-btn { 
+        border: none; 
+        padding: 8px 16px; 
+        border-radius: 100px; 
+        font-weight: 800; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+        background: none; 
+    }
+
+    .mode-btn.active { 
+        background: var(--purple-main); 
+        color: white; 
+    }
+
+    @media (max-width: 1550px) { 
+        .logo-img { width: 650px; } 
+        .dashboard-grid { margin-top: -18vh; } 
+    }
+
+    @media (max-width: 1400px) { 
+        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -12vh; } 
+        .sidebar-col { display: none; } 
     }
 </style>
 </head>
@@ -480,53 +579,55 @@
 <div class="toastArea" id="toastArea"></div>
 
 <div class="app-container">
-    
     <div class="top-bar">
-        <div class="crowns-container" id="crownGrid"></div>
+        <div style="display:flex; align-items:center;">
+            <div class="crowns-container" id="crownGrid"></div>
+            <div class="mode-switch">
+                <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
+                <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
+            </div>
+        </div>
         <img src="logo.png" alt="Mighty Pens" class="logo-img">
     </div>
 
     <div class="dashboard-grid">
-        
-        <!-- COL 1: MASCOT -->
         <div class="mascot-col">
             <div class="mascot-area">
-                <div class="speech-bubble">Booyar amigos!</div>
-                
-                <!-- PREMIUM FOGGY SMOKE EFFECT -->
+                <div class="speech-bubble" id="mascotBubble">Booyar amigos!</div>
                 <svg class="smoke-puff animate" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="60" cy="80" r="40" fill="white" opacity="0.4" />
                     <circle cx="100" cy="60" r="50" fill="white" opacity="0.5" />
                     <circle cx="140" cy="90" r="45" fill="white" opacity="0.4" />
                     <circle cx="100" cy="100" r="30" fill="white" opacity="0.3" />
                 </svg>
-
                 <img src="mascot.png" alt="Mighty Pen" class="mascot-img">
             </div>
         </div>
 
-        <!-- COL 2: EDITOR -->
         <div class="editor-col">
             <div class="editor-box">
-                <!-- DROPPING TOPIC PILL (onclick removed) -->
                 <div id="topicText" class="topic-pill">Topic: Loading...</div>
-
+                
                 <div class="result-overlay" id="resultOverlay">
-                    <div id="resultText" style="font-size: 1.4rem; font-weight: 700; color: var(--purple-main); margin-bottom: 30px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
+                    <div id="resultText" style="font-size: 1.3rem; font-weight: 700; color: var(--purple-main); margin-bottom: 30px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
                     <div style="display: flex; gap: 15px;">
                         <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
                         <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
                     </div>
                 </div>
+
                 <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
+                
                 <div class="editor-controls">
-                    <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
-                    <button class="btn-submit" onclick="getFeedback()">CHECK WRITING</button>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
+                        <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.9rem;"></div>
+                    </div>
+                    <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
                 </div>
             </div>
         </div>
 
-        <!-- COL 3: SIDEBAR -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
@@ -534,7 +635,7 @@
                 <div class="card-body" id="starText">"The rusted gate groaned—a warning from the past—as Marcus lunged forward."</div>
                 <div class="card-footer" id="starAuthor">- Sarah, Year 5</div>
             </div>
-
+            
             <div class="info-card tip">
                 <div class="card-badge">💡</div>
                 <div class="card-header">PRO LESSON</div>
@@ -542,10 +643,9 @@
                 <div class="card-footer" style="color: #92400e">Try it now!</div>
             </div>
         </div>
-
     </div>
 
-    <!-- TOOLKIT -->
+    <!-- FULL 18 TOOLTIPS RESTORED -->
     <div class="toolkit-wrapper">
         <div class="bottom-bar" id="toolsMenu">
             <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Intro</strong>Paragraph 1. Use 1 action → description → background story.</div></button>
@@ -567,58 +667,108 @@
             <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Word Variety</strong>Vary your nouns and verbs to keep energy high.</div></button>
             <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Don't over-describe. Let the verbs do the work.</div></button>
         </div>
-        <button class="btn-submit" style="background: var(--text-main); font-size: 1.1rem; display:flex; align-items:center; gap:12px;" onclick="toggleTools()">
-            <span>🛠️</span> Mr C's Tools & Tips
-        </button>
+        <button class="btn-submit" style="background: var(--text-main); font-size: 1.1rem;" onclick="toggleTools()">🛠️ Mr C's Tools</button>
     </div>
-
 </div>
 
 <script>
-    /* --- DATA ENGINE --- */
-    const topics = ["Bravery", "The Lie", "Overboard", "Secrets", "The Dare", "The Shortcut", "The Escape", "Lost", "The Storm", "The Knock", "The Discovery", "The Phone Call", "The Stranger", "The Promise", "The Warning", "The Last Bus", "The Map", "The Key"];
+    /* --- DATA & CONFIG (FULL ARRAYS RESTORED) --- */
+    const topics = [
+        "Bravery", "The Lie", "Overboard", "Secrets", "The Dare", 
+        "The Shortcut", "The Escape", "Lost", "The Storm", "The Knock", 
+        "The Discovery", "The Phone Call", "The Stranger", "The Promise", 
+        "The Warning", "The Last Bus", "The Map", "The Key"
+    ];
     
     const lessonSets = [
-        { example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", author: "Sarah, Year 5", tip: "Use an em-dash — like this — to add extra detail mid-sentence." },
-        { example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", author: "James, Year 6", tip: "Start with an -ing word followed by three past-tense verbs for high energy!" },
-        { example: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", author: "Leo, Year 4", tip: "The Triple Descriptor: Use 'With' followed by three specific details." },
-        { example: "The fog swallowed the trees, turning the park into a ghostly maze.", author: "Amelie, Year 5", tip: "Use strong verbs like 'swallowed' to bring settings to life (Personification)." }
+        { 
+            example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", 
+            author: "Sarah, Year 5", 
+            tip: "Use an em-dash — like this — to add extra detail mid-sentence." 
+        },
+        { 
+            example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", 
+            author: "James, Year 6", 
+            tip: "Start with an -ing word followed by three past-tense verbs for high energy!" 
+        },
+        { 
+            example: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", 
+            author: "Leo, Year 4", 
+            tip: "The Triple Descriptor: Use 'With' followed by three specific details." 
+        },
+        { 
+            example: "The fog swallowed the trees, turning the park into a ghostly maze.", 
+            author: "Amelie, Year 5", 
+            tip: "Use strong verbs like 'swallowed' to bring settings to life (Personification)." 
+        }
     ];
 
     const skillDefs = [
-        { id: "activeVerbs", name: "Active Verbs" }, { id: "goodStarts", name: "Good Starts" },
-        { id: "adjectives", name: "Adjectives" }, { id: "complexity", name: "Complexity" },
-        { id: "repetition", name: "Variety" }, { id: "atmosphere", name: "Atmosphere" },
-        { id: "storyDepth", name: "Story Depth" }, { id: "craft", name: "Craft Moves" },
-        { id: "pacing", name: "Pacing" }, { id: "vocabulary", name: "Vocabulary" }
+        { id: "activeVerbs", name: "Active Verbs" }, 
+        { id: "goodStarts", name: "Good Starts" },
+        { id: "adjectives", name: "Adjectives" }, 
+        { id: "complexity", name: "Complexity" },
+        { id: "repetition", name: "Variety" }, 
+        { id: "atmosphere", name: "Atmosphere" },
+        { id: "storyDepth", name: "Story Depth" }, 
+        { id: "craft", name: "Craft Moves" },
+        { id: "pacing", name: "Pacing" }, 
+        { id: "vocabulary", name: "Vocabulary" }
     ];
 
-    /* --- LOGIC ENGINE --- */
-    function getBadgeState() {
-        const saved = localStorage.getItem("mrCParagraphBadges_v12");
-        if (saved) return JSON.parse(saved);
-        const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
-    }
-    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v12", JSON.stringify(state)); }
+    /* --- PERSISTENT STATE --- */
+    let currentMode = 'mission';
+    const stateKey = "mrCMightyPens_v14_full";
+    
+    let appState = JSON.parse(localStorage.getItem(stateKey)) || {
+        badges: {}, 
+        checksUsed: 0, 
+        emailSent: false, 
+        lastReset: new Date().toDateString()
+    };
+    
+    skillDefs.forEach(s => { 
+        if(!appState.badges[s.id]) appState.badges[s.id] = 0; 
+    });
 
+    function save() { 
+        if (appState.lastReset !== new Date().toDateString()) {
+            appState.checksUsed = 0;
+            appState.lastReset = new Date().toDateString();
+        }
+        localStorage.setItem(stateKey, JSON.stringify(appState)); 
+    }
+
+    /* --- LOGIC ENGINE --- */
     function renderCrowns() {
-        const state = getBadgeState();
         const grid = document.getElementById("crownGrid");
         grid.innerHTML = skillDefs.map(def => {
-            const level = state[def.id] || 0;
+            const level = appState.badges[def.id] || 0;
             const fill = level > 0 ? "#ffd700" : "rgba(230, 210, 150, 0.3)";
-            const stroke = level > 0 ? "#b8860b" : "#8b6508";
+            const strokeColor = level > 0 ? '#b8860b' : '#8b6508';
+            
             return `
-            <div class="crown-wrapper">
-                <svg class="crown-svg" viewBox="0 0 100 80"><path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" fill="${fill}" stroke="${stroke}" stroke-width="3" stroke-linejoin="round"/></svg>
+            <div class="crown-wrapper" title="${def.name}: Level ${level}">
+                <svg class="crown-svg" viewBox="0 0 100 80">
+                    <path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" fill="${fill}" stroke="${strokeColor}" stroke-width="3" stroke-linejoin="round"/>
+                </svg>
             </div>`;
         }).join("");
+        
+        const remaining = 3 - appState.checksUsed;
+        document.getElementById("checksLeft").innerText = currentMode === 'mission' 
+            ? `${remaining} Feedbacks Remaining` 
+            : "Practice Mode Unlimited Checks";
+            
+        document.getElementById("emailBtn").style.display = appState.emailSent ? "none" : "block";
     }
 
-    function analyseWriting(text) {
+    // FULL ANALYSIS FUNCTION RESTORED
+    function analyse(text) {
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
         const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+        
         const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
         const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
         const beWords = ["was","were","is","are","be","been","being"];
@@ -632,91 +782,190 @@
         const adjectiveCount = words.filter(w => adjectiveHints.some(end => w.endsWith(end))).length;
         const adjectiveRatio = words.length ? adjectiveCount / words.length : 0;
         const complexSentenceCount = sentences.filter(s => /(because|although|while|when|since|if|after|before|as|who|that)/i.test(s) || (s.match(/,/g) || []).length >= 2).length;
-        const freq = {}; words.forEach(w => { if (w.length > 4) freq[w] = (freq[w] || 0) + 1; });
+        
+        const freq = {}; 
+        words.forEach(w => { 
+            if (w.length > 4) freq[w] = (freq[w] || 0) + 1; 
+        });
         const repetitionScore = Object.values(freq).filter(v => v >= 3).length;
+        
         const atmosphereCount = words.filter(w => atmosphereWords.includes(w)).length;
         const storyCount = words.filter(w => storyWords.includes(w)).length;
         const craftCount = (clean.match(/—/g) || []).length + (clean.match(/with [^.!?]*, [^.!?]*, and [^.!?]*/g) || []).length + (clean.match(/ing, [^.!?]*ed, [^.!?]*ed, and [^.!?]*ed/g) || []).length;
-        return { strongVerbCount, weakVerbCount, badStartCount, adjectiveRatio, complexSentenceCount, repetitionScore, atmosphereCount, storyCount, craftCount };
-    }
-
-    function maybeLevelUp(text) {
-        const state = getBadgeState();
-        const metrics = analyseWriting(text);
-        const changed = [];
-        const checks = {
-            activeVerbs: metrics.strongVerbCount >= [0,2,4,6,8][state.activeVerbs] && metrics.weakVerbCount <= Math.max(4 - state.activeVerbs, 1),
-            goodStarts: metrics.badStartCount <= [99,4,3,2,1][state.goodStarts],
-            adjectives: metrics.adjectiveRatio >= [0,.05,.07,.09,.1][state.adjectives] && metrics.adjectiveRatio <= .18,
-            complexity: metrics.complexSentenceCount >= [0,1,2,3,4][state.complexity],
-            repetition: metrics.repetitionScore <= [99,7,6,5,4][state.repetition],
-            atmosphere: metrics.atmosphereCount >= [0,1,2,3,4][state.atmosphere],
-            storyDepth: metrics.storyCount >= [0,1,2,3,4][state.storyDepth],
-            craft: metrics.craftCount >= [0,1,1,2,2][state.craft],
-            pacing: metrics.complexSentenceCount >= 1,
-            vocabulary: metrics.strongVerbCount >= 3
+        
+        return { 
+            words, 
+            sentences, 
+            strongVerbCount, 
+            weakVerbCount, 
+            badStartCount, 
+            adjectiveRatio, 
+            complexSentenceCount, 
+            repetitionScore, 
+            atmosphereCount, 
+            storyCount, 
+            craftCount 
         };
-        skillDefs.forEach(def => { if ((state[def.id] || 0) < 5 && checks[def.id]) { state[def.id] += 1; changed.push(def.id); } });
-        if (changed.length) { setBadgeState(state); renderCrowns(); showToast(`👑 Skills Upgraded!`); }
     }
 
-    async function getFeedback() {
+    function handleCheck() {
         const text = document.getElementById("paragraph").value.trim();
-        const overlay = document.getElementById("resultOverlay");
-        const resultText = document.getElementById("resultText");
-        if(!text) { showToast("Please write your story first!"); return; }
-        overlay.style.display = "flex";
-        resultText.innerHTML = "Thinking... 🧐";
-        try {
-            const response = await fetch("/api/feedback", {
-                method: "POST", headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text, topic: document.getElementById("topicText").innerText.replace("Topic: ", "") })
-            });
-            const data = await response.json();
-            if (!response.ok) throw new Error();
-            resultText.innerText = data.feedback;
+        const metrics = analyse(text);
+        
+        if (metrics.words.length < 50) { 
+            showToast("Mighty Pen: Too short! Write at least 50 words."); 
+            return; 
+        }
+        
+        if (metrics.words.length > 150) { 
+            showToast("Mighty Pen: Over 150 words! Keep it punchy."); 
+            return; 
+        }
+
+        if (metrics.badStartCount > 2 || metrics.weakVerbCount > 4) {
+            document.getElementById("resultOverlay").style.display = "flex";
+            document.getElementById("resultText").innerText = "Mighty Pen is busy! 🖋️\n\nYour writing has too many 'Lazy Starts' or 'Weak Verbs'. Fix those basic errors yourself before the expert coach helps you polish it!";
+            return;
+        }
+
+        if (currentMode === 'mission') {
+            if (appState.checksUsed >= 3) { 
+                showToast("No Feedbacks left! Use your own brain now."); 
+                return; 
+            }
+            appState.checksUsed++;
+            save();
+            callAI(text);
+        } else {
+            document.getElementById("resultOverlay").style.display = "flex";
+            document.getElementById("resultText").innerText = "Practice Mode Success! 🥋\n\nYou've cleared the Gatekeeper and polished your basics. Keep writing and leveling up your crowns!";
             maybeLevelUp(text);
-        } catch (error) {
-            resultText.innerText = "Check your writing connection, amigos!";
         }
     }
 
-    function rotateLesson() {
-        const set = lessonSets[Math.floor(Math.random()*lessonSets.length)];
-        document.getElementById("starText").innerText = `"${set.example}"`;
-        document.getElementById("starAuthor").innerText = `- ${set.author}`;
-        document.getElementById("proTip").innerText = set.tip;
+    // FULL FEEDBACK BLOCK RESTORED
+    async function callAI(text) {
+        const overlay = document.getElementById("resultOverlay");
+        const resText = document.getElementById("resultText");
+        
+        overlay.style.display = "flex";
+        resText.innerText = "Connecting to the Inkwell... 🧐";
+        
+        try {
+            const response = await fetch("/api/feedback", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    text, 
+                    topic: document.getElementById("topicText").innerText.replace("Weekly Mission: ", "") 
+                })
+            });
+            const data = await response.json();
+            
+            if (!response.ok) throw new Error("API Offline");
+            
+            resText.innerText = data.feedback;
+            maybeLevelUp(text);
+            
+        } catch (error) {
+            const m = analyse(text);
+            const fallback = `Feedback system offline.\n\nLocal Report:\n• Action Verbs: ${m.strongVerbCount}\n• Complex Structures: ${m.complexSentenceCount}\n• Starts Failed: ${m.badStartCount}\n\nKeep writing to earn crowns!`;
+            
+            resText.innerText = fallback;
+            maybeLevelUp(text);
+        }
     }
 
-    function toggleTools() { document.getElementById("toolsMenu").classList.toggle("open"); }
-    function closeFeedback() { document.getElementById("resultOverlay").style.display = "none"; }
-    function newTopic() { document.getElementById("topicText").innerText = "Topic: " + topics[Math.floor(Math.random() * topics.length)]; }
-    function showToast(text) {
-        const area = document.getElementById("toastArea");
-        const toast = document.createElement("div");
-        toast.className = "toast";
-        toast.innerText = text;
-        area.appendChild(toast);
-        setTimeout(() => { toast.style.animation = "toastOut 0.3s forwards"; setTimeout(() => toast.remove(), 300); }, 3500);
+    // FULL LEVEL UP LOGIC RESTORED
+    function maybeLevelUp(text) {
+        const metrics = analyse(text);
+        const changed = [];
+        
+        const checks = {
+            activeVerbs: metrics.strongVerbCount >= [0,2,4,6,8][appState.badges.activeVerbs || 0] && metrics.weakVerbCount <= Math.max(4 - (appState.badges.activeVerbs || 0), 1),
+            goodStarts: metrics.badStartCount <= [99,4,3,2,1][appState.badges.goodStarts || 0],
+            adjectives: metrics.adjectiveRatio >= [0,.05,.07,.09,.1][appState.badges.adjectives || 0] && metrics.adjectiveRatio <= .18,
+            complexity: metrics.complexSentenceCount >= [0,1,2,3,4][appState.badges.complexity || 0],
+            repetition: metrics.repetitionScore <= [99,7,6,5,4][appState.badges.repetition || 0],
+            atmosphere: metrics.atmosphereCount >= [0,1,2,3,4][appState.badges.atmosphere || 0],
+            storyDepth: metrics.storyCount >= [0,1,2,3,4][appState.badges.storyDepth || 0],
+            craft: metrics.craftCount >= [0,1,1,2,2][appState.badges.craft || 0],
+            pacing: metrics.complexSentenceCount >= 1 && metrics.words.length >= 60,
+            vocabulary: metrics.strongVerbCount >= 3
+        };
+
+        skillDefs.forEach(def => {
+            if ((appState.badges[def.id] || 0) < 5 && checks[def.id]) {
+                appState.badges[def.id] = (appState.badges[def.id] || 0) + 1;
+                changed.push(def.name);
+            }
+        });
+
+        if (changed.length) {
+            save();
+            renderCrowns();
+            showToast(`👑 Skills Upgraded: ${changed.join(", ")}!`);
+        }
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
+        document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
+        document.getElementById("topicText").innerText = mode === 'mission' ? "Weekly Mission: The Storm" : "Practice Topic: " + topics[Math.floor(Math.random()*topics.length)];
+        renderCrowns();
     }
 
     function sendEmail() {
+        if(appState.emailSent) return;
+        
         const text = document.getElementById("paragraph").value.trim();
-        const topicName = document.getElementById("topicText").innerText.replace("Topic: ", "");
-        const body = encodeURIComponent(`Topic: ${topicName}\n\nStudent text:\n${text}`);
-        window.location.href = `mailto:myessayfeedback@gmail.com?subject=My Writing - ${topicName}&body=${body}`;
+        window.location.href = `mailto:myessayfeedback@gmail.com?subject=Weekly Mission Submission&body=${encodeURIComponent(text)}`;
+        
+        appState.emailSent = true;
+        save();
+        renderCrowns();
+        showToast("Mission Sent to Mr C! 🚀");
     }
 
+    /* --- UI HELPERS --- */
+    function toggleTools() { 
+        document.getElementById("toolsMenu").classList.toggle("open"); 
+    }
+    
+    function closeFeedback() { 
+        document.getElementById("resultOverlay").style.display = "none"; 
+    }
+    
+    function showToast(text) {
+        const area = document.getElementById("toastArea");
+        const toast = document.createElement("div");
+        toast.className = "toast"; 
+        toast.innerText = text; 
+        area.appendChild(toast);
+        
+        setTimeout(() => { 
+            toast.style.animation = "toastOut 0.3s forwards"; 
+            setTimeout(() => toast.remove(), 300); 
+        }, 3500);
+    }
+    
     document.getElementById("paragraph").addEventListener("input", function() {
         const words = this.value.trim() ? this.value.trim().split(/\s+/).length : 0;
         document.getElementById("wordCount").innerText = "Words: " + words;
+        document.getElementById("wordCount").style.color = (words < 50 || words > 150) ? "red" : "var(--text-muted)";
     });
 
     // INIT
-    newTopic();
+    setMode('mission');
     renderCrowns();
-    rotateLesson();
-    setInterval(rotateLesson, 15000);
+    
+    setInterval(() => {
+        const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
+        document.getElementById("starText").innerText = `"${set.example}"`;
+        document.getElementById("starAuthor").innerText = `- ${set.author}`;
+        document.getElementById("proTip").innerText = set.tip;
+    }, 20000);
 </script>
 </body>
 </html>
