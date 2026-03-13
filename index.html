@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mighty Pens - Classroom Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+    /* --- KEYNOTE LAYOUT DESIGN SYSTEM --- */
+    :root {
+        /* Background Gradients */
+        --bg-yellow: #ffcf33;
+        --bg-orange: #f28b00;
+        
+        /* Accents */
+        --coral-red: #ff786e;
+        --peach-light: #ffb666;
+        
+        /* Logo & Tooltips */
+        --purple-main: #7b2cbf;
+        --purple-dark: #3b0f69;
+        --purple-tooltip: #a855f7;
+        --logo-stroke: #ffa600;
+
+        /* General */
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+    }
+
+    * { box-sizing: border-box; }
+    
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden; /* Lock to screen like a presentation slide */
+        font-family: 'Nunito', system-ui, sans-serif;
+        background: linear-gradient(135deg, var(--bg-yellow) 0%, var(--bg-orange) 100%);
+        color: var(--text-main);
+    }
+
+    /* --- ORGANIC BACKGROUND BLOBS --- */
+    .bg-shape {
+        position: absolute;
+        z-index: 0;
+        opacity: 0.95;
+        pointer-events: none; /* Let clicks pass through */
+    }
+
+    .bg-left {
+        bottom: 0;
+        left: 0;
+        width: 55vw;
+        height: 65vh;
+        min-width: 600px;
+        /* Warm drop shadow dropping up and to the right */
+        filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
+    }
+
+    .bg-right {
+        top: 0;
+        right: 0;
+        width: 30vw;
+        height: 100vh;
+        min-width: 350px;
+        /* Warm drop shadow dropping to the left */
+        filter: drop-shadow(-15px 10px 25px rgba(200, 70, 0, 0.25));
+    }
+
+    /* --- APP WRAPPER --- */
+    .app-container {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        padding: 20px 40px;
+    }
+
+    /* --- TOP BAR (Crowns & Logo) --- */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        height: 120px;
+    }
+
+    /* Crowns */
+    .crowns-container {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: -10px;
+    }
+
+    .crown-wrapper {
+        position: relative;
+        width: 70px;
+        height: 60px;
+        cursor: help;
+    }
+
+    .crown-svg {
+        width: 100%;
+        height: 100%;
+        transition: all 0.3s;
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
+    }
+
+    .crown-wrapper:hover .crown-svg {
+        transform: translateY(-5px);
+    }
+
+    /* Crown Hover Info */
+    .crown-hover {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background: var(--text-main);
+        color: white;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+        z-index: 100;
+    }
+    .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
+
+    /* Image Logo */
+    .logo-img {
+        max-width: 350px;
+        height: auto;
+        margin-right: 20px;
+        margin-top: 10px;
+        z-index: 20;
+        filter: drop-shadow(0 15px 15px rgba(0,0,0,0.25));
+    }
+
+    /* --- MIDDLE AREA (Mascot & Editor) --- */
+    .main-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        position: relative;
+    }
+
+    /* Mascot */
+    .mascot-area {
+        position: relative;
+        width: 320px;
+        height: 400px;
+        flex-shrink: 0;
+        z-index: 20;
+    }
+    
+    .mascot-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 15px 20px rgba(0,0,0,0.25));
+    }
+
+    .speech-bubble {
+        position: absolute;
+        top: 130px;
+        right: -80px;
+        left: auto;
+        background: #4a4a4a;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-weight: 800;
+        font-size: 1.2rem;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        z-index: 30;
+    }
+
+    .speech-bubble::after {
+        content: '';
+        position: absolute;
+        bottom: -12px;
+        left: 24px;
+        right: auto;
+        border-width: 15px 15px 0 0;
+        border-style: solid;
+        border-color: #4a4a4a transparent transparent transparent;
+    }
+
+    /* Huge White Editor Box */
+    .editor-box {
+        flex: 1;
+        height: 50vh;
+        background: #ffffff;
+        border-radius: 32px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+        z-index: 10;
+        margin-right: 20px;
+    }
+
+    textarea {
+        flex: 1;
+        width: 100%;
+        border: none;
+        padding: 40px;
+        font-family: 'Nunito', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0f172a;
+        resize: none;
+        background: transparent;
+    }
+
+    textarea:focus { outline: none; }
+    textarea::placeholder { color: #0f172a; text-align: center; line-height: 10em; } /* Centered placeholder text */
+
+    /* Subtle Controls tucked at bottom of white box */
+    .editor-controls {
+        background: #f8fafc;
+        border-top: 2px solid #e2e8f0;
+        padding: 16px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .status-group {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .status-badge {
+        background: white;
+        border: 2px solid #e2e8f0;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-weight: 800;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .btn-submit {
+        background: var(--purple-main);
+        color: white;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 900;
+        font-size: 1.1rem;
+        padding: 12px 30px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        transition: transform 0.1s;
+        box-shadow: 0 4px 10px rgba(123, 44, 191, 0.3);
+    }
+    .btn-submit:active { transform: scale(0.96); }
+
+    /* Results Overlay */
+    .result-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(255,255,255,0.95);
+        backdrop-filter: blur(5px);
+        z-index: 50;
+        padding: 40px;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .result-content {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--purple-main);
+        max-width: 800px;
+        margin-bottom: 30px;
+        white-space: pre-wrap;
+    }
+
+    /* --- BOTTOM BAR (Tooltips Dock) --- */
+    .toolkit-wrapper {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 40;
+    }
+
+    .btn-toggle-tools {
+        background: var(--text-main);
+        color: white;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 900;
+        font-size: 1.1rem;
+        padding: 14px 32px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-toggle-tools:hover {
+        background: var(--purple-main);
+        transform: translateY(-3px) scale(1.05);
+        box-shadow: 0 15px 25px rgba(123, 44, 191, 0.3);
+    }
+    
+    .btn-toggle-tools:active { transform: translateY(1px) scale(0.98); }
+
+    .bottom-bar {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 20px;
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        
+        /* Hidden state */
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: absolute;
+        bottom: 100%;
+        margin-bottom: 15px;
+        width: 95vw;
+        max-width: 1200px;
+    }
+
+    .bottom-bar.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: all;
+    }
+
+    .tooltip-btn {
+        background: var(--purple-tooltip);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 20px;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 900;
+        font-size: 0.8rem;
+        cursor: help;
+        position: relative;
+        text-transform: uppercase;
+        box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
+        transition: background 0.2s;
+        flex: 1 1 calc(11% - 10px);
+        min-width: 95px;
+        white-space: nowrap;
+    }
+
+    .tooltip-btn:hover { background: var(--purple-main); }
+
+    .tooltip-pop {
+        position: absolute;
+        bottom: calc(100% + 15px);
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: max-content;
+        max-width: 260px;
+        white-space: normal; /* Forces text to wrap correctly */
+        background: white;
+        color: var(--text-main);
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        line-height: 1.4;
+        text-align: left;
+        text-transform: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    .tooltip-pop::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px 10px 0 10px;
+        border-style: solid;
+        border-color: white transparent transparent transparent;
+    }
+
+    .tooltip-btn:hover .tooltip-pop {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 4px; }
+
+    /* Toasts */
+    .toastArea { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 2000; }
+    .toast {
+        background: var(--text-main);
+        color: white;
+        border-radius: 100px;
+        padding: 12px 30px;
+        font-weight: 800;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        animation: toastDrop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes toastDrop { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toastOut { to { opacity: 0; transform: translateY(-20px); } }
+
+    @media (max-width: 1100px) {
+        .logo-img { max-width: 250px; }
+        .mascot-area { width: 250px; }
+        .bottom-bar { flex-wrap: wrap; }
+    }
+</style>
+</head>
+<body>
+
+<!-- SVG Background Shapes for precise curves -->
+<svg class="bg-shape bg-left" viewBox="0 0 600 500" preserveAspectRatio="xMinYMax slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Perfect bezier curve mimicking the bottom-left hill from the mockup -->
+    <path d="M 0 100 C 180 -50 280 280 420 320 C 550 360 600 450 600 500 L 0 500 Z" fill="var(--coral-red)" />
+</svg>
+
+<svg class="bg-shape bg-right" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin slice" xmlns="http://www.w3.org/2000/svg">
+    <!-- Flowing wave mimicking the right side of the mockup -->
+    <path d="M 200 0 C 350 250 -50 450 150 700 C 250 850 50 950 100 1000 L 400 1000 L 400 0 Z" fill="var(--peach-light)" />
+</svg>
+
+<div class="toastArea" id="toastArea"></div>
+
+<div class="app-container">
+    
+    <!-- Top Bar: Crowns and Logo -->
+    <div class="top-bar">
+        <div class="crowns-container" id="crownGrid">
+            <!-- Crowns injected via JS -->
+        </div>
+        
+        <!-- Replaced CSS Logo with Image -->
+        <img src="logo.png" alt="Mighty Pens Logo" class="logo-img">
+    </div>
+
+    <!-- Main Content: Mascot and Editor -->
+    <div class="main-area">
+        
+        <div class="mascot-area">
+            <div class="speech-bubble">Booyar amigos!</div>
+            
+            <!-- Replaced SVG with Image -->
+            <img src="mascot.png" alt="Mighty Pen Mascot" class="mascot-img">
+        </div>
+
+        <div class="editor-box">
+            <!-- Hidden overlay for feedback -->
+            <div class="result-overlay" id="resultOverlay">
+                <div class="result-content" id="resultText"></div>
+                <div style="display: flex; gap: 15px;">
+                    <button class="btn-submit" onclick="closeFeedback()">Back to Editing</button>
+                    <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
+                </div>
+            </div>
+
+            <!-- The main writing canvas -->
+            <textarea id="paragraph" placeholder="Student text goes here"></textarea>
+
+            <!-- Tucked away controls -->
+            <div class="editor-controls">
+                <div class="status-group">
+                    <div class="status-badge" style="color: var(--coral-red);" id="topicText">Topic: Bravery</div>
+                    <div class="status-badge" id="wordCount">Words: 0</div>
+                </div>
+                <button class="btn-submit" onclick="getFeedback()">Check Writing</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <!-- Bottom Bar: Expandable Toolkit -->
+    <div class="toolkit-wrapper">
+        <div class="bottom-bar" id="toolsMenu">
+            <button class="tooltip-btn">WHO
+                <div class="tooltip-pop"><strong>Character Paragraph</strong>1 action → description → background story.</div>
+            </button>
+            <button class="tooltip-btn">WHERE
+                <div class="tooltip-pop"><strong>Setting Paragraph</strong>1 action → description of location → history.</div>
+            </button>
+            <button class="tooltip-btn">WHAT
+                <div class="tooltip-pop"><strong>Purpose Paragraph</strong>1 action → description, thinking. Why are they here?</div>
+            </button>
+            <button class="tooltip-btn">TENSION
+                <div class="tooltip-pop"><strong>Problem Appears</strong>1 action → atmosphere → story. Build suspense.</div>
+            </button>
+            <button class="tooltip-btn">COMPLEX
+                <div class="tooltip-pop"><strong>Problem Worsens</strong>1 action → atmosphere. Make it worse.</div>
+            </button>
+            <button class="tooltip-btn">RESOLVE
+                <div class="tooltip-pop"><strong>The Outcome</strong>1 action → mixture → story to finish.</div>
+            </button>
+            <button class="tooltip-btn">ACTION
+                <div class="tooltip-pop"><strong>Strong Verbs</strong>Avoid: went, got, did. Use: lunged, sprinted.</div>
+            </button>
+            <button class="tooltip-btn">DESCRIBE
+                <div class="tooltip-pop"><strong>Visual Detail</strong>Help the reader picture the scene. Use precise words.</div>
+            </button>
+            <button class="tooltip-btn">STORY
+                <div class="tooltip-pop"><strong>Meaningful Detail</strong>Add information that deepens the situation or history.</div>
+            </button>
+            <button class="tooltip-btn">ATMOS
+                <div class="tooltip-pop"><strong>Scene Mood</strong>Show what is happening around the character.</div>
+            </button>
+            <button class="tooltip-btn">THINK
+                <div class="tooltip-pop"><strong>Inner Reaction</strong>Show the character's reaction to the situation.</div>
+            </button>
+            <button class="tooltip-btn">DIALOGUE
+                <div class="tooltip-pop"><strong>Use Sparingly</strong>Short paragraphs usually need only one line of speech.</div>
+            </button>
+            <button class="tooltip-btn">QUAD VERB
+                <div class="tooltip-pop"><strong>Power Move</strong>-ing opener + 3 past tense verbs.</div>
+            </button>
+            <button class="tooltip-btn">3x DESC
+                <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener followed by three descriptive elements.</div>
+            </button>
+            <button class="tooltip-btn">EM-DASH
+                <div class="tooltip-pop"><strong>Insert Detail</strong>Insert extra description mid-sentence using spaced em-dashes.</div>
+            </button>
+            <button class="tooltip-btn">STARTS
+                <div class="tooltip-pop"><strong>Avoid Lazy Openers</strong>Don't use: The, It, A, An, I, My, We, Our, Suddenly.</div>
+            </button>
+            <button class="tooltip-btn">REPEAT
+                <div class="tooltip-pop"><strong>Vary Words</strong>Do not repeat the same strong noun or verb too often.</div>
+            </button>
+            <button class="tooltip-btn">ADJECTIVE
+                <div class="tooltip-pop"><strong>Keep to ~12%</strong>Use description carefully so verbs still carry energy.</div>
+            </button>
+        </div>
+
+        <button class="btn-toggle-tools" onclick="toggleTools()">
+            🛠️ Mr C's Tools & Tips
+        </button>
+    </div>
+
+</div>
+
+<script>
+// --- DATA & CONFIG ---
+const topics = [
+    "Bravery","The Lie","Overboard","Secrets","The Dare","The Shortcut","The Escape","Lost","The Storm","The Knock",
+    "The Discovery","The Phone Call","The Stranger","The Promise","The Warning","The Last Bus","The Map","The Key"
+];
+
+// 8 Skills corresponding to the 8 Crowns
+const skillDefs = [
+    { id: "activeVerbs", name: "Active Verbs" },
+    { id: "goodStarts", name: "Good Starts" },
+    { id: "adjectives", name: "Adjectives" },
+    { id: "complexity", name: "Complexity" },
+    { id: "repetition", name: "Variety" },
+    { id: "atmosphere", name: "Atmosphere" },
+    { id: "storyDepth", name: "Story Depth" },
+    { id: "craft", name: "Craft Moves" }
+];
+
+const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
+const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
+const beWords = ["was","were","is","are","be","been","being"];
+const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
+const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
+const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
+
+// --- SVG CROWN HELPER ---
+function getCrownSVG(level) {
+    // Empty state = light transparent fill with dark rim. Filled = solid bright gold.
+    const isFilled = level > 0;
+    const fill = isFilled ? "#ffd700" : "rgba(230, 210, 150, 0.4)";
+    const stroke = isFilled ? "#b8860b" : "#8b6508";
+    const strokeWidth = isFilled ? "3" : "2";
+
+    return `
+    <svg class="crown-svg" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" 
+            fill="${fill}" stroke="${stroke}" stroke-width="${strokeWidth}" stroke-linejoin="round"/>
+    </svg>
+    `;
+}
+
+// --- LOGIC ---
+function pickRandomTopic() { return topics[Math.floor(Math.random() * topics.length)]; }
+document.getElementById("topicText").innerText = "Topic: " + pickRandomTopic();
+
+function updateWordCount() {
+    const text = document.getElementById("paragraph").value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    document.getElementById("wordCount").innerText = "Words: " + words;
+}
+
+function getBadgeState() {
+    const saved = localStorage.getItem("mrCParagraphBadges_v7");
+    if (saved) return JSON.parse(saved);
+    const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
+}
+function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v7", JSON.stringify(state)); }
+
+function renderCrowns() {
+    const state = getBadgeState();
+    const grid = document.getElementById("crownGrid");
+    grid.innerHTML = skillDefs.map(def => {
+        const level = state[def.id] || 0;
+        return `
+        <div class="crown-wrapper">
+            ${getCrownSVG(level)}
+            <div class="crown-hover">${def.name}: Level ${level}</div>
+        </div>`;
+    }).join("");
+}
+
+function showToast(text) {
+    const area = document.getElementById("toastArea");
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.innerText = text;
+    area.appendChild(toast);
+    setTimeout(() => {
+        toast.style.animation = "toastOut 0.3s forwards";
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+function analyseWriting(text) {
+    const clean = text.toLowerCase();
+    const words = clean.match(/[a-z']+/g) || [];
+    const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
+    
+    const strongVerbCount = words.filter(w => /ed$|ing$/.test(w) && !beWords.includes(w) && !weakVerbs.includes(w)).length;
+    const weakVerbCount = words.filter(w => weakVerbs.includes(w)).length;
+    const badStartCount = sentences.filter(s => badStarts.includes((s.match(/[a-zA-Z']+/) || [""])[0].toLowerCase())).length;
+    const adjectiveCount = words.filter(w => adjectiveHints.some(end => w.endsWith(end))).length;
+    const adjectiveRatio = words.length ? adjectiveCount / words.length : 0;
+    const complexSentenceCount = sentences.filter(s => /(because|although|while|when|since|if|after|before|as|which|who|that)/i.test(s) || (s.match(/,/g) || []).length >= 2).length;
+    
+    const freq = {}; words.forEach(w => { if (w.length > 4) freq[w] = (freq[w] || 0) + 1; });
+    const repetitionScore = Object.values(freq).filter(v => v >= 3).length;
+    const atmosphereCount = words.filter(w => atmosphereWords.includes(w)).length;
+    const storyCount = words.filter(w => storyWords.includes(w)).length;
+    const craftCount = (clean.match(/—/g) || []).length + (clean.match(/with [^.!?]*, [^.!?]*, and [^.!?]*/g) || []).length + (clean.match(/ing, [^.!?]*ed, [^.!?]*ed, and [^.!?]*ed/g) || []).length;
+                       
+    return { strongVerbCount, weakVerbCount, badStartCount, adjectiveRatio, complexSentenceCount, repetitionScore, atmosphereCount, storyCount, craftCount };
+}
+
+function maybeLevelUp(text) {
+    const state = getBadgeState();
+    const metrics = analyseWriting(text);
+    const changed = [];
+
+    const checks = {
+        activeVerbs: metrics.strongVerbCount >= [0,2,4,6,8][state.activeVerbs] && metrics.weakVerbCount <= Math.max(4 - state.activeVerbs, 1),
+        goodStarts: metrics.badStartCount <= [99,4,3,2,1][state.goodStarts],
+        adjectives: metrics.adjectiveRatio >= [0,.05,.07,.09,.1][state.adjectives] && metrics.adjectiveRatio <= .18,
+        complexity: metrics.complexSentenceCount >= [0,1,2,3,4][state.complexity],
+        repetition: metrics.repetitionScore <= [99,7,6,5,4][state.repetition],
+        atmosphere: metrics.atmosphereCount >= [0,1,2,3,4][state.atmosphere],
+        storyDepth: metrics.storyCount >= [0,1,2,3,4][state.storyDepth],
+        craft: metrics.craftCount >= [0,1,1,2,2][state.craft]
+    };
+
+    skillDefs.forEach(def => {
+        if ((state[def.id] || 0) < 5 && checks[def.id]) {
+            state[def.id] += 1;
+            changed.push(def.name);
+        }
+    });
+
+    if (changed.length) {
+        setBadgeState(state);
+        renderCrowns();
+        showToast(`👑 Crowns Upgraded: ${changed.join(", ")}`);
+    }
+}
+
+let lastFeedbackData = "";
+
+async function getFeedback() {
+    const text = document.getElementById("paragraph").value.trim();
+    const overlay = document.getElementById("resultOverlay");
+    const resultText = document.getElementById("resultText");
+
+    if(!text) { showToast("Please write your story first!"); return; }
+
+    overlay.style.display = "flex";
+    resultText.innerHTML = "Thinking about your writing... 🧐";
+
+    try {
+        const response = await fetch("/api/feedback", {
+            method: "POST", headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text, topic: document.getElementById("topicText").innerText.replace("Topic: ", "") })
+        });
+        const data = await response.json();
+        if (!response.ok) { resultText.innerText = "Error: " + (data.error || "Unknown error."); return; }
+
+        resultText.innerText = data.feedback || "Great job! Feedback complete.";
+        lastFeedbackData = data.feedback || "";
+        maybeLevelUp(text);
+
+    } catch (error) {
+        let fallback = "Feedback system offline. Local metrics:\n\n";
+        const metrics = analyseWriting(text);
+        fallback += `Action Verbs: ${metrics.strongVerbCount} | Weak Verbs: ${metrics.weakVerbCount}\n`;
+        fallback += `Weak Starts: ${metrics.badStartCount} | Complex Sentences: ${metrics.complexSentenceCount}\n`;
+        
+        resultText.innerText = fallback;
+        lastFeedbackData = fallback;
+        maybeLevelUp(text);
+    }
+}
+
+function closeFeedback() {
+    document.getElementById("resultOverlay").style.display = "none";
+}
+
+function toggleTools() {
+    const menu = document.getElementById("toolsMenu");
+    menu.classList.toggle("open");
+}
+
+function sendEmail() {
+    const text = document.getElementById("paragraph").value.trim();
+    const topicName = document.getElementById("topicText").innerText.replace("Topic: ", "");
+    const emailBody = encodeURIComponent(`Topic: ${topicName}\n\nStory:\n${text}\n\nFeedback:\n${lastFeedbackData}`);
+    window.location.href = `mailto:myessayfeedback@gmail.com?subject=My Great Story - ${topicName}&body=${emailBody}`;
+}
+
+// --- INIT ---
+document.getElementById("paragraph").addEventListener("input", updateWordCount);
+updateWordCount();
+renderCrowns();
+</script>
+</body>
+</html>
