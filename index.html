@@ -84,7 +84,7 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        height: 120px;
+        min-height: 120px; /* Changed from fixed height to min-height so it doesn't squish the logo */
     }
 
     /* Crowns */
@@ -135,10 +135,11 @@
 
     /* Image Logo */
     .logo-img {
-        width: clamp(250px, 30vw, 600px); /* Responsive: Min 250px, Ideal 30% of screen, Max 600px */
+        width: 500px; /* BIG base size */
+        max-width: 40vw; /* Prevents it from overlapping on iPads */
         height: auto;
         margin-right: 20px;
-        margin-top: 10px;
+        margin-top: -10px;
         z-index: 20;
         filter: drop-shadow(0 15px 15px rgba(0,0,0,0.25));
     }
@@ -155,8 +156,9 @@
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: clamp(250px, 25vw, 500px); /* Scales with screen width */
-        height: clamp(350px, 45vh, 650px); /* Scales with screen height */
+        width: 450px; /* BIG base width */
+        height: 550px; /* BIG base height */
+        max-width: 35vw; /* Keeps it proportional on smaller screens */
         flex-shrink: 0;
         z-index: 20;
     }
@@ -170,8 +172,8 @@
 
     .speech-bubble {
         position: absolute;
-        top: 20%; /* Changed to percentage so it stays perfectly aligned as mascot scales */
-        right: -60px;
+        top: 15%; 
+        right: -80px;
         left: auto;
         background: #4a4a4a;
         color: white;
@@ -428,15 +430,15 @@
         border-radius: 100px;
         padding: 12px 30px;
         font-weight: 800;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        animation: toastDrop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
+    .toastTitle { font-weight: 900; color: var(--coral-red); margin-bottom: 4px; font-size: 1.1rem; }
+    .toastText { font-size: 0.95rem; font-weight: 600; }
+
     @keyframes toastDrop { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     @keyframes toastOut { to { opacity: 0; transform: translateY(-20px); } }
 
     @media (max-width: 1100px) {
-        .logo-img { max-width: 350px; }
-        .mascot-area { width: 300px; height: 380px; }
+        .logo-img { width: 350px; max-width: 40vw; }
+        .mascot-area { width: 300px; height: 400px; max-width: 30vw; }
         .bottom-bar { flex-wrap: wrap; }
     }
 </style>
