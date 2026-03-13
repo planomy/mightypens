@@ -19,7 +19,8 @@
         --text-main: #1e293b;
         --text-muted: #64748b;
         --star-gold: #fbbf24;
-        --tip-orange: #ffedcc; /* Faded orange background */
+        --tip-orange: #ffedcc; /* Faded orange instruction background */
+        --tip-accent: #f59e0b;
     }
 
     * { box-sizing: border-box; }
@@ -29,7 +30,7 @@
         padding: 0;
         height: 100vh;
         width: 100vw;
-        overflow: hidden;
+        overflow: hidden; 
         font-family: 'Nunito', system-ui, sans-serif;
         background: linear-gradient(135deg, var(--bg-yellow) 0%, var(--bg-orange) 100%);
         color: var(--text-main);
@@ -71,14 +72,14 @@
         flex-direction: column;
         height: 100vh;
         width: 100vw;
-        padding: 1% 40px 20px; /* Aligned to topmost with padding */
+        padding: 1% 40px 20px; 
     }
 
     .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        min-height: 120px;
+        min-height: 140px;
     }
 
     .crowns-container {
@@ -115,14 +116,13 @@
     }
     .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
 
-    /* Logo Pinned to Top */
     .logo-img {
         width: 850px; 
-        max-width: 42vw;
+        max-width: 45vw;
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -10px; /* High alignment */
-        margin-right: -15px;
+        margin-top: -35px; 
+        margin-right: -10px;
         position: relative;
         z-index: 200;
     }
@@ -131,17 +131,17 @@
     .dashboard-grid {
         flex: 1;
         display: grid;
-        grid-template-columns: 1fr 2.6fr 1fr; /* Strong center weighting */
+        grid-template-columns: 1fr 2.5fr 1fr; 
         gap: 40px;
         align-items: center;
-        margin-top: -22vh; /* MOVED HIGHER: Significant lift into the upper-center zone */
+        margin-top: -16vh; 
         max-width: 2000px;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
     }
 
-    /* COL 1: MASCOT */
+    /* COL 1: MASCOT (WITH SLIDE ANIMATION) */
     .mascot-col {
         position: relative;
         display: flex;
@@ -154,6 +154,13 @@
         position: relative;
         width: 420px; 
         max-width: 24vw;
+        transform: translate(-300px, -200px) rotate(-15deg);
+        opacity: 0;
+        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s;
+    }
+
+    @keyframes mascotSlide {
+        to { transform: translate(0, 0) rotate(0deg); opacity: 1; }
     }
 
     .mascot-img {
@@ -161,6 +168,28 @@
         height: auto;
         display: block;
         filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25));
+    }
+
+    /* SMOKE PUFF ANIMATION */
+    .smoke-puff {
+        position: absolute;
+        bottom: 40px;
+        left: 20px;
+        width: 100px;
+        height: 60px;
+        pointer-events: none;
+        opacity: 0;
+        z-index: 50;
+    }
+
+    .smoke-puff.animate {
+        animation: smokeFade 1.5s ease-out forwards 1.5s; /* Trigger after slide */
+    }
+
+    @keyframes smokeFade {
+        0% { transform: scale(0.2); opacity: 0; }
+        20% { opacity: 0.6; }
+        100% { transform: scale(2); opacity: 0; }
     }
 
     .speech-bubble {
@@ -176,37 +205,66 @@
         white-space: nowrap;
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         z-index: 30;
+        opacity: 0;
+        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 2s;
     }
 
-    /* SPEECH BUBBLE POINT FACING MASCOT (POINTING LEFT) */
+    @keyframes bubblePop {
+        from { transform: scale(0); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
     .speech-bubble::after {
         content: '';
         position: absolute;
         top: 50%;
-        left: -12px; /* Anchor to the left side */
+        left: -12px; 
         transform: translateY(-50%);
         border-width: 8px 12px 8px 0;
         border-style: solid;
         border-color: transparent #333 transparent transparent;
     }
 
-    /* COL 2: EDITOR (Centered high) */
+    /* COL 2: EDITOR (With Dropping Pill) */
     .editor-box {
         background: #ffffff;
         border-radius: 40px;
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
         display: flex;
         flex-direction: column;
-        height: 60vh;
-        overflow: hidden;
+        height: 62vh;
+        overflow: visible; /* To allow the Pill to sit on top */
         border: 4px solid #fff;
         position: relative;
+    }
+
+    .topic-pill {
+        position: absolute;
+        top: -24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(-200px);
+        background: var(--coral-red);
+        color: white;
+        padding: 10px 30px;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 1.2rem;
+        box-shadow: 0 10px 20px rgba(255, 120, 110, 0.3);
+        z-index: 50;
+        white-space: nowrap;
+        opacity: 0;
+        animation: topicDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.8s;
+        cursor: pointer;
+    }
+
+    @keyframes topicDrop {
+        to { transform: translateX(-50%) translateY(0); opacity: 1; }
     }
 
     textarea {
         flex: 1;
         width: calc(100% - 60px);
-        margin: 30px 30px 15px 30px;
+        margin: 40px 30px 15px 30px; /* Adjusted for the pill */
         border: 2px solid #f5f3ff;
         border-radius: 28px;
         padding: 35px;
@@ -219,7 +277,7 @@
         box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08);
         transition: all 0.2s ease;
     }
-    textarea:focus { outline: none; border-color: #d8b4fe; box-shadow: 0 12px 40px rgba(123, 44, 191, 0.15); }
+    textarea:focus { outline: none; border-color: #d8b4fe; }
 
     .editor-controls {
         background: #faf5ff; 
@@ -230,7 +288,7 @@
         border-top: 2px solid #f3e8ff;
     }
 
-    /* COL 3: SIDEBAR STACK */
+    /* COL 3: SIDEBAR */
     .sidebar-col {
         display: flex;
         flex-direction: column;
@@ -247,14 +305,12 @@
         transition: transform 0.3s;
     }
 
-    .info-card.star { transform: rotate(1.5deg); z-index: 5; }
+    .info-card.star { transform: rotate(1.5deg); }
     .info-card.tip { 
         transform: rotate(-1.5deg); 
-        background: var(--tip-orange); /* RESTORED ORANGE BG */
-        border: 2px solid #fbd38d;
-        z-index: 4;
+        background: var(--tip-orange); 
+        border-color: #fbd38d;
     }
-    .info-card:hover { transform: rotate(0deg) scale(1.02); z-index: 10; }
 
     .card-header {
         display: flex;
@@ -265,7 +321,7 @@
         font-size: 1.2rem;
     }
     .star .card-header { color: var(--bg-orange); }
-    .tip .card-header { color: #92400e; } /* Higher contrast for orange bg */
+    .tip .card-header { color: #92400e; }
 
     .card-body {
         font-style: italic;
@@ -316,7 +372,6 @@
         transition: transform 0.1s, background 0.2s;
     }
     .btn-submit:hover { background: var(--purple-dark); transform: scale(1.02); }
-    .btn-submit:active { transform: scale(0.96); }
 
     /* --- BOTTOM TOOLKIT --- */
     .toolkit-wrapper {
@@ -388,18 +443,6 @@
         pointer-events: none;
         z-index: 250;
     }
-
-    .tooltip-pop::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 10px 10px 0 10px;
-        border-style: solid;
-        border-color: white transparent transparent transparent;
-    }
-
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
@@ -429,22 +472,19 @@
         animation: toastDrop 0.4s forwards;
     }
     @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes toastOut { to { opacity: 0; transform: translateY(-30px); } }
 
     @media (max-width: 1550px) {
-        .logo-img { width: 650px; }
+        .logo-img { width: 600px; }
         .mascot-area { width: 380px; }
-        .dashboard-grid { margin-top: -18vh; }
     }
     @media (max-width: 1400px) {
-        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -14vh; }
+        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -10vh; }
         .sidebar-col { display: none; }
     }
 </style>
 </head>
 <body>
 
-<!-- SVG BACKGROUND STAGING (Meet ensures no clipping) -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <path d="M 0 600 L 0 350 C 150 200 400 600 700 480 C 850 420 1000 550 1000 600 Z" fill="var(--coral-red)" />
 </svg>
@@ -468,13 +508,24 @@
         <div class="mascot-col">
             <div class="mascot-area">
                 <div class="speech-bubble">Booyar amigos!</div>
+                
+                <!-- Animated Smoke Effect -->
+                <svg class="smoke-puff animate" viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="30" cy="30" r="15" fill="white" />
+                    <circle cx="50" cy="20" r="20" fill="white" />
+                    <circle cx="70" cy="35" r="18" fill="white" />
+                </svg>
+
                 <img src="mascot.png" alt="Mighty Pen" class="mascot-img">
             </div>
         </div>
 
-        <!-- COL 2: EDITOR (LIFTED HIGHER) -->
+        <!-- COL 2: EDITOR -->
         <div class="editor-col">
             <div class="editor-box">
+                <!-- DROPPING TOPIC PILL -->
+                <div id="topicText" class="topic-pill" onclick="newTopic()">Topic: Loading...</div>
+
                 <div class="result-overlay" id="resultOverlay">
                     <div id="resultText" style="font-size: 1.4rem; font-weight: 700; color: var(--purple-main); margin-bottom: 30px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
                     <div style="display: flex; gap: 15px;">
@@ -482,18 +533,15 @@
                         <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
                     </div>
                 </div>
-                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
+                <textarea id="paragraph" placeholder="Type your story..."></textarea>
                 <div class="editor-controls">
-                    <div style="display: flex; gap: 20px; align-items: center;">
-                        <div id="topicText" style="font-weight: 900; color: var(--coral-red); cursor: pointer; font-size: 1.15rem;" onclick="newTopic()">Topic: Loading...</div>
-                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
-                    </div>
+                    <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
                     <button class="btn-submit" onclick="getFeedback()">CHECK WRITING</button>
                 </div>
             </div>
         </div>
 
-        <!-- COL 3: SIDEBAR STACK -->
+        <!-- COL 3: SIDEBAR -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
@@ -502,7 +550,6 @@
                 <div class="card-footer" id="starAuthor">- Sarah, Year 5</div>
             </div>
 
-            <!-- RESTORED ORANGE BG CARD -->
             <div class="info-card tip">
                 <div class="card-badge">💡</div>
                 <div class="card-header">PRO LESSON</div>
@@ -546,36 +593,12 @@
     /* --- DATA ENGINE --- */
     const topics = ["Bravery", "The Lie", "Overboard", "Secrets", "The Dare", "The Shortcut", "The Escape", "Lost", "The Storm", "The Knock", "The Discovery", "The Phone Call", "The Stranger", "The Promise", "The Warning", "The Last Bus", "The Map", "The Key"];
     
-    // CONTEXTUAL LESSON SETS
     const lessonSets = [
-        {
-            example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.",
-            author: "Sarah, Year 5",
-            tip: "Use an em-dash — like this — to add extra detail mid-sentence."
-        },
-        {
-            example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.",
-            author: "James, Year 6",
-            tip: "Start with an -ing word followed by three past-tense verbs for high energy!"
-        },
-        {
-            example: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.",
-            author: "Leo, Year 4",
-            tip: "The Triple Descriptor: Use 'With' followed by three specific details."
-        },
-        {
-            example: "The fog swallowed the trees, turning the park into a ghostly maze.",
-            author: "Amelie, Year 5",
-            tip: "Use strong verbs like 'swallowed' to bring settings to life (Personification)."
-        }
+        { example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", author: "Sarah, Year 5", tip: "Use an em-dash — like this — to add extra detail mid-sentence." },
+        { example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", author: "James, Year 6", tip: "Start with an -ing word followed by three past-tense verbs for high energy!" },
+        { example: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", author: "Leo, Year 4", tip: "The Triple Descriptor: Use 'With' followed by three specific details." },
+        { example: "The fog swallowed the trees, turning the park into a ghostly maze.", author: "Amelie, Year 5", tip: "Use strong verbs like 'swallowed' to bring settings to life (Personification)." }
     ];
-
-    const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
-    const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
-    const beWords = ["was","were","is","are","be","been","being"];
-    const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
-    const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
-    const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
 
     const skillDefs = [
         { id: "activeVerbs", name: "Active Verbs" },
@@ -615,7 +638,13 @@
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
         const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
-        
+        const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
+        const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
+        const beWords = ["was","were","is","are","be","been","being"];
+        const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
+        const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
+        const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
+
         const strongVerbCount = words.filter(w => /ed$|ing$/.test(w) && !beWords.includes(w) && !weakVerbs.includes(w)).length;
         const weakVerbCount = words.filter(w => weakVerbs.includes(w)).length;
         const badStartCount = sentences.filter(s => badStarts.includes((s.match(/[a-zA-Z']+/) || [""])[0].toLowerCase())).length;
@@ -660,7 +689,7 @@
         const resultText = document.getElementById("resultText");
         if(!text) { showToast("Please write your story first!"); return; }
         overlay.style.display = "flex";
-        resultText.innerHTML = "Uplinking to Command... Analyzing your writing... 🧐";
+        resultText.innerHTML = "Thinking about your writing... 🧐";
         try {
             const response = await fetch("/api/feedback", {
                 method: "POST", headers: { "Content-Type": "application/json" },
@@ -669,13 +698,11 @@
             const data = await response.json();
             if (!response.ok) throw new Error("API Offline");
             resultText.innerText = data.feedback;
-            lastFeedbackData = data.feedback;
             maybeLevelUp(text);
         } catch (error) {
             const m = analyseWriting(text);
             const fallback = `Feedback system offline.\n\nLocal Report:\n• Action Verbs: ${m.strongVerbCount}\n• Complex Structures: ${m.complexSentenceCount}\n• Starts Failed: ${m.badStartCount}\n\nKeep writing to earn crowns!`;
             resultText.innerText = fallback;
-            lastFeedbackData = fallback;
             maybeLevelUp(text);
         }
     }
@@ -702,7 +729,8 @@
     function sendEmail() {
         const text = document.getElementById("paragraph").value.trim();
         const topicName = document.getElementById("topicText").innerText.replace("Topic: ", "");
-        const body = encodeURIComponent(`Topic: ${topicName}\n\nStudent text:\n${text}\n\nFeedback:\n${lastFeedbackData}`);
+        const lastFeedback = document.getElementById("resultText").innerText;
+        const body = encodeURIComponent(`Topic: ${topicName}\n\nStudent text:\n${text}\n\nFeedback:\n${lastFeedback}`);
         window.location.href = `mailto:myessayfeedback@gmail.com?subject=My Writing - ${topicName}&body=${body}`;
     }
 
