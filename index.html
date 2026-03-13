@@ -609,20 +609,54 @@
         letter-spacing: 2px;
     }
 
+    /* =========================================================
+       RESPONSIVE DESIGN (FIXES FOR MACBOOKS & IPADS)
+       ========================================================= */
+
+    /* Large Laptops / Smaller Desktops */
     @media (max-width: 1550px) { 
-        .logo-img { width: 650px; } 
-        .dashboard-grid { margin-top: -18vh; } 
+        .logo-img { width: 600px; } 
+        .dashboard-grid { margin-top: -20vh; gap: 25px; } 
+        .mascot-area { width: 360px; }
     }
 
+    /* MacBooks / iPads Landscape (FIX: Shrink sidebar instead of hiding) */
     @media (max-width: 1400px) { 
-        .dashboard-grid { grid-template-columns: 1fr 2fr; margin-top: -12vh; } 
-        .sidebar-col { display: none; } 
+        .dashboard-grid { grid-template-columns: 1fr 2.2fr 1fr; margin-top: -15vh; gap: 20px; } 
+        .logo-img { width: 500px; margin-top: -15px; }
+        .mascot-area { width: 300px; }
+        
+        /* The Responsive Squeeze for Learning Tools */
+        .sidebar-col { display: flex; gap: 20px; } 
+        .info-card { padding: 18px; border-radius: 25px; }
+        .card-header { font-size: 1rem; margin-bottom: 8px; }
+        .card-body { font-size: 0.9rem; padding-left: 12px; }
+        .card-badge { width: 45px; height: 45px; font-size: 1.3rem; top: -12px; right: -12px; }
+        
+        textarea { margin: 35px 20px 10px 20px; padding: 25px; font-size: 1.2rem; }
     }
+
+    /* Smaller iPads (Landscape) */
+    @media (max-width: 1100px) {
+        .dashboard-grid { grid-template-columns: 1fr 2fr 1fr; gap: 15px; }
+        .logo-img { width: 400px; }
+        .mascot-area { width: 260px; }
+        .speech-bubble { font-size: 0.8rem; padding: 10px 16px; top: 10%; }
+        .mode-switch { flex-direction: column; gap: 2px; }
+        .mode-btn { padding: 5px 10px; font-size: 0.75rem; }
+    }
+
+    /* Laptops with short vertical screens (FIX: Prevent Logo Overlap) */
+    @media (max-height: 850px) {
+        .dashboard-grid { margin-top: -10vh; }
+        .editor-box { height: 58vh; }
+        .logo-img { width: 550px; margin-top: -10px; }
+    }
+
 </style>
 </head>
 <body>
 
-<!-- DISCRETE PROGRESS PILL -->
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
@@ -635,7 +669,6 @@
 
 <div class="toastArea" id="toastArea"></div>
 
-<!-- SAVE/LOAD MODAL -->
 <div class="save-modal" id="saveModal">
     <div class="save-box">
         <h2 style="margin-top:0; color: var(--purple-main); font-weight: 900;">Mighty Code</h2>
@@ -708,7 +741,6 @@
             </div>
         </div>
 
-        <!-- COL 3: SIDEBAR -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
@@ -726,7 +758,6 @@
         </div>
     </div>
 
-    <!-- FULL 18 TOOLTIPS RESTORED -->
     <div class="toolkit-wrapper">
         <div class="bottom-bar" id="toolsMenu">
             <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Intro</strong>Paragraph 1. Use 1 action → description → background story.</div></button>
