@@ -49,20 +49,22 @@
     }
 
     .bg-left {
-        bottom: 0;
-        left: 0;
-        width: 55vw;
-        height: 65vh;
+        bottom: -5vh; /* Tuck it down slightly */
+        left: -5vw;
+        width: 60vw;
+        max-width: 1000px; /* Prevents it from becoming overwhelmingly massive */
+        height: auto; /* Letting height be auto prevents the SVG from ever cropping */
         min-width: 600px;
         /* Warm drop shadow dropping up and to the right */
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
     .bg-right {
-        top: 0;
-        right: 0;
-        width: 30vw;
-        height: 100vh;
+        top: -5vh;
+        right: -5vw;
+        width: 35vw;
+        max-width: 600px;
+        height: auto; 
         min-width: 350px;
         /* Warm drop shadow dropping to the left */
         filter: drop-shadow(-15px 10px 25px rgba(200, 70, 0, 0.25));
@@ -148,17 +150,20 @@
     .main-area {
         flex: 1;
         display: flex;
-        align-items: center;
-        gap: 20px;
+        align-items: center; /* Vertically center */
+        justify-content: center; /* Horizontally center on large monitors */
+        gap: 40px;
         position: relative;
+        max-width: 1600px; /* Locks the max spread of the app */
+        margin: 0 auto; /* Keeps the whole app centered */
+        margin-top: -6vh; /* Pulls the entire row upwards to fix the "too low" feeling */
     }
 
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: 400px; /* BIG base width */
-        max-width: 38vw; /* Limit on smaller screens */
-        /* Removed fixed height! The container will now tightly hug the image height */
+        width: 500px; /* Dialed down slightly so it balances with the new editor box */
+        max-width: 35vw; /* Limit on smaller screens */
         flex-shrink: 0;
         z-index: 20;
     }
@@ -201,7 +206,9 @@
     /* Huge White Editor Box */
     .editor-box {
         flex: 1;
-        height: 50vh;
+        width: 100%;
+        max-width: 950px; /* This stops the box from becoming too wide on big screens */
+        height: 60vh; /* Made slightly taller */
         background: #ffffff;
         border-radius: 32px;
         box-shadow: 0 20px 40px rgba(0,0,0,0.15);
@@ -455,14 +462,13 @@
 <body>
 
 <!-- SVG Background Shapes for precise curves -->
-<svg class="bg-shape bg-left" viewBox="0 0 600 500" preserveAspectRatio="xMinYMax slice" xmlns="http://www.w3.org/2000/svg">
-    <!-- Perfect bezier curve mimicking the bottom-left hill from the mockup -->
-    <path d="M 0 100 C 180 -50 280 280 420 320 C 550 360 600 450 600 500 L 0 500 Z" fill="var(--coral-red)" />
+<!-- Note: 'meet' is used instead of 'slice' to ensure it never gets cut off -->
+<svg class="bg-shape bg-left" viewBox="0 0 800 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 200 C 200 50 350 400 550 450 C 700 480 800 550 800 600 L 0 600 Z" fill="var(--coral-red)" />
 </svg>
 
-<svg class="bg-shape bg-right" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin slice" xmlns="http://www.w3.org/2000/svg">
-    <!-- Flowing wave mimicking the right side of the mockup -->
-    <path d="M 200 0 C 350 250 -50 450 150 700 C 250 850 50 950 100 1000 L 400 1000 L 400 0 Z" fill="var(--peach-light)" />
+<svg class="bg-shape bg-right" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 150 0 C 300 200 0 450 150 700 C 250 900 50 1000 50 1000 L 400 1000 L 400 0 Z" fill="var(--peach-light)" />
 </svg>
 
 <div class="toastArea" id="toastArea"></div>
