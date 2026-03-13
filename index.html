@@ -121,8 +121,10 @@
         max-width: 40vw;
         height: auto;
         filter: drop-shadow(0 15px 25px rgba(0,0,0,0.25));
-        margin-top: 15px; /* PUSH DOWN solution */
+        margin-top: -5px; /* Lifted higher */
         margin-right: 10px;
+        position: relative; /* Enabled for z-index */
+        z-index: 100; /* Brought to the absolute front */
     }
 
     /* --- THE DASHBOARD GRID --- */
@@ -491,7 +493,7 @@
             <!-- 18 Integrated Tool Buttons with popping tooltips -->
             <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Paragraph</strong>Paragraph 1. Use 1 action → description → background.</div></button>
             <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>Setting Paragraph</strong>Paragraph 2. Use 1 action → location detail → history.</div></button>
-            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose Paragraph</strong>Paragraph 3. Use 1 action → thinking. Why are you here?</div></button>
+            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose Paragraph</strong>Paragraph 3. Use 1 action → thinking. Why are they here?</div></button>
             <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>Problem Appears</strong>Paragraph 4. Use 1 action → atmosphere. Build suspense.</div></button>
             <button class="tooltip-btn">COMPLEX <div class="tooltip-pop"><strong>Problem Worsens</strong>Paragraph 5. Use 1 action → atmosphere. Make it harder!</div></button>
             <button class="tooltip-btn">RESOLVE <div class="tooltip-pop"><strong>Outcome</strong>Paragraph 6. Use 1 action → mixture → finish the story.</div></button>
