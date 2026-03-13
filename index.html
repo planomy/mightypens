@@ -43,7 +43,6 @@
         pointer-events: none;
     }
 
-    /* Red Hill Fix: Deeply curved path to prevent 'flat' look on big Macs */
     .bg-left {
         bottom: -5vh;
         left: -5vw;
@@ -72,7 +71,7 @@
         flex-direction: column;
         height: 100vh;
         width: 100vw;
-        padding: 1% 40px 20px; /* Reduced top padding to move elements up */
+        padding: 1% 40px 20px; 
     }
 
     .top-bar {
@@ -116,13 +115,13 @@
     }
     .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
 
-    /* Logo Higher */
+    /* Logo Higher and to the front */
     .logo-img {
         width: 850px; 
         max-width: 45vw;
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -30px; /* Pull it into the top margin */
+        margin-top: -35px; /* Lifted high */
         margin-right: -10px;
         position: relative;
         z-index: 200;
@@ -132,10 +131,10 @@
     .dashboard-grid {
         flex: 1;
         display: grid;
-        grid-template-columns: 1fr 2.5fr 1fr; /* Center-weighted for perfect centering */
+        grid-template-columns: 1fr 2.5fr 1fr; 
         gap: 40px;
         align-items: center;
-        margin-top: -12vh; /* Lifted high to clear the bottom bar */
+        margin-top: -16vh; /* MOVED HIGHER: Significant lift into the upper-center zone */
         max-width: 2000px;
         margin-left: auto;
         margin-right: auto;
@@ -179,7 +178,7 @@
         z-index: 30;
     }
 
-    /* SPEECH BUBBLE POINT POINTING LEFT */
+    /* SPEECH BUBBLE POINT POINTING LEFT TOWARDS MASCOT */
     .speech-bubble::after {
         content: '';
         position: absolute;
@@ -191,7 +190,7 @@
         border-color: transparent #333 transparent transparent;
     }
 
-    /* COL 2: EDITOR (Centered Paper) */
+    /* COL 2: EDITOR (The Paper) */
     .editor-box {
         background: #ffffff;
         border-radius: 40px;
@@ -439,7 +438,7 @@
 </head>
 <body>
 
-<!-- UPDATED RED HILL: Deeper curves to ensure it looks 'hill-like' on Mac -->
+<!-- SVG BACKGROUND STAGING (Meet ensures no clipping) -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <path d="M 0 600 L 0 350 C 150 200 400 600 700 480 C 850 420 1000 550 1000 600 Z" fill="var(--coral-red)" />
 </svg>
@@ -467,7 +466,7 @@
             </div>
         </div>
 
-        <!-- COL 2: EDITOR (Centered) -->
+        <!-- COL 2: EDITOR (Centered higher) -->
         <div class="editor-col">
             <div class="editor-box">
                 <div class="result-overlay" id="resultOverlay">
@@ -488,7 +487,7 @@
             </div>
         </div>
 
-        <!-- COL 3: SIDEBAR STACK (Matched Set) -->
+        <!-- COL 3: SIDEBAR STACK -->
         <div class="sidebar-col">
             <div class="info-card star">
                 <div class="card-badge">⭐</div>
