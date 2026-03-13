@@ -135,11 +135,11 @@
 
     /* Image Logo */
     .logo-img {
-        width: 500px; /* BIG base size */
-        max-width: 40vw; /* Prevents it from overlapping on iPads */
+        width: 750px; /* MUCH BIGGER base size */
+        max-width: 55vw; /* Increased so it can grow larger on big screens */
         height: auto;
-        margin-right: 20px;
-        margin-top: -10px;
+        margin-right: 0px;
+        margin-top: -20px;
         z-index: 20;
         filter: drop-shadow(0 15px 15px rgba(0,0,0,0.25));
     }
@@ -156,9 +156,9 @@
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: 450px; /* BIG base width */
-        height: 550px; /* BIG base height */
-        max-width: 35vw; /* Keeps it proportional on smaller screens */
+        width: 600px; /* MUCH BIGGER base width */
+        height: 700px; /* MUCH BIGGER base height */
+        max-width: 45vw; /* Increased so it can grow larger */
         flex-shrink: 0;
         z-index: 20;
     }
@@ -172,8 +172,8 @@
 
     .speech-bubble {
         position: absolute;
-        top: 15%; 
-        right: -80px;
+        top: 20%; 
+        right: -60px;
         left: auto;
         background: #4a4a4a;
         color: white;
@@ -437,8 +437,8 @@
     @keyframes toastOut { to { opacity: 0; transform: translateY(-20px); } }
 
     @media (max-width: 1100px) {
-        .logo-img { width: 350px; max-width: 40vw; }
-        .mascot-area { width: 300px; height: 400px; max-width: 30vw; }
+        .logo-img { width: 450px; max-width: 50vw; }
+        .mascot-area { width: 400px; height: 500px; max-width: 40vw; }
         .bottom-bar { flex-wrap: wrap; }
     }
 </style>
