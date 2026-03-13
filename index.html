@@ -45,10 +45,10 @@
     .bg-left {
         bottom: -5vh;
         left: -5vw;
-        width: 60vw;
-        max-width: 1000px;
+        width: 65vw;
+        max-width: 1100px;
         height: auto;
-        min-width: 600px;
+        min-width: 700px;
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
@@ -76,14 +76,15 @@
     .top-bar {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        height: 140px;
+        align-items: flex-start; /* Prevent centering logo into the top edge */
+        padding-top: 20px;
+        min-height: 160px;
     }
 
     .crowns-container {
         display: flex;
         gap: 8px;
-        margin-top: -20px;
+        margin-top: 10px;
     }
 
     .crown-wrapper {
@@ -114,23 +115,25 @@
     }
     .crown-wrapper:hover .crown-hover { opacity: 1; visibility: visible; }
 
+    /* Massive but safely positioned logo */
     .logo-img {
-        width: 750px;
-        max-width: 35vw;
+        width: 700px;
+        max-width: 40vw;
         height: auto;
-        filter: drop-shadow(0 15px 15px rgba(0,0,0,0.2));
-        margin-top: -20px;
+        filter: drop-shadow(0 15px 25px rgba(0,0,0,0.25));
+        margin-top: 15px; /* PUSH DOWN solution */
+        margin-right: 10px;
     }
 
     /* --- THE DASHBOARD GRID --- */
     .dashboard-grid {
         flex: 1;
         display: grid;
-        grid-template-columns: 1fr 2fr 1fr;
-        gap: 30px;
+        grid-template-columns: 1.1fr 2fr 1fr;
+        gap: 40px;
         align-items: center;
-        margin-top: -4vh;
-        max-width: 1800px;
+        margin-top: -6vh;
+        max-width: 1900px;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
@@ -147,8 +150,8 @@
 
     .mascot-area {
         position: relative;
-        width: 500px;
-        max-width: 25vw;
+        width: 550px;
+        max-width: 28vw;
     }
 
     .mascot-img {
@@ -160,11 +163,11 @@
 
     .speech-bubble {
         position: absolute;
-        top: 24%;
+        top: 22%;
         left: 85%;
         background: #333;
         color: white;
-        padding: 12px 20px;
+        padding: 14px 22px;
         border-radius: 20px;
         font-weight: 800;
         font-size: clamp(0.9rem, 1.2vw, 1.2rem);
@@ -191,7 +194,7 @@
         box-shadow: 0 30px 60px rgba(0,0,0,0.12);
         display: flex;
         flex-direction: column;
-        height: 65vh;
+        height: 62vh;
         overflow: hidden;
         border: 4px solid #fff;
         position: relative;
@@ -200,14 +203,14 @@
     textarea {
         flex: 1;
         width: calc(100% - 60px);
-        margin: 30px 30px 10px 30px;
-        border: 2px solid #f3f0ff;
-        border-radius: 24px;
-        padding: 30px;
+        margin: 30px 30px 15px 30px;
+        border: 2px solid #f5f3ff;
+        border-radius: 28px;
+        padding: 35px;
         font-family: inherit;
-        font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+        font-size: clamp(1.3rem, 1.8vw, 1.9rem);
         font-weight: 700;
-        line-height: 1.5;
+        line-height: 1.6;
         resize: none;
         background: #ffffff;
         box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08);
@@ -216,7 +219,7 @@
     textarea:focus { outline: none; border-color: #d8b4fe; box-shadow: 0 12px 40px rgba(123, 44, 191, 0.15); }
 
     .editor-controls {
-        background: #faf8ff;
+        background: #faf5ff; /* Purple tinge */
         padding: 20px 30px;
         display: flex;
         justify-content: space-between;
@@ -228,13 +231,13 @@
     .star-col {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
     }
 
     .star-card {
         background: #fff;
-        padding: 25px;
-        border-radius: 30px;
+        padding: 30px;
+        border-radius: 35px;
         box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         transform: rotate(2deg);
         position: relative;
@@ -244,20 +247,20 @@
     .star-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 12px;
+        gap: 12px;
+        margin-bottom: 15px;
         color: var(--bg-orange);
         font-weight: 900;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
     }
 
     .star-text {
         font-style: italic;
-        font-size: 1rem;
+        font-size: 1.1rem;
         color: var(--text-muted);
-        line-height: 1.4;
-        border-left: 4px solid var(--star-gold);
-        padding-left: 15px;
+        line-height: 1.5;
+        border-left: 5px solid var(--star-gold);
+        padding-left: 20px;
     }
 
     .star-badge {
@@ -265,13 +268,13 @@
         top: -15px;
         right: -15px;
         background: var(--star-gold);
-        width: 50px;
-        height: 50px;
+        width: 55px;
+        height: 55px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.5rem;
+        font-size: 1.6rem;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
@@ -280,21 +283,21 @@
         background: var(--purple-main);
         color: white;
         font-weight: 900;
-        padding: 14px 35px;
+        padding: 16px 40px;
         border-radius: 100px;
         border: none;
         cursor: pointer;
-        font-size: 1.1rem;
-        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.2);
+        font-size: 1.15rem;
+        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25);
         transition: transform 0.1s, background 0.2s;
     }
-    .btn-submit:hover { background: var(--purple-dark); }
+    .btn-submit:hover { background: var(--purple-dark); transform: scale(1.02); }
     .btn-submit:active { transform: scale(0.96); }
 
     /* --- BOTTOM TOOLKIT --- */
     .toolkit-wrapper {
         position: fixed;
-        bottom: 20px;
+        bottom: 25px;
         left: 50%;
         transform: translateX(-50%);
         z-index: 100;
@@ -307,15 +310,15 @@
         display: none;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 8px;
-        background: rgba(255, 255, 255, 0.95);
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(10px);
-        padding: 15px;
-        border-radius: 25px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        margin-bottom: 10px;
-        max-width: 1200px;
-        width: 90vw;
+        padding: 18px;
+        border-radius: 30px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        margin-bottom: 12px;
+        max-width: 1300px;
+        width: 95vw;
     }
 
     .bottom-bar.open { display: flex; }
@@ -324,17 +327,19 @@
         background: var(--purple-tooltip);
         color: white;
         border: none;
-        padding: 10px 18px;
+        padding: 12px 20px;
         border-radius: 20px;
         font-weight: 900;
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         cursor: help;
         position: relative;
         text-transform: uppercase;
-        flex: 1 1 calc(11% - 10px);
-        min-width: 100px;
+        flex: 1 1 calc(10% - 10px);
+        min-width: 105px;
         white-space: nowrap;
+        transition: background 0.2s;
     }
+    .tooltip-btn:hover { background: var(--purple-main); }
 
     .tooltip-pop {
         position: absolute;
@@ -342,22 +347,22 @@
         left: 50%;
         transform: translateX(-50%) translateY(10px);
         width: max-content;
-        max-width: 260px;
+        max-width: 280px;
         white-space: normal;
         background: white;
         color: var(--text-main);
-        padding: 16px;
-        border-radius: 12px;
-        font-size: 0.9rem;
-        line-height: 1.4;
+        padding: 18px;
+        border-radius: 15px;
+        font-size: 0.95rem;
+        line-height: 1.5;
         text-align: left;
         text-transform: none;
         opacity: 0;
         visibility: hidden;
         transition: all 0.2s;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
         pointer-events: none;
-        z-index: 200;
+        z-index: 250;
     }
 
     .tooltip-pop::after {
@@ -372,36 +377,40 @@
     }
 
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1rem; margin-bottom: 4px; }
+    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
-    /* Results */
+    /* Results Overlay */
     .result-overlay {
         position: absolute;
         inset: 0;
         background: rgba(255,255,255,0.98);
-        z-index: 200;
+        z-index: 300;
         display: none;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        padding: 40px;
+        padding: 50px;
         text-align: center;
     }
 
     /* Toasts */
-    .toastArea { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; z-index: 2000; }
+    .toastArea { position: fixed; top: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; gap: 12px; z-index: 2000; }
     .toast {
-        background: #333;
+        background: #1e293b;
         color: white;
         border-radius: 100px;
-        padding: 12px 30px;
+        padding: 14px 40px;
         font-weight: 800;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        animation: toastDrop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        animation: toastDrop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
-    @keyframes toastDrop { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes toastOut { to { opacity: 0; transform: translateY(-20px); } }
+    @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes toastOut { to { opacity: 0; transform: translateY(-30px); } }
 
+    @media (max-width: 1550px) {
+        .logo-img { width: 550px; }
+        .mascot-area { width: 420px; }
+    }
     @media (max-width: 1400px) {
         .dashboard-grid { grid-template-columns: 1fr 1.8fr; }
         .star-col { display: none; }
@@ -410,9 +419,9 @@
 </head>
 <body>
 
-<!-- SVG BACKGROUND STAGING -->
-<svg class="bg-shape bg-left" viewBox="0 0 800 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 200 C 200 50 350 400 550 450 C 700 480 800 550 800 600 L 0 600 Z" fill="var(--coral-red)" />
+<!-- SVG BACKGROUND STAGING (Meet ensures no clipping) -->
+<svg class="bg-shape bg-left" viewBox="0 0 1000 500" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 0 500 L 0 150 C 300 50 500 450 1000 250 L 1000 500 Z" fill="var(--coral-red)" />
 </svg>
 
 <svg class="bg-shape bg-right-wave" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
@@ -430,7 +439,7 @@
 
     <div class="dashboard-grid">
         
-        <!-- COL 1: MASCOT -->
+        <!-- COL 1: MASCOT (Standing on his hill) -->
         <div class="mascot-col">
             <div class="mascot-area">
                 <div class="speech-bubble">Booyar amigos!</div>
@@ -438,67 +447,68 @@
             </div>
         </div>
 
-        <!-- COL 2: EDITOR -->
+        <!-- COL 2: EDITOR (Paper feel) -->
         <div class="editor-col">
             <div class="editor-box">
                 <div class="result-overlay" id="resultOverlay">
-                    <div id="resultText" style="font-size: 1.3rem; font-weight: 700; color: var(--purple-main); margin-bottom: 25px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
+                    <div id="resultText" style="font-size: 1.4rem; font-weight: 700; color: var(--purple-main); margin-bottom: 30px; max-width: 800px; line-height: 1.6; white-space: pre-wrap;"></div>
                     <div style="display: flex; gap: 15px;">
                         <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
                         <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
                     </div>
                 </div>
-                <textarea id="paragraph"></textarea>
+                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
                 <div class="editor-controls">
-                    <div style="display: flex; gap: 15px; align-items: center;">
-                        <div id="topicText" style="font-weight: 900; color: var(--coral-red); cursor: pointer;" onclick="newTopic()">Topic: Loading...</div>
-                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 4px 12px; border-radius: 15px;">Words: 0</div>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div id="topicText" style="font-weight: 900; color: var(--coral-red); cursor: pointer; font-size: 1.1rem;" onclick="newTopic()">Topic: Loading...</div>
+                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
                     </div>
                     <button class="btn-submit" onclick="getFeedback()">CHECK WRITING</button>
                 </div>
             </div>
         </div>
 
-        <!-- COL 3: STAR OF THE WEEK -->
+        <!-- COL 3: STAR OF THE WEEK (Anchoring the right side) -->
         <div class="star-col">
             <div class="star-card" id="starCard">
                 <div class="star-badge">⭐</div>
                 <div class="star-header">STAR OF THE WEEK</div>
                 <div class="star-text" id="starText">"The rusted gate groaned—a warning from the past—as Marcus lunged forward."</div>
-                <div id="starAuthor" style="margin-top: 10px; font-weight: 800; font-size: 0.9rem; text-align: right;">- Sarah, Year 5</div>
+                <div id="starAuthor" style="margin-top: 15px; font-weight: 800; font-size: 1rem; text-align: right;">- Sarah, Year 5</div>
             </div>
 
             <div class="star-card" style="transform: rotate(-1deg); background: var(--peach-light); border:none;">
                 <div class="star-header" style="color: white;">PRO TIP</div>
-                <div style="color: white; font-weight: 700; font-size: 0.95rem;" id="proTip">Try starting with an -ing word like "Sprinting" to add energy!</div>
+                <div style="color: white; font-weight: 700; font-size: 1rem;" id="proTip">Try starting with an -ing word like "Sprinting" to add energy!</div>
             </div>
         </div>
 
     </div>
 
-    <!-- TOOLKIT -->
+    <!-- TOOLKIT TOGGLE -->
     <div class="toolkit-wrapper">
         <div class="bottom-bar" id="toolsMenu">
-            <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Paragraph</strong>1 action → description → background story.</div></button>
-            <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>Setting Paragraph</strong>1 action → location description → history.</div></button>
-            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose Paragraph</strong>1 action → thinking. Why are they here?</div></button>
-            <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>Problem Appears</strong>1 action → atmosphere → story. Build suspense.</div></button>
-            <button class="tooltip-btn">COMPLEX <div class="tooltip-pop"><strong>Problem Worsens</strong>1 action → atmosphere. Make it worse!</div></button>
-            <button class="tooltip-btn">RESOLVE <div class="tooltip-pop"><strong>The Outcome</strong>1 action → mixture → story to finish.</div></button>
-            <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Strong Verbs</strong>Avoid: went, got, did. Use: lunged, sprinted.</div></button>
-            <button class="tooltip-btn">DESCRIBE <div class="tooltip-pop"><strong>Visual Detail</strong>Help the reader picture the scene. Use precise words.</div></button>
-            <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Meaningful Detail</strong>Add depth that explains history or personality.</div></button>
+            <!-- 18 Integrated Tool Buttons with popping tooltips -->
+            <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Paragraph</strong>Paragraph 1. Use 1 action → description → background.</div></button>
+            <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>Setting Paragraph</strong>Paragraph 2. Use 1 action → location detail → history.</div></button>
+            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose Paragraph</strong>Paragraph 3. Use 1 action → thinking. Why are you here?</div></button>
+            <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>Problem Appears</strong>Paragraph 4. Use 1 action → atmosphere. Build suspense.</div></button>
+            <button class="tooltip-btn">COMPLEX <div class="tooltip-pop"><strong>Problem Worsens</strong>Paragraph 5. Use 1 action → atmosphere. Make it harder!</div></button>
+            <button class="tooltip-btn">RESOLVE <div class="tooltip-pop"><strong>Outcome</strong>Paragraph 6. Use 1 action → mixture → finish the story.</div></button>
+            <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Strong Verbs</strong>Avoid: went, got, did. Use: lunged, sprinted, grabbed.</div></button>
+            <button class="tooltip-btn">DESCRIBE <div class="tooltip-pop"><strong>Visual Detail</strong>Help the reader see the scene with precise words.</div></button>
+            <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Lore Detail</strong>Add depth that explains childhood, hopes, or fears.</div></button>
             <button class="tooltip-btn">ATMOS <div class="tooltip-pop"><strong>Scene Mood</strong>Show what is happening around the character.</div></button>
             <button class="tooltip-btn">THINK <div class="tooltip-pop"><strong>Inner Reaction</strong>Show the character's reaction to the situation.</div></button>
-            <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Use Sparingly</strong>Keep it to one strong line of speech.</div></button>
-            <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Power Move</strong>-ing opener + 3 past tense verbs.</div></button>
-            <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details.</div></button>
-            <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Insert Detail</strong>Add rhythm using spaced em-dashes.</div></button>
+            <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Use Sparingly</strong>Keep it to just one strong line of speech.</div></button>
+            <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Power Move</strong>-ing opener + 3 past tense verbs (e.g. He lunged, spun, and bolted).</div></button>
+            <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details of a thing or person.</div></button>
+            <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Insert Detail</strong>Add rhythm using spaced em-dashes — like this!</div></button>
             <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Avoid Lazy Starts</strong>Don't use: The, It, A, An, I, My, We, Our.</div></button>
-            <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Vary Words</strong>Vary your nouns and verbs to keep it interesting.</div></button>
-            <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Keep to ~12%</strong>Use description to add flavor, not to slow down.</div></button>
+            <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Vary Words</strong>Vary your nouns and verbs to keep the energy high.</div></button>
+            <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for ~12%</strong>Use description to add flavor, but keep the verbs moving.</div></button>
         </div>
-        <button class="btn-submit" style="background: var(--text-main); font-size: 0.95rem; display:flex; align-items:center; gap:8px;" onclick="toggleTools()">
+        <button class="btn-submit" style="background: var(--text-main); font-size: 1rem; display:flex; align-items:center; gap:10px;" onclick="toggleTools()">
             <span>🛠️</span> Mr C's Tools & Tips
         </button>
     </div>
@@ -506,7 +516,7 @@
 </div>
 
 <script>
-    /* --- DATA & LOGIC ENGINE --- */
+    /* --- DATA & CONFIG --- */
     const topics = ["Bravery", "The Lie", "Overboard", "Secrets", "The Dare", "The Shortcut", "The Escape", "Lost", "The Storm", "The Knock", "The Discovery", "The Phone Call", "The Stranger", "The Promise", "The Warning", "The Last Bus", "The Map", "The Key"];
     
     const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
@@ -530,19 +540,26 @@
     const starExamples = [
         { text: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", author: "Sarah, Year 5" },
         { text: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", author: "James, Year 6" },
-        { text: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", author: "Leo, Year 4" }
+        { text: "With a pounding heart, a torn sleeve, and mud in his eyes, he waited.", author: "Leo, Year 4" },
+        { text: "The fog swallowed the trees, turning the familiar park into a ghostly maze.", author: "Amelie, Year 5" }
     ];
 
     const proTips = [
         "Try starting with an -ing word like 'Sprinting' to add energy!",
         "Use an em-dash — like this — to add extra detail mid-sentence.",
         "Avoid using 'Suddenly' - try to show the action instead!",
-        "Check your word count! Is your paragraph about 60-80 words?"
+        "Aim for about 60-80 words in your paragraph.",
+        "Check your verbs! Can you swap 'went' for 'lunged' or 'scrambled'?"
     ];
 
-    /* --- INITIALIZATION --- */
-    function newTopic() { document.getElementById("topicText").innerText = "Topic: " + topics[Math.floor(Math.random() * topics.length)]; }
-    
+    /* --- WRITING ENGINE --- */
+    function getBadgeState() {
+        const saved = localStorage.getItem("mrCParagraphBadges_v9");
+        if (saved) return JSON.parse(saved);
+        const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
+    }
+    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v9", JSON.stringify(state)); }
+
     function renderCrowns() {
         const state = getBadgeState();
         const grid = document.getElementById("crownGrid");
@@ -558,21 +575,6 @@
             </div>`;
         }).join("");
     }
-
-    function rotateStar() {
-        const ex = starExamples[Math.floor(Math.random()*starExamples.length)];
-        document.getElementById("starText").innerText = `"${ex.text}"`;
-        document.getElementById("starAuthor").innerText = `- ${ex.author}`;
-        document.getElementById("proTip").innerText = proTips[Math.floor(Math.random()*proTips.length)];
-    }
-
-    /* --- WRITING ENGINE --- */
-    function getBadgeState() {
-        const saved = localStorage.getItem("mrCParagraphBadges_v8");
-        if (saved) return JSON.parse(saved);
-        const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
-    }
-    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v8", JSON.stringify(state)); }
 
     function analyseWriting(text) {
         const clean = text.toLowerCase();
@@ -630,7 +632,7 @@
         if(!text) { showToast("Please write your story first!"); return; }
 
         overlay.style.display = "flex";
-        resultText.innerHTML = "Uplinking to Command... Analyzing your writing... 🧐";
+        resultText.innerHTML = "Thinking about your writing... 🧐";
 
         try {
             const response = await fetch("/api/feedback", {
@@ -653,13 +655,22 @@
 
     function toggleTools() { document.getElementById("toolsMenu").classList.toggle("open"); }
     function closeFeedback() { document.getElementById("resultOverlay").style.display = "none"; }
+    function newTopic() { document.getElementById("topicText").innerText = "Topic: " + topics[Math.floor(Math.random() * topics.length)]; }
+    
+    function rotateStar() {
+        const ex = starExamples[Math.floor(Math.random()*starExamples.length)];
+        document.getElementById("starText").innerText = `"${ex.text}"`;
+        document.getElementById("starAuthor").innerText = `- ${ex.author}`;
+        document.getElementById("proTip").innerText = proTips[Math.floor(Math.random()*proTips.length)];
+    }
+
     function showToast(text) {
         const area = document.getElementById("toastArea");
         const toast = document.createElement("div");
         toast.className = "toast";
         toast.innerText = text;
         area.appendChild(toast);
-        setTimeout(() => { toast.style.animation = "toastOut 0.3s forwards"; setTimeout(() => toast.remove(), 300); }, 3000);
+        setTimeout(() => { toast.style.animation = "toastOut 0.3s forwards"; setTimeout(() => toast.remove(), 300); }, 3500);
     }
 
     function sendEmail() {
@@ -669,17 +680,17 @@
         window.location.href = `mailto:myessayfeedback@gmail.com?subject=My Writing - ${topicName}&body=${body}`;
     }
 
-    /* --- EVENT LISTENERS --- */
+    /* --- LISTENERS --- */
     document.getElementById("paragraph").addEventListener("input", function() {
-        const words = this.value.trim().split(/\s+/).length;
-        document.getElementById("wordCount").innerText = "Words: " + (this.value.trim() ? words : 0);
+        const words = this.value.trim() ? this.value.trim().split(/\s+/).length : 0;
+        document.getElementById("wordCount").innerText = "Words: " + words;
     });
 
     // INIT
     newTopic();
     renderCrowns();
     rotateStar();
-    setInterval(rotateStar, 10000); // Rotate star of week every 10 seconds
+    setInterval(rotateStar, 10000);
 </script>
 </body>
 </html>
