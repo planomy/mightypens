@@ -114,7 +114,7 @@
         grid-template-columns: 1fr 2.5fr 1fr; 
         gap: 40px;
         align-items: center;
-        margin-top: -28vh; /* LIFTED HIGHER: Pulls the writing box and sidebar further up */
+        margin-top: -28vh; 
         max-width: 2000px;
         margin-left: auto;
         margin-right: auto;
@@ -165,7 +165,7 @@
     }
 
     .smoke-puff.animate {
-        animation: fogFade 2.5s ease-out forwards 1.5s; /* Trigger when mascot lands */
+        animation: fogFade 2s ease-out forwards 1.5s; 
     }
 
     @keyframes fogFade {
@@ -188,7 +188,7 @@
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         z-index: 500; 
         opacity: 0;
-        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; /* Appear when mascot arrives */
+        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
     }
 
     @keyframes bubblePop {
@@ -262,7 +262,6 @@
     }
     textarea:focus { outline: none; border-color: #d8b4fe; }
 
-    /* LILAC BOX FIX: Match corners to parent */
     .editor-controls {
         background: #faf5ff; 
         padding: 18px 30px;
@@ -589,16 +588,17 @@
         { id: "activeVerbs", name: "Active Verbs" }, { id: "goodStarts", name: "Good Starts" },
         { id: "adjectives", name: "Adjectives" }, { id: "complexity", name: "Complexity" },
         { id: "repetition", name: "Variety" }, { id: "atmosphere", name: "Atmosphere" },
-        { id: "storyDepth", name: "Story Depth" }, { id: "craft", name: "Craft Moves" }
+        { id: "storyDepth", name: "Story Depth" }, { id: "craft", name: "Craft Moves" },
+        { id: "pacing", name: "Pacing" }, { id: "vocabulary", name: "Vocabulary" }
     ];
 
     /* --- LOGIC ENGINE --- */
     function getBadgeState() {
-        const saved = localStorage.getItem("mrCParagraphBadges_v11");
+        const saved = localStorage.getItem("mrCParagraphBadges_v12");
         if (saved) return JSON.parse(saved);
         const fresh = {}; skillDefs.forEach(b => fresh[b.id] = 0); return fresh;
     }
-    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v11", JSON.stringify(state)); }
+    function setBadgeState(state) { localStorage.setItem("mrCParagraphBadges_v12", JSON.stringify(state)); }
 
     function renderCrowns() {
         const state = getBadgeState();
@@ -630,7 +630,7 @@
         const badStartCount = sentences.filter(s => badStarts.includes((s.match(/[a-zA-Z']+/) || [""])[0].toLowerCase())).length;
         const adjectiveCount = words.filter(w => adjectiveHints.some(end => w.endsWith(end))).length;
         const adjectiveRatio = words.length ? adjectiveCount / words.length : 0;
-        const complexSentenceCount = sentences.filter(s => /(because|although|while|when|since|if|after|before|as|which|who|that)/i.test(s) || (s.match(/,/g) || []).length >= 2).length;
+        const complexSentenceCount = sentences.filter(s => /(because|although|while|when|since|if|after|before|as|who|that)/i.test(s) || (s.match(/,/g) || []).length >= 2).length;
         const freq = {}; words.forEach(w => { if (w.length > 4) freq[w] = (freq[w] || 0) + 1; });
         const repetitionScore = Object.values(freq).filter(v => v >= 3).length;
         const atmosphereCount = words.filter(w => atmosphereWords.includes(w)).length;
@@ -651,7 +651,9 @@
             repetition: metrics.repetitionScore <= [99,7,6,5,4][state.repetition],
             atmosphere: metrics.atmosphereCount >= [0,1,2,3,4][state.atmosphere],
             storyDepth: metrics.storyCount >= [0,1,2,3,4][state.storyDepth],
-            craft: metrics.craftCount >= [0,1,1,2,2][state.craft]
+            craft: metrics.craftCount >= [0,1,1,2,2][state.craft],
+            pacing: metrics.complexSentenceCount >= 1,
+            vocabulary: metrics.strongVerbCount >= 3
         };
         skillDefs.forEach(def => { if ((state[def.id] || 0) < 5 && checks[def.id]) { state[def.id] += 1; changed.push(def.id); } });
         if (changed.length) { setBadgeState(state); renderCrowns(); showToast(`👑 Skills Upgraded!`); }
@@ -674,7 +676,7 @@
             resultText.innerText = data.feedback;
             maybeLevelUp(text);
         } catch (error) {
-            resultText.innerText = "Error analyzing your writing. Check your connection!";
+            resultText.innerText = "Check your writing connection, amigos!";
         }
     }
 
