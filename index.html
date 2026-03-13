@@ -156,31 +156,33 @@
     /* Mascot */
     .mascot-area {
         position: relative;
-        width: 600px; /* MUCH BIGGER base width */
-        height: 700px; /* MUCH BIGGER base height */
-        max-width: 45vw; /* Increased so it can grow larger */
+        width: 600px; /* BIG base width */
+        max-width: 38vw; /* Limit on smaller screens */
+        /* Removed fixed height! The container will now tightly hug the image height */
         flex-shrink: 0;
         z-index: 20;
     }
     
     .mascot-img {
         width: 100%;
-        height: 100%;
-        object-fit: contain;
+        height: auto; /* Forces perfect aspect ratio scaling */
+        display: block; /* Removes tiny ghost gaps below images */
         filter: drop-shadow(0 15px 20px rgba(0,0,0,0.25));
     }
 
     .speech-bubble {
         position: absolute;
-        top: 20%; 
-        right: -60px;
-        left: auto;
+        /* Anchored with percentages so it scales perfectly with the image */
+        top: 24%; 
+        left: 85%;
+        right: auto;
         background: #4a4a4a;
         color: white;
         padding: 12px 24px;
         border-radius: 30px;
         font-weight: 800;
-        font-size: 1.2rem;
+        font-size: clamp(0.9rem, 1.5vw, 1.2rem); /* Dynamic font size */
+        white-space: nowrap; /* Prevents text from stacking */
         box-shadow: 0 8px 15px rgba(0,0,0,0.2);
         z-index: 30;
     }
@@ -188,12 +190,12 @@
     .speech-bubble::after {
         content: '';
         position: absolute;
-        bottom: -12px;
-        left: 24px;
-        right: auto;
+        top: 100%;
+        left: 20px;
         border-width: 15px 15px 0 0;
         border-style: solid;
         border-color: #4a4a4a transparent transparent transparent;
+        transform: scaleX(-1); /* Flips the tail to point left towards the mascot! */
     }
 
     /* Huge White Editor Box */
@@ -213,24 +215,31 @@
 
     textarea {
         flex: 1;
-        width: 100%;
-        border: none;
-        padding: 40px;
+        width: calc(100% - 60px);
+        margin: 30px 30px 20px 30px;
+        border: 2px solid #f5f3ff;
+        border-radius: 24px;
+        padding: 30px;
         font-family: 'Nunito', sans-serif;
         font-size: 1.8rem;
         font-weight: 700;
         color: #0f172a;
         resize: none;
-        background: transparent;
+        background: #ffffff;
+        box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08); /* Soft shadow around the input box */
+        transition: all 0.2s ease;
     }
 
-    textarea:focus { outline: none; }
-    textarea::placeholder { color: #0f172a; text-align: center; line-height: 10em; } /* Centered placeholder text */
+    textarea:focus { 
+        outline: none; 
+        border-color: #d8b4fe;
+        box-shadow: 0 12px 40px rgba(123, 44, 191, 0.15);
+    }
 
     /* Subtle Controls tucked at bottom of white box */
     .editor-controls {
-        background: #f8fafc;
-        border-top: 2px solid #e2e8f0;
+        background: #faf5ff; /* Changed from pale bluey/gray to a pale purple tinge */
+        border-top: 2px solid #f3e8ff;
         padding: 16px 30px;
         display: flex;
         justify-content: space-between;
@@ -245,7 +254,7 @@
 
     .status-badge {
         background: white;
-        border: 2px solid #e2e8f0;
+        border: 2px solid #f3e8ff; /* Adjusted to match the new purple tone */
         padding: 8px 16px;
         border-radius: 20px;
         font-weight: 800;
@@ -491,7 +500,7 @@
             </div>
 
             <!-- The main writing canvas -->
-            <textarea id="paragraph" placeholder="Student text goes here"></textarea>
+            <textarea id="paragraph"></textarea>
 
             <!-- Tucked away controls -->
             <div class="editor-controls">
