@@ -387,6 +387,16 @@
         z-index: 500; 
         opacity: 0; 
         animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
+        cursor: pointer; /* Makes the mouse a little hand */
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* Add a little pop when they hover or click */
+    .speech-bubble:hover {
+        transform: scale(1.15) translateX(0) !important;
+    }
+    .speech-bubble:active {
+        transform: scale(0.95) translateX(0) !important;
     }
 
     @keyframes bubblePop { 
@@ -1554,7 +1564,22 @@
             console.warn("Fallback local lessons loaded.");
         }
     }
+/* --- MASCOT EASTER EGG AUDIO --- */
+    const booyarSound = new Audio('booyar_duck.mp3');
+    const bubbleElement = document.getElementById('mascotBubble');
 
+    // Trigger when they click it
+    bubbleElement.addEventListener('click', () => {
+        booyarSound.currentTime = 0; // Resets the sound if they spam click it!
+        booyarSound.play().catch(e => console.log("Audio play failed:", e));
+    });
+
+    // Trigger when they pass over it (hover)
+    bubbleElement.addEventListener('mouseenter', () => {
+        booyarSound.currentTime = 0; 
+        booyarSound.play().catch(e => console.log("Audio play failed:", e));
+    });
+    
     setMode('mission');
     renderCrowns();
     rotateLesson();
