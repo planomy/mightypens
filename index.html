@@ -549,18 +549,64 @@
 
     .drawer-content {
         background: #334155;
-        padding: 8px 18px;
+        padding: 15px 18px 8px 18px;
         border-radius: 0 21px 21px 0; 
         box-shadow: 6px 6px 24px rgba(0,0,0,0.25);
         display: flex;
-        flex-wrap: wrap;
-        gap: 8px; 
+        flex-direction: column;
+        gap: 12px; 
         max-width: 720px; 
         width: 85vw;
         border: 3px solid #475569;
         border-left: none;
         position: relative;
         z-index: 2;
+    }
+
+    .drawer-header {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #475569;
+        margin-bottom: 4px;
+    }
+
+    .drawer-switch {
+        display: flex; 
+        gap: 4px; 
+        background: #1e293b; 
+        padding: 4px; 
+        border-radius: 100px;
+    }
+
+    .drawer-switch-btn {
+        border: none; 
+        padding: 6px 20px; 
+        border-radius: 100px; 
+        font-weight: 900; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+        background: none; 
+        color: #94a3b8; 
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    .drawer-switch-btn.active {
+        background: var(--purple-tooltip); 
+        color: white;
+    }
+
+    .tool-grid {
+        display: none;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .tool-grid.active-grid {
+        display: flex;
     }
 
     .drawer-tab {
@@ -617,69 +663,72 @@
     }
 
     .tooltip-pop {
-    position: absolute;
-    bottom: calc(100% + 15px);
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    width: max-content;
-    max-width: 280px;
-    white-space: normal;
-    background: white;
-    color: var(--text-main);
-    padding: 18px;
-    border-radius: 15px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    line-height: 1.5;
-    text-align: left;
-    text-transform: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-    pointer-events: none;
-    z-index: 250;
-}
+        position: absolute;
+        bottom: calc(100% + 15px);
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: max-content;
+        max-width: 280px;
+        white-space: normal;
+        background: white;
+        color: var(--text-main);
+        padding: 18px;
+        border-radius: 15px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.5;
+        text-align: left;
+        text-transform: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        pointer-events: none;
+        z-index: 250;
+    }
     
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    
     .tooltip-pop > strong:first-child {
-    display: block;
-    color: var(--purple-main);
-    font-size: 1.1rem;
-    margin-bottom: 6px;
-}
-   .tooltip-pop strong {
-    font-weight: 900;
-}
+        display: block;
+        color: var(--purple-main);
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+    
+    .tooltip-pop strong {
+        font-weight: 900;
+    }
+    
     /* --- TOOLTIP OFF-SCREEN FIX --- */
     /* 1. Left Edge Fix */
-    .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
-    .tooltip-btn:nth-child(8n + 2) .tooltip-pop {
+    .tool-grid .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
+    .tool-grid .tooltip-btn:nth-child(8n + 2) .tooltip-pop {
         left: 0; 
         transform: translateX(-5px) translateY(10px);
     }
-    .tooltip-btn:nth-child(8n + 1):hover .tooltip-pop,
-    .tooltip-btn:nth-child(8n + 2):hover .tooltip-pop {
+    .tool-grid .tooltip-btn:nth-child(8n + 1):hover .tooltip-pop,
+    .tool-grid .tooltip-btn:nth-child(8n + 2):hover .tooltip-pop {
         transform: translateX(-5px) translateY(0);
     }
-    .tooltip-btn:nth-child(8n + 1) .tooltip-pop::after,
-    .tooltip-btn:nth-child(8n + 2) .tooltip-pop::after {
+    .tool-grid .tooltip-btn:nth-child(8n + 1) .tooltip-pop::after,
+    .tool-grid .tooltip-btn:nth-child(8n + 2) .tooltip-pop::after {
         left: 35px;
         transform: translateX(-50%);
     }
     /* 2. Right Edge Fix */
-    .tooltip-btn:nth-child(8n + 7) .tooltip-pop,
-    .tooltip-btn:nth-child(8n + 8) .tooltip-pop {
+    .tool-grid .tooltip-btn:nth-child(8n + 7) .tooltip-pop,
+    .tool-grid .tooltip-btn:nth-child(8n + 8) .tooltip-pop {
         left: auto;
         right: 0; 
         transform: translateX(5px) translateY(10px);
     }
-    .tooltip-btn:nth-child(8n + 7):hover .tooltip-pop,
-    .tooltip-btn:nth-child(8n + 8):hover .tooltip-pop {
+    .tool-grid .tooltip-btn:nth-child(8n + 7):hover .tooltip-pop,
+    .tool-grid .tooltip-btn:nth-child(8n + 8):hover .tooltip-pop {
         transform: translateX(5px) translateY(0);
     }
-    .tooltip-btn:nth-child(8n + 7) .tooltip-pop::after,
-    .tooltip-btn:nth-child(8n + 8) .tooltip-pop::after {
+    .tool-grid .tooltip-btn:nth-child(8n + 7) .tooltip-pop::after,
+    .tool-grid .tooltip-btn:nth-child(8n + 8) .tooltip-pop::after {
         left: auto;
         right: 35px;
         transform: translateX(50%);
@@ -918,30 +967,54 @@
 
     <div class="side-drawer" id="toolsDrawer">
         <div class="drawer-content">
-            <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>The WHO paragraph</strong>Paragraph 1. Introduce your character. Make them interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
-            <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>The WHERE paragraph</strong>Paragraph 2. Introduce the setting. Make it interesting. Add location and history. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
-            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>The WHAT paragraph</strong>Paragraph 3. Why is the character here? There must be a good reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
-            <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
-            <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
-            <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The Resolution</strong>Paragraph 6. Finish your story. The reader must care about your character. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
-            <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Action sentences</strong>Avoid: went, got, did, made, saw etc. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
-            <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Description sentences</strong>Help the reader see the character and scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
-            <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
-            <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
-            <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
-            <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
-            <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
-            <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With <u>muddy boots</u>, a <u>torn sleeve</u>, and <u>blood</u> pounding in his ears, Tyler staggered into the shed.</div></button>
-            <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: As she approached the dark alley, all sounds <strong>- the drone of traffic, the babble of tourists -</strong> ceased, and the figure emerged from the shadows.</div></button>
-            <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
-            <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
-            <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
-            <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions. Example: The old house groaned as wind shoved against the tired walls.</div></button>
-            <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Use repeated “and” for intensity. Example: Smoke curled and drifted and thickened across the burning paddock.</div></button>
-            <button class="tooltip-btn">ASYND <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed and punch. Example: Along the track, boots pounded, breath burned, fear surged.</div></button>
-            <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: <strong>From above</strong>, the city glittered like scattered jewels; <strong>from below</strong>, traffic roared through narrow streets.</div></button>
-            <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old propspector, <strong>who spent his days beside the tranquil river where he once found a rare gem</strong>, smiled at memories it bought him.</div></button>
-            <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the <strong>document</strong> he retrieved from the solicitor's office in one hand, and <strong>a renewed sense of purpose</strong> in the other, Thomas rode home through the busy streets.</div></button>
+            
+            <div class="drawer-header">
+                <div class="drawer-switch">
+                    <button class="drawer-switch-btn active" id="tabStory" onclick="switchDrawerTab('story')">STORY TOOLS</button>
+                    <button class="drawer-switch-btn" id="tabDevices" onclick="switchDrawerTab('devices')">LITERARY DEVICES</button>
+                </div>
+            </div>
+
+            <div class="tool-grid active-grid" id="gridStory">
+                <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>The WHO paragraph</strong>Paragraph 1. Introduce your character. Make them interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
+                <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>The WHERE paragraph</strong>Paragraph 2. Introduce the setting. Make it interesting. Add location and history. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
+                <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>The WHAT paragraph</strong>Paragraph 3. Why is the character here? There must be a good reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
+                <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
+                <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
+                <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The Resolution</strong>Paragraph 6. Finish your story. The reader must care about your character. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
+                <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Action sentences</strong>Avoid: went, got, did, made, saw etc. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
+                <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Description sentences</strong>Help the reader see the character and scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
+                <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
+                <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
+                <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
+                <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
+                <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
+                <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With <u>muddy boots</u>, a <u>torn sleeve</u>, and <u>blood</u> pounding in his ears, Tyler staggered into the shed.</div></button>
+                <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: As she approached the dark alley, all sounds <strong>- the drone of traffic, the babble of tourists -</strong> ceased, and the figure emerged from the shadows.</div></button>
+                <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
+                <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
+                <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
+                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions. Example: The old house groaned as wind shoved against the tired walls.</div></button>
+                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Use repeated “and” for intensity. Example: Smoke curled and drifted and thickened across the burning paddock.</div></button>
+                <button class="tooltip-btn">ASYND <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed and punch. Example: Along the track, boots pounded, breath burned, fear surged.</div></button>
+                <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: <strong>From above</strong>, the city glittered like scattered jewels; <strong>from below</strong>, traffic roared through narrow streets.</div></button>
+                <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old propspector, <strong>who spent his days beside the tranquil river where he once found a rare gem</strong>, smiled at memories it bought him.</div></button>
+                <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the <strong>document</strong> he retrieved from the solicitor's office in one hand, and <strong>a renewed sense of purpose</strong> in the other, Thomas rode home through the busy streets.</div></button>
+            </div>
+
+            <div class="tool-grid" id="gridDevices">
+                <button class="tooltip-btn">SIMILE <div class="tooltip-pop"><strong>Simile</strong>Compare using “like” or “as”.<br><br>&bull; The moon hung above the paddock like a silver coin.<br>&bull; Cold wind cut across the field like a sharpened blade.<br>&bull; The playground roared like a stadium after the bell rang.<br>&bull; Dust rose behind the bike like a ghostly cloud.<br>&bull; His voice cracked like dry wood in a fire.</div></button>
+                <button class="tooltip-btn">METAPHOR <div class="tooltip-pop"><strong>Metaphor</strong>Say one thing is another.<br><br>&bull; The city at night was a river of light.<br>&bull; The classroom was a pressure cooker before the exam.<br>&bull; Her mind was a locked vault.<br>&bull; The desert was an endless ocean of sand.<br>&bull; His anger was a storm building on the horizon.</div></button>
+                <button class="tooltip-btn">IMAGERY <div class="tooltip-pop"><strong>Imagery</strong>Use strong sensory description.<br><br>&bull; Warm sunlight spilled across the dusty oval.<br>&bull; Salt wind stung his face as waves hammered the rocks.<br>&bull; The forest floor smelled of wet leaves and dark soil.<br>&bull; Frost glittered on the fence wires in the pale morning light.<br>&bull; The engine coughed, rattled, and shuddered to life.</div></button>
+                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions.<br><br>&bull; The old house groaned as wind shoved against the walls.<br>&bull; The river whispered over the smooth stones.<br>&bull; The storm clouds marched across the sky.<br>&bull; The rusty gate complained every time it opened.<br>&bull; The shadows crept across the empty road.</div></button>
+                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Repeat “and” for intensity.<br><br>&bull; Smoke curled and drifted and thickened across the paddock.<br>&bull; He ran and stumbled and scrambled up the hill.<br>&bull; The wind howled and rattled and slammed the loose shutters.<br>&bull; The crowd shouted and pushed and surged toward the gate.<br>&bull; Rain hammered the roof and the windows and the tin gutters.</div></button>
+                <button class="tooltip-btn">ASYNDETON <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed.<br><br>&bull; Boots pounded, breath burned, fear surged.<br>&bull; The siren wailed, doors slammed, engines roared.<br>&bull; Leaves rustled, branches cracked, footsteps approached.<br>&bull; He turned, ran, vanished into the fog.<br>&bull; Wind rose, clouds gathered, thunder rolled.</div></button>
+                <button class="tooltip-btn">SYNECDOCHE <div class="tooltip-pop"><strong>Synecdoche</strong>A part represents the whole.<br><br>&bull; All eyes turned to the stage.<br>&bull; New wheels rolled into the driveway.<br>&bull; More hands were needed to lift the boat.<br>&bull; The captain called for every head on deck.<br>&bull; The crowd waited for fresh legs to enter the game.</div></button>
+                <button class="tooltip-btn">HYPERBOLE <div class="tooltip-pop"><strong>Hyperbole</strong>Extreme exaggeration.<br><br>&bull; The backpack weighed a ton.<br>&bull; I waited a thousand years for the bell.<br>&bull; The heat could melt the road.<br>&bull; He ran faster than lightning across the field.<br>&bull; The queue stretched to the end of the world.</div></button>
+                <button class="tooltip-btn">ALLITERAT <div class="tooltip-pop"><strong>Alliteration</strong>Repeated starting sounds.<br><br>&bull; Silent shadows slid across the street.<br>&bull; Blazing bonfires burned beside the beach.<br>&bull; Wild wind whipped across the water.<br>&bull; Cold clouds crept over the canyon.<br>&bull; Dusty dirt drifted down the track.</div></button>
+                <button class="tooltip-btn">CONTRAST <div class="tooltip-pop"><strong>Contrast (Antithesis)</strong>Opposing ideas side-by-side.<br><br>&bull; Above, the stars glittered; below, the city roared.<br>&bull; Outside, the storm raged; inside, the room stayed silent.<br>&bull; Some ran forward, others froze in fear.<br>&bull; The road ahead glowed, the forest behind darkened.<br>&bull; Hope rose, fear lingered.</div></button>
+            </div>
+            
         </div>
         <button class="drawer-tab" onclick="toggleTools()">
             <span style="font-size: 0.8rem;">🛠️</span>
@@ -1559,6 +1632,14 @@
 
     function toggleTools() {
         document.getElementById("toolsDrawer").classList.toggle("open");
+    }
+
+    // Toggle Drawer Tabs Function
+    function switchDrawerTab(tab) {
+        document.getElementById('tabStory').classList.toggle('active', tab === 'story');
+        document.getElementById('tabDevices').classList.toggle('active', tab === 'devices');
+        document.getElementById('gridStory').classList.toggle('active-grid', tab === 'story');
+        document.getElementById('gridDevices').classList.toggle('active-grid', tab === 'devices');
     }
 
     function closeFeedback() {
