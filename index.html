@@ -636,9 +636,19 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- NEW "HILL TOP" CORAL PATH: Flat entry on the left (9 o'clock), then deep dip hugging box, exiting bottom early -->
+<!-- PRECISION HILL TOP PATH: Matching the high-peak markup provided by user -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 600 V 300 C 200 300 300 580 500 580 C 600 580 650 600 700 600 Z" fill="var(--coral-red)" />
+    <!-- 
+      - Entry (Left edge) starts flat at Y=220. 
+      - Dip goes deep down to Y=570 to hug the corner.
+      - Hill arches up significantly to peak at Y=440.
+      - Early Bottom Exit drops off at X=950.
+    -->
+    <path d="M 0 600 V 220 
+             C 150 220, 250 570, 450 570 
+             C 650 570, 700 440, 820 440 
+             C 900 440, 930 550, 950 600 
+             Z" fill="var(--coral-red)" />
 </svg>
 
 <svg class="bg-shape bg-right-wave" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
@@ -776,8 +786,6 @@
 
 <script>
     /* --- DATA & CONFIG --- */
-    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
-
     const topics = [
         "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
         "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
@@ -816,44 +824,6 @@
         { xp: 1300, name: "Master of the Inkwell" },
         { xp: 2000, name: "Grandmaster Pen" }
     ];
-
-    /* --- GOOGLE SHEETS FETCH LOGIC --- */
-    function parseCSV(text) {
-        const rows = [];
-        let row = [], inQuotes = false, val = '';
-        for (let i = 0; i < text.length; i++) {
-            let c = text[i];
-            if (c === '"') {
-                if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
-                else inQuotes = !inQuotes;
-            } else if (c === ',' && !inQuotes) {
-                row.push(val.trim()); val = '';
-            } else if (c === '\n' && !inQuotes) {
-                row.push(val.trim()); rows.push(row); row = []; val = '';
-            } else if (c !== '\r') { val += c; }
-        }
-        if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
-        return rows;
-    }
-
-    async function loadGoogleSheetData() {
-        if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
-        try {
-            let fetchUrl = GOOGLE_SHEET_URL;
-            if (fetchUrl.includes('/pubhtml')) fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
-            const response = await fetch(fetchUrl);
-            if (!response.ok) throw new Error("Failed to fetch Google Sheet");
-            const text = await response.text();
-            const rows = parseCSV(text);
-            const newLessons = [];
-            rows.forEach((r, index) => {
-                if (index > 0 && r.length >= 3 && r[0]) {
-                    newLessons.push({ author: r[0], example: r[1], tip: r[2] });
-                }
-            });
-            if (newLessons.length > 0) { lessonSets = newLessons; rotateLesson(); }
-        } catch (error) { console.warn("Fallback local lessons loaded."); }
-    }
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
@@ -1024,7 +994,6 @@
     setMode('mission');
     renderCrowns();
     rotateLesson();
-    loadGoogleSheetData(); 
 </script>
 </body>
 </html>
