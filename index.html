@@ -48,11 +48,11 @@
 
     .bg-left {
         bottom: -5vh; 
-        left: -5vw; 
-        width: 95vw;
+        left: -2vw; 
+        width: 104vw; /* Adjusted to prevent gap while scaling */
         max-width: 1800px;
         height: auto; 
-        min-width: 1100px; 
+        min-width: 850px; /* Reduced from 1100px so the curve scales properly on smaller screens */
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
@@ -636,18 +636,18 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- PRECISION HILL TOP PATH: Matching user markup with higher dip and shallower hill -->
+<!-- PRECISION HILL TOP PATH: Flat entry, exact dip depth, shallower & pulled back peak -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <!-- 
-      - Entry (Left edge) starts flat at Y=220. 
-      - Dip is now HIGHER (Y=510 instead of 570) to hug the corner better.
-      - Second hill is 40% SHALLOWER (peak lowered from Y=440 to Y=480).
-      - Exit drops off at X=960.
+      1. Starts flat at Y=220 and stays completely flat to X=250.
+      2. Dips precisely to Y=510 at the corner.
+      3. Right hill peak pulled back left (X=760) and 40% shallower (Y=450).
+      4. Early exit at X=920 to frame the right side cleanly. 
     -->
     <path d="M 0 600 V 220 
-             C 150 220, 280 510, 480 510 
-             C 650 510, 750 480, 850 480 
-             C 920 480, 940 550, 960 600 
+             C 250 220, 350 510, 480 510 
+             C 580 510, 660 450, 760 450 
+             C 830 450, 870 550, 920 600 
              Z" fill="var(--coral-red)" />
 </svg>
 
@@ -993,9 +993,48 @@
         document.getElementById("wordCount").style.color = (count < 50 || count > 150) ? "red" : "var(--text-muted)";
     });
 
+    /* --- GOOGLE SHEETS FETCH LOGIC (Moved to bottom) --- */
+    function parseCSV(text) {
+        const rows = [];
+        let row = [], inQuotes = false, val = '';
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') {
+                if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
+                else inQuotes = !inQuotes;
+            } else if (c === ',' && !inQuotes) {
+                row.push(val.trim()); val = '';
+            } else if (c === '\n' && !inQuotes) {
+                row.push(val.trim()); rows.push(row); row = []; val = '';
+            } else if (c !== '\r') { val += c; }
+        }
+        if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
+        return rows;
+    }
+
+    async function loadGoogleSheetData() {
+        if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
+        try {
+            let fetchUrl = GOOGLE_SHEET_URL;
+            if (fetchUrl.includes('/pubhtml')) fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
+            const response = await fetch(fetchUrl);
+            if (!response.ok) throw new Error("Failed to fetch Google Sheet");
+            const text = await response.text();
+            const rows = parseCSV(text);
+            const newLessons = [];
+            rows.forEach((r, index) => {
+                if (index > 0 && r.length >= 3 && r[0]) {
+                    newLessons.push({ author: r[0], example: r[1], tip: r[2] });
+                }
+            });
+            if (newLessons.length > 0) { lessonSets = newLessons; rotateLesson(); }
+        } catch (error) { console.warn("Fallback local lessons loaded."); }
+    }
+
     setMode('mission');
     renderCrowns();
     rotateLesson();
+    loadGoogleSheetData();
 </script>
 </body>
 </html>
