@@ -84,30 +84,105 @@
         min-height: 140px;
     }
 
+    /* --- PLAYER DASHBOARD & XP SYSTEM --- */
+    .player-dashboard {
+        display: flex;
+        flex-direction: column;
+        gap: 2px; /* Reduced gap to pull crowns closer to the top */
+        margin-top: 40px; /* Pushed down to clear the Save/Load button */
+        min-width: 350px;
+        z-index: 100;
+    }
+
+    .title-xp-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .player-title {
+        font-size: 1.15rem;
+        font-weight: 900;
+        color: var(--text-main);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        white-space: nowrap; /* Prevents the title from wrapping to a new line */
+        min-width: 230px; /* NEW: Locks the title width so the progress bar never jumps */
+    }
+
+    .xp-track {
+        position: relative;
+        flex: 1; /* Automatically stretches to fill remaining space next to the title */
+        max-width: 250px;
+        height: 20px; /* Bumped from 18px to 20px for better text fit */
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .xp-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--star-gold), var(--bg-orange));
+        width: 0%;
+        transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-radius: 12px;
+    }
+
+    .xp-text {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.85rem; font-weight: 900; color: #1e293b;
+        text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+        white-space: nowrap; /* Prevents the text from ever breaking to a second line */
+    }
+
     .crowns-container { 
         display: flex; 
         gap: 8px; 
-        margin-top: 15px; 
+        margin-top: 0px; /* Removed extra margin to lift crowns */
     }
 
     .crown-wrapper { 
         position: relative; 
-        width: 60px; 
-        height: 50px; 
+        width: 42px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
     }
 
     .crown-svg { 
         width: 100%; 
-        height: 100%; 
-        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); 
+        height: auto; 
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
         transition: transform 0.2s; 
+    }
+    
+    .crown-wrapper:hover .crown-svg {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .crown-xp {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1px 6px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .logo-img {
-        width: clamp(350px, 40vw, 850px); 
+        width: clamp(300px, 35vw, 600px); 
         height: auto;
         filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -35px; 
+        margin-top: -20px; 
         margin-right: -10px; 
         position: relative; 
         z-index: 200;
@@ -120,7 +195,7 @@
         grid-template-columns: 1fr 2.5fr 1fr; 
         gap: 40px; 
         align-items: center; 
-        margin-top: -28vh; 
+        margin-top: -26vh; 
         max-width: 2000px; 
         margin-left: auto; 
         margin-right: auto; 
@@ -178,17 +253,9 @@
     }
 
     @keyframes fogFade { 
-        0% { 
-            transform: scale(0.3) translateY(20px); 
-            opacity: 0; 
-        } 
-        20% { 
-            opacity: 0.8; 
-        } 
-        100% { 
-            transform: scale(2) translateY(-60px); 
-            opacity: 0; 
-        } 
+        0% { transform: scale(0.3) translateY(20px); opacity: 0; } 
+        20% { opacity: 0.8; } 
+        100% { transform: scale(2) translateY(-60px); opacity: 0; } 
     }
 
     /* --- SPEECH BUBBLE --- */
@@ -210,25 +277,13 @@
     }
 
     @keyframes bubblePop { 
-        from { 
-            transform: scale(0) translateX(-20px); 
-            opacity: 0; 
-        } 
-        to { 
-            transform: scale(1) translateX(0); 
-            opacity: 1; 
-        } 
+        from { transform: scale(0) translateX(-20px); opacity: 0; } 
+        to { transform: scale(1) translateX(0); opacity: 1; } 
     }
 
     .speech-bubble::after {
-        content: ''; 
-        position: absolute; 
-        top: 50%; 
-        left: -12px; 
-        transform: translateY(-50%);
-        border-width: 8px 12px 8px 0; 
-        border-style: solid; 
-        border-color: transparent #333 transparent transparent;
+        content: ''; position: absolute; top: 50%; left: -12px; transform: translateY(-50%);
+        border-width: 8px 12px 8px 0; border-style: solid; border-color: transparent #333 transparent transparent;
     }
 
     /* --- EDITOR --- */
@@ -264,386 +319,162 @@
     }
 
     @keyframes topicDrop { 
-        to { 
-            transform: translateX(-50%) translateY(0); 
-            opacity: 1; 
-        } 
+        to { transform: translateX(-50%) translateY(0); opacity: 1; } 
     }
 
     textarea {
-        flex: 1; 
-        width: calc(100% - 60px); 
-        margin: 40px 30px 15px 30px; 
-        border: 2px solid #f5f3ff;
-        border-radius: 28px; 
-        padding: 35px; 
-        font-family: inherit; 
-        font-size: clamp(1.3rem, 1.7vw, 1.8rem);
-        font-weight: 700; 
-        line-height: 1.6; 
-        resize: none; 
-        background: #ffffff;
-        box-shadow: 0 12px 35px rgba(123, 44, 191, 0.08); 
+        flex: 1; width: calc(100% - 60px); margin: 40px 30px 15px 30px; 
+        border: 2px solid #f5f3ff; border-radius: 28px; padding: 35px; 
+        font-family: inherit; font-size: clamp(1.3rem, 1.7vw, 1.8rem);
+        font-weight: 700; line-height: 1.6; resize: none; background: #ffffff;
+        box-shadow: inset 0 4px 15px rgba(123, 44, 191, 0.03); 
         transition: all 0.2s ease;
     }
 
-    textarea:focus { 
-        outline: none; 
-        border-color: #d8b4fe; 
-    }
+    textarea:focus { outline: none; border-color: #d8b4fe; }
 
     .editor-controls {
-        background: #faf5ff; 
-        padding: 18px 30px; 
-        display: flex; 
-        justify-content: space-between;
-        align-items: center; 
-        border-top: 2px solid #f3e8ff; 
-        border-radius: 0 0 36px 36px;
+        background: #faf5ff; padding: 18px 30px; display: flex; 
+        justify-content: space-between; align-items: center; 
+        border-top: 2px solid #f3e8ff; border-radius: 0 0 36px 36px;
     }
 
     /* --- SIDEBAR --- */
-    .sidebar-col { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 30px; 
-    }
+    .sidebar-col { display: flex; flex-direction: column; gap: 30px; }
 
     .info-card {
-        background: #fff; 
-        padding: 28px; 
-        border-radius: 35px; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        position: relative; 
-        border: 2px solid #fff; 
-        transition: transform 0.3s;
+        background: #fff; padding: 28px; border-radius: 35px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; 
+        border: 2px solid #fff; transition: transform 0.3s;
     }
 
-    .info-card.star { 
-        transform: rotate(1.5deg); 
-    }
+    .info-card.star { transform: rotate(1.5deg); }
+    .info-card.tip { transform: rotate(-1.5deg); background: var(--tip-orange); border: 2px solid #fbd38d; }
 
-    .info-card.tip { 
-        transform: rotate(-1.5deg); 
-        background: var(--tip-orange); 
-        border: 2px solid #fbd38d; 
-    }
-
-    .card-header { 
-        display: flex; 
-        align-items: center; 
-        gap: 12px; 
-        margin-bottom: 12px; 
-        font-weight: 900; 
-        font-size: 1.2rem; 
-    }
-
+    .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-weight: 900; font-size: 1.2rem; }
     .star .card-header { color: var(--bg-orange); }
     .tip .card-header { color: #92400e; }
 
-    .card-body { 
-        font-style: italic; 
-        font-size: 1.05rem; 
-        color: var(--text-main); 
-        line-height: 1.5; 
-        padding-left: 18px; 
-    }
-
+    .card-body { font-style: italic; font-size: 1.05rem; color: var(--text-main); line-height: 1.5; padding-left: 18px; }
     .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
     .tip .card-body { border-left: 5px solid #d97706; font-style: normal; }
 
     .card-badge {
-        position: absolute; 
-        top: -15px; 
-        right: -15px; 
-        width: 55px; 
-        height: 55px;
-        border-radius: 50%; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center;
-        font-size: 1.6rem; 
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2); 
-        color: white;
+        position: absolute; top: -15px; right: -15px; width: 55px; height: 55px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white;
     }
 
     .star .card-badge { background: var(--star-gold); }
     .tip .card-badge { background: var(--purple-main); }
 
-    .card-footer { 
-        margin-top: 15px; 
-        font-weight: 800; 
-        font-size: 0.95rem; 
-        text-align: right; 
-        color: var(--text-main); 
-    }
+    .card-footer { margin-top: 15px; font-weight: 800; font-size: 0.95rem; text-align: right; color: var(--text-main); }
 
     /* --- BUTTONS --- */
     .btn-submit {
-        background: var(--purple-main); 
-        color: white; 
-        font-weight: 900; 
-        padding: 16px 45px;
-        border-radius: 100px; 
-        border: none; 
-        cursor: pointer; 
-        font-size: 1.2rem;
-        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25); 
-        transition: transform 0.1s, background 0.2s;
+        background: var(--purple-main); color: white; font-weight: 900; padding: 16px 45px;
+        border-radius: 100px; border: none; cursor: pointer; font-size: 1.2rem;
+        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25); transition: transform 0.1s, background 0.2s;
     }
-
-    .btn-submit:hover:not(:disabled) { 
-        background: var(--purple-dark); 
-        transform: scale(1.02); 
-    }
-
-    .btn-submit:disabled { 
-        background: #cbd5e1; 
-        cursor: not-allowed; 
-        box-shadow: none; 
-    }
+    .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: scale(1.02); }
+    .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
 
     /* --- TOOLKIT --- */
     .toolkit-wrapper {
-        position: fixed; 
-        bottom: 25px; 
-        left: 50%; 
-        transform: translateX(-50%);
-        z-index: 150; 
-        display: flex; 
-        flex-direction: column; 
-        align-items: center;
+        position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%);
+        z-index: 150; display: flex; flex-direction: column; align-items: center;
     }
-
     .bottom-bar {
-        display: none; 
-        justify-content: center; 
-        flex-wrap: wrap; 
-        gap: 10px;
-        background: rgba(255, 255, 255, 0.98); 
-        padding: 20px; 
-        border-radius: 35px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.25); 
-        margin-bottom: 12px; 
-        max-width: 1400px; 
-        width: 95vw;
+        display: none; justify-content: center; flex-wrap: wrap; gap: 10px;
+        background: rgba(255, 255, 255, 0.98); padding: 20px; border-radius: 35px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.25); margin-bottom: 12px; max-width: 1400px; width: 95vw;
     }
-
-    .bottom-bar.open { 
-        display: flex; 
-    }
-
+    .bottom-bar.open { display: flex; }
     .tooltip-btn {
-        background: var(--purple-tooltip); 
-        color: white; 
-        border: none; 
-        padding: 12px 20px;
-        border-radius: 20px; 
-        font-weight: 900; 
-        font-size: 0.85rem; 
-        cursor: help;
-        position: relative; 
-        text-transform: uppercase; 
-        flex: 1 1 calc(10% - 10px);
-        min-width: 110px; 
-        white-space: nowrap; 
-        transition: background 0.2s;
+        background: var(--purple-tooltip); color: white; border: none; padding: 12px 20px;
+        border-radius: 20px; font-weight: 900; font-size: 0.85rem; cursor: help;
+        position: relative; text-transform: uppercase; flex: 1 1 calc(10% - 10px);
+        min-width: 110px; white-space: nowrap; transition: background 0.2s;
     }
-
     .tooltip-pop {
-        position: absolute; 
-        bottom: calc(100% + 15px); 
-        left: 50%; 
-        transform: translateX(-50%) translateY(10px);
-        width: max-content; 
-        max-width: 280px; 
-        white-space: normal; 
-        background: white;
-        color: var(--text-main); 
-        padding: 18px; 
-        border-radius: 15px; 
-        font-size: 0.95rem;
-        line-height: 1.5; 
-        text-align: left; 
-        text-transform: none; 
-        opacity: 0;
-        visibility: hidden; 
-        transition: all 0.2s; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.25); 
-        pointer-events: none; 
-        z-index: 250;
+        position: absolute; bottom: calc(100% + 15px); left: 50%; transform: translateX(-50%) translateY(10px);
+        width: max-content; max-width: 280px; white-space: normal; background: white;
+        color: var(--text-main); padding: 18px; border-radius: 15px; font-size: 0.95rem;
+        line-height: 1.5; text-align: left; text-transform: none; opacity: 0; visibility: hidden; 
+        transition: all 0.2s; box-shadow: 0 15px 35px rgba(0,0,0,0.25); pointer-events: none; z-index: 250;
     }
-
-    .tooltip-btn:hover .tooltip-pop { 
-        opacity: 1; 
-        visibility: visible; 
-        transform: translateX(-50%) translateY(0); 
-    }
-
-    .tooltip-pop strong { 
-        display: block; 
-        color: var(--purple-main); 
-        font-size: 1.1rem; 
-        margin-bottom: 6px; 
-    }
+    .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
     /* --- RESULTS & TOASTS --- */
     .result-overlay {
-        position: absolute; 
-        inset: 0; 
-        background: rgba(255,255,255,0.98); 
-        z-index: 300;
-        display: none; 
-        flex-direction: column; 
-        justify-content: center; 
-        align-items: center;
-        padding: 50px; 
-        text-align: center; 
-        border-radius: 40px;
-        overflow-y: auto; /* Allow scrolling if feedback gets long */
+        position: absolute; inset: 0; background: rgba(255,255,255,0.98); z-index: 300;
+        display: none; flex-direction: column; justify-content: center; align-items: center;
+        padding: 50px; text-align: center; border-radius: 40px; overflow-y: auto; 
     }
-
     .toastArea { 
-        position: fixed; 
-        top: 30px; 
-        left: 50%; 
-        transform: translateX(-50%); 
-        display: flex; 
-        flex-direction: column; 
-        gap: 12px; 
-        z-index: 2000; 
+        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
+        display: flex; flex-direction: column; gap: 12px; z-index: 2000; 
     }
-
     .toast {
-        background: #1e293b; 
-        color: white; 
-        border-radius: 100px; 
-        padding: 14px 40px; 
-        font-weight: 800;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
-        animation: toastDrop 0.4s forwards;
+        background: #1e293b; color: white; border-radius: 100px; padding: 14px 40px; 
+        font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: toastDrop 0.4s forwards;
     }
-
-    @keyframes toastDrop { 
-        from { opacity: 0; transform: translateY(-30px); } 
-        to { opacity: 1; transform: translateY(0); } 
-    }
+    @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
     /* --- TOGGLE SWITCH --- */
     .mode-switch {
-        display: flex; 
-        gap: 10px; 
-        background: white; 
-        padding: 5px; 
-        border-radius: 100px; 
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        display: flex; gap: 10px; background: white; padding: 5px; border-radius: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
     }
-
     .mode-btn { 
-        border: none; 
-        padding: 8px 16px; 
-        border-radius: 100px; 
-        font-weight: 800; 
-        cursor: pointer; 
-        transition: all 0.2s; 
-        background: none; 
+        border: none; padding: 8px 16px; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; background: none; 
     }
-
-    .mode-btn.active { 
-        background: var(--purple-main); 
-        color: white; 
-    }
+    .mode-btn.active { background: var(--purple-main); color: white; }
 
     /* --- DISCRETE SAVE PILL & MODAL --- */
     .discrete-btn {
-        position: absolute;
-        top: 15px;
-        left: 20px;
-        background: rgba(255, 255, 255, 0.4);
-        color: var(--purple-dark);
-        border: none;
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        font-weight: 900;
-        cursor: pointer;
-        opacity: 0.5;
-        transition: all 0.2s;
-        z-index: 300;
+        position: absolute; top: 15px; left: 40px; background: rgba(255, 255, 255, 0.4);
+        color: var(--purple-dark); border: none; padding: 6px 14px; border-radius: 20px;
+        font-size: 0.8rem; font-weight: 900; cursor: pointer; opacity: 0.5; transition: all 0.2s; z-index: 300;
     }
-    .discrete-btn:hover {
-        opacity: 1;
-        background: rgba(255, 255, 255, 0.9);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
+    .discrete-btn:hover { opacity: 1; background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
     .save-modal {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
-        backdrop-filter: blur(5px);
-        z-index: 3000;
-        display: none;
-        justify-content: center;
-        align-items: center;
+        position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+        z-index: 3000; display: none; justify-content: center; align-items: center;
     }
     .save-box {
-        background: white;
-        padding: 40px;
-        border-radius: 30px;
-        width: 90%;
-        max-width: 450px;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-        text-align: center;
+        background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 450px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25); text-align: center;
     }
     .save-input {
-        width: 100%;
-        padding: 15px;
-        border-radius: 15px;
-        border: 2px solid #e2e8f0;
-        font-size: 1.1rem;
-        font-weight: 700;
-        text-align: center;
-        margin-bottom: 15px;
-        font-family: monospace;
-        letter-spacing: 2px;
+        width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #e2e8f0;
+        font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 15px;
+        font-family: monospace; letter-spacing: 2px;
     }
 
     /* =========================================================
-       RESPONSIVE DESIGN (FIXES FOR MACBOOKS & IPADS)
+       RESPONSIVE DESIGN 
        ========================================================= */
-
-    /* Large Laptops / Smaller Desktops */
     @media (max-width: 1600px) { 
-        .logo-img { margin-top: -20px; } 
-        .dashboard-grid { margin-top: -20vh; gap: 25px; } 
+        .logo-img { margin-top: -15px; } 
+        .dashboard-grid { margin-top: -18vh; gap: 25px; } 
         .mascot-area { width: 360px; }
         .sidebar-col { margin-top: 40px; } 
     }
-
-    /* MacBooks / iPads Landscape */
     @media (max-width: 1440px), (max-height: 950px) { 
-        /* Shifted columns left, pushed margin higher */
-        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -18vh; gap: 30px; } 
-        
-        /* Shrunk logo further to prevent overlap */
-        .logo-img { margin-top: -15px; width: clamp(300px, 35vw, 550px); }
-        
-        /* Added margin-right to drag mascot further away from editor */
+        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -14vh; gap: 30px; } 
+        .logo-img { margin-top: -10px; width: clamp(280px, 30vw, 450px); }
+        .player-dashboard { min-width: 300px; padding: 0; }
         .mascot-area { width: 240px; margin-right: 4vw; } 
         .speech-bubble { font-size: 0.85rem; padding: 10px 18px; } 
-        
         .sidebar-col { display: flex; gap: 20px; margin-top: 60px; } 
         .info-card { padding: 18px; border-radius: 25px; }
         .card-header { font-size: 1rem; margin-bottom: 8px; }
         .card-body { font-size: 0.9rem; padding-left: 12px; }
         .card-badge { width: 45px; height: 45px; font-size: 1.3rem; top: -12px; right: -12px; }
-        
         textarea { margin: 35px 20px 10px 20px; padding: 25px; font-size: 1.2rem; }
         .editor-box { height: 60vh; }
     }
-
-    /* Smaller iPads (Landscape) */
     @media (max-width: 1100px) {
         .dashboard-grid { grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-top: -8vh; }
         .mascot-area { width: 200px; margin-right: 2vw; } 
@@ -651,8 +482,9 @@
         .mode-switch { flex-direction: column; gap: 2px; }
         .mode-btn { padding: 5px 10px; font-size: 0.75rem; }
         .sidebar-col { margin-top: 70px; }
+        .player-dashboard { min-width: 250px; }
+        .crown-wrapper { width: 35px; }
     }
-
 </style>
 </head>
 <body>
@@ -673,10 +505,10 @@
     <div class="save-box">
         <h2 style="margin-top:0; color: var(--purple-main); font-weight: 900;">Mighty Code</h2>
         <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px;">
-            Write down this secret code to save your crowns. You can paste it on any computer to load your progress!
+            Copy this secret code to save your XP. You can paste it on any computer to load your progress!
         </p>
         
-        <input type="text" id="displayCode" class="save-input" readonly value="MP-XXXXX-00A">
+        <input type="text" id="displayCode" class="save-input" readonly value="">
         
         <hr style="border:0; height:2px; background:#f1f5f9; margin: 30px 0;">
         
@@ -691,9 +523,18 @@
 
 <div class="app-container">
     <div class="top-bar">
-        <div style="display:flex; align-items:center;">
+        <!-- NEW PLAYER DASHBOARD -->
+        <div class="player-dashboard">
+            <div class="title-xp-row">
+                <div class="player-title" id="playerTitle">Novice Ink-Spiller</div>
+                <div class="xp-track">
+                    <div class="xp-fill" id="xpFill"></div>
+                    <div class="xp-text" id="xpText">0 / 100 XP to Apprentice</div>
+                </div>
+            </div>
             <div class="crowns-container" id="crownGrid"></div>
         </div>
+
         <img src="logo.png" alt="Mighty Pens" class="logo-img">
     </div>
 
@@ -786,11 +627,8 @@
 <script>
     /* --- DATA & CONFIG --- */
     
-    // 1. YOUR GOOGLE SHEET PUBLISHED URL GOES HERE
-    // By using the 'pubhtml' link and fetching it as a CSV, we bypass the strict browser CORS issues!
     const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
 
-    // 2. THE 52-WEEK TOPIC AUTO-PILOT
     const topics = [
         "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
         "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
@@ -805,7 +643,6 @@
         "The Illusion", "The Arrival"
     ];
     
-    // 3. FALLBACK LESSONS (Used if Google Sheet isn't linked yet or goes offline)
     let lessonSets = [
         { 
             example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", 
@@ -819,27 +656,35 @@
         }
     ];
 
+    // 8 AI Crowns perfectly mapped to the GPT grading rubric
     const skillDefs = [
-        { id: "activeVerbs", name: "Active Verbs" }, 
-        { id: "goodStarts", name: "Good Starts" },
-        { id: "adjectives", name: "Adjectives" }, 
-        { id: "complexity", name: "Complexity" },
-        { id: "repetition", name: "Variety" }, 
-        { id: "atmosphere", name: "Atmosphere" },
-        { id: "storyDepth", name: "Story Depth" }, 
-        { id: "craft", name: "Craft Moves" },
-        { id: "pacing", name: "Pacing" }, 
-        { id: "vocabulary", name: "Vocabulary" }
+        { id: "starts", name: "Sentence Starts", match: /Sentence Starts/i },
+        { id: "verbs", name: "Active Verbs", match: /Active Verbs/i },
+        { id: "vocab", name: "Vocabulary", match: /Vocabulary Strength/i },
+        { id: "variety", name: "Sentence Variety", match: /Sentence Variety/i },
+        { id: "structure", name: "Story Structure", match: /Story Structure/i },
+        { id: "repetition", name: "Word Choice", match: /Word Choice/i },
+        { id: "stopwords", name: "Stop Words", match: /Stop Word/i },
+        { id: "grammar", name: "Punctuation", match: /Punctuation/i }
     ];
 
-    /* --- GOOGLE SHEETS FETCH LOGIC (CORS-SAFE CSV PARSER) --- */
+    // The 2000 XP Title Ladder
+    const titles = [
+        { xp: 0, name: "Novice Ink-Spiller" },
+        { xp: 100, name: "Apprentice Scribe" },
+        { xp: 300, name: "Journeyman Writer" },
+        { xp: 700, name: "Adept Storyteller" },
+        { xp: 1300, name: "Master of the Inkwell" },
+        { xp: 2000, name: "Grandmaster Pen" }
+    ];
+
+    /* --- GOOGLE SHEETS FETCH LOGIC --- */
     function parseCSV(text) {
         const rows = [];
         let row = [], inQuotes = false, val = '';
         for (let i = 0; i < text.length; i++) {
             let c = text[i];
             if (c === '"') {
-                // If it's an escaped quote ("") inside quotes, keep one quote
                 if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
                 else inQuotes = !inQuotes;
             } else if (c === ',' && !inQuotes) {
@@ -856,15 +701,10 @@
 
     async function loadGoogleSheetData() {
         if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
-        
         try {
-            // We convert your published HTML link into a CSV export link to bypass strict browser CORS rules
             let fetchUrl = GOOGLE_SHEET_URL;
-            if (fetchUrl.includes('/pubhtml')) {
-                fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
-            } else if (fetchUrl.includes('/edit')) {
-                fetchUrl = fetchUrl.replace(/\/edit.*$/, '/export?format=csv');
-            }
+            if (fetchUrl.includes('/pubhtml')) fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
+            else if (fetchUrl.includes('/edit')) fetchUrl = fetchUrl.replace(/\/edit.*$/, '/export?format=csv');
 
             const response = await fetch(fetchUrl);
             if (!response.ok) throw new Error("Failed to fetch Google Sheet");
@@ -873,7 +713,6 @@
             const rows = parseCSV(text);
             const newLessons = [];
             
-            // Loop through rows (skipping header, checking for minimum data)
             rows.forEach((r, index) => {
                 if (index > 0 && r.length >= 3 && r[0]) {
                     newLessons.push({
@@ -886,7 +725,7 @@
             
             if (newLessons.length > 0) {
                 lessonSets = newLessons;
-                rotateLesson(); // Refresh immediately once data loads
+                rotateLesson(); 
             }
         } catch (error) {
             console.warn("Mighty Pens Info: Using fallback local lessons. (Could not fetch sheet due to privacy/CORS).", error);
@@ -895,17 +734,17 @@
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
-    const stateKey = "mrCMightyPens_v15_secure";
+    const stateKey = "mrCMightyPens_v16_xp"; // Wiped clean to support unbounded XP
     
     let appState = JSON.parse(localStorage.getItem(stateKey)) || {
-        badges: {}, 
+        xp: {}, 
         checksUsed: 0, 
         emailSent: false, 
         lastReset: new Date().toDateString()
     };
     
     skillDefs.forEach(s => { 
-        if(!appState.badges[s.id]) appState.badges[s.id] = 0; 
+        if(appState.xp[s.id] === undefined) appState.xp[s.id] = 0; 
     });
 
     function save() { 
@@ -916,58 +755,42 @@
         localStorage.setItem(stateKey, JSON.stringify(appState)); 
     }
 
-    /* --- SECURE SAVE LOGIC --- */
-    const codeMap = { 0:'X', 1:'Q', 2:'W', 3:'E', 4:'R', 5:'T' };
-    const revMap = { 'X':0, 'Q':1, 'W':2, 'E':3, 'R':4, 'T':5 };
-
+    /* --- SECURE SAVE LOGIC (NEW UNBOUNDED XP FORMAT) --- */
     function generateCode() {
-        let sum = 0;
-        let letters = "";
-        skillDefs.forEach(def => {
-            const lvl = appState.badges[def.id] || 0;
-            sum += lvl;
-            letters += codeMap[lvl];
-        });
-        const checksumChar = String.fromCharCode(65 + (sum % 26)); // Random looking letter A-Z
-        const sumStr = sum.toString().padStart(2, '0'); 
-        return `MP-${letters}-${sumStr}${checksumChar}`;
+        const xpArray = skillDefs.map(def => appState.xp[def.id] || 0);
+        const rawStr = xpArray.join('-');
+        return `MP-${btoa(rawStr).replace(/=/g, '')}`;
     }
 
     function processLoadCode() {
-        let codeStr = document.getElementById("inputCode").value.trim().toUpperCase();
-        const regex = /^MP-([XQWERT]{10})-(\d{2})([A-Z])$/;
-        const match = codeStr.match(regex);
-        
-        if (!match) {
+        let codeStr = document.getElementById("inputCode").value.trim();
+        if (!codeStr.startsWith("MP-")) {
             showToast("❌ Invalid Mighty Code format!");
             return;
         }
 
-        const letters = match[1];
-        const sumStr = parseInt(match[2], 10);
-        const checkChar = match[3];
-
-        let calcSum = 0;
-        let newBadges = {};
-        for(let i=0; i<10; i++) {
-            const lvl = revMap[letters[i]];
-            calcSum += lvl;
-            newBadges[skillDefs[i].id] = lvl;
+        try {
+            const b64 = codeStr.substring(3);
+            const rawStr = atob(b64);
+            const xpArray = rawStr.split('-');
+            
+            if (xpArray.length === skillDefs.length) {
+                let newXp = {};
+                skillDefs.forEach((def, i) => {
+                    newXp[def.id] = parseInt(xpArray[i]) || 0;
+                });
+                appState.xp = newXp;
+                save();
+                renderCrowns();
+                toggleSaveModal(false);
+                showToast("🔓 XP Progress Loaded Successfully!");
+                document.getElementById("inputCode").value = "";
+            } else {
+                throw new Error("Mismatch");
+            }
+        } catch(e) {
+            showToast("❌ Invalid Code! Could not read XP data.");
         }
-
-        const calcCheckChar = String.fromCharCode(65 + (calcSum % 26));
-        
-        if (calcSum !== sumStr || calcCheckChar !== checkChar) {
-            showToast("❌ Invalid Code: Checksum failed!");
-            return;
-        }
-
-        appState.badges = newBadges;
-        save();
-        renderCrowns();
-        toggleSaveModal(false);
-        showToast("🔓 Progress Loaded Successfully!");
-        document.getElementById("inputCode").value = "";
     }
 
     function toggleSaveModal(show) {
@@ -982,20 +805,57 @@
 
     /* --- LOGIC ENGINE --- */
     function renderCrowns() {
+        let totalXP = 0;
+        
+        // 1. Render the 8 Crowns
         const grid = document.getElementById("crownGrid");
         grid.innerHTML = skillDefs.map(def => {
-            const level = appState.badges[def.id] || 0;
-            const fill = level > 0 ? "#ffd700" : "rgba(230, 210, 150, 0.3)";
-            const strokeColor = level > 0 ? '#b8860b' : '#8b6508';
+            const xp = appState.xp[def.id] || 0;
+            totalXP += xp;
+            const fill = xp > 0 ? "#ffd700" : "rgba(230, 210, 150, 0.3)";
+            const strokeColor = xp > 0 ? '#b8860b' : '#8b6508';
             
             return `
-            <div class="crown-wrapper" title="${def.name}: Level ${level}">
+            <div class="crown-wrapper" title="${def.name}: ${xp} XP">
                 <svg class="crown-svg" viewBox="0 0 100 80">
                     <path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" fill="${fill}" stroke="${strokeColor}" stroke-width="3" stroke-linejoin="round"/>
                 </svg>
+                <div class="crown-xp">${xp}</div>
             </div>`;
         }).join("");
         
+        // 2. Calculate Title and Progress Bar
+        let currentTitle = titles[0];
+        let nextTitle = null;
+        for(let i = titles.length - 1; i >= 0; i--) {
+            if(totalXP >= titles[i].xp) {
+                currentTitle = titles[i];
+                nextTitle = titles[i+1] || null;
+                break;
+            }
+        }
+
+        document.getElementById("playerTitle").innerText = currentTitle.name;
+        
+        const xpText = document.getElementById("xpText");
+        const xpFill = document.getElementById("xpFill");
+
+        if (nextTitle) {
+            const range = nextTitle.xp - currentTitle.xp;
+            const progress = totalXP - currentTitle.xp;
+            const percent = Math.min(100, Math.max(0, (progress / range) * 100));
+            const xpNeeded = nextTitle.xp - totalXP;
+            
+            xpFill.style.width = `${percent}%`;
+            xpText.innerText = `LEVEL UP IN ${xpNeeded} XP`;
+        } else {
+            // Max Rank Reached
+            xpFill.style.width = `100%`;
+            xpFill.style.background = `linear-gradient(90deg, #7b2cbf, #f59e0b)`;
+            xpText.innerText = `${totalXP} XP - ULTIMATE MASTER!`;
+            xpText.style.color = `white`;
+        }
+
         const remaining = 3 - appState.checksUsed;
         document.getElementById("checksLeft").innerText = currentMode === 'mission' 
             ? `${remaining} Feedbacks Remaining` 
@@ -1004,64 +864,31 @@
         document.getElementById("emailBtn").style.display = appState.emailSent ? "none" : "block";
     }
 
-    function analyse(text) {
+    function analyseLocal(text) {
         const clean = text.toLowerCase();
         const words = clean.match(/[a-z']+/g) || [];
         const sentences = text.split(/[.!?]+/).map(s => s.trim()).filter(Boolean);
-        
         const weakVerbs = ["went","got","did","made","looked","saw","felt","put","came","took","ran"];
         const badStarts = ["the","it","a","an","he","she","they","this","then","there","i","my","we","our","suddenly"];
-        const beWords = ["was","were","is","are","be","been","being"];
-        const adjectiveHints = ["y","ful","less","ous","ive","al","ic","ish","ary"];
-        const atmosphereWords = ["wind","rain","shadow","dark","noise","silence","cold","fog","mist","storm","breeze","thunder","creak","rattle","night"];
-        const storyWords = ["because","since","grew","growing","childhood","always","never","feared","hoped","dreamed","remembered","years","family","home","once"];
-
-        const strongVerbCount = words.filter(w => /ed$|ing$/.test(w) && !beWords.includes(w) && !weakVerbs.includes(w)).length;
+        
         const weakVerbCount = words.filter(w => weakVerbs.includes(w)).length;
         const badStartCount = sentences.filter(s => badStarts.includes((s.match(/[a-zA-Z']+/) || [""])[0].toLowerCase())).length;
-        const adjectiveCount = words.filter(w => adjectiveHints.some(end => w.endsWith(end))).length;
-        const adjectiveRatio = words.length ? adjectiveCount / words.length : 0;
-        const complexSentenceCount = sentences.filter(s => /(because|although|while|when|since|if|after|before|as|who|that)/i.test(s) || (s.match(/,/g) || []).length >= 2).length;
         
-        const freq = {}; 
-        words.forEach(w => { 
-            if (w.length > 4) freq[w] = (freq[w] || 0) + 1; 
-        });
-        const repetitionScore = Object.values(freq).filter(v => v >= 3).length;
-        
-        const atmosphereCount = words.filter(w => atmosphereWords.includes(w)).length;
-        const storyCount = words.filter(w => storyWords.includes(w)).length;
-        const craftCount = (clean.match(/—/g) || []).length + (clean.match(/with [^.!?]*, [^.!?]*, and [^.!?]*/g) || []).length + (clean.match(/ing, [^.!?]*ed, [^.!?]*ed, and [^.!?]*ed/g) || []).length;
-        
-        return { 
-            words, 
-            sentences, 
-            strongVerbCount, 
-            weakVerbCount, 
-            badStartCount, 
-            adjectiveRatio, 
-            complexSentenceCount, 
-            repetitionScore, 
-            atmosphereCount, 
-            storyCount, 
-            craftCount 
-        };
+        return { words, sentences, weakVerbCount, badStartCount };
     }
 
     function handleCheck() {
         const text = document.getElementById("paragraph").value.trim();
-        const metrics = analyse(text);
+        const metrics = analyseLocal(text);
         
         if (metrics.words.length < 50) { 
             showToast("Mighty Pen: Too short! Write at least 50 words."); 
             return; 
         }
-        
         if (metrics.words.length > 150) { 
             showToast("Mighty Pen: Over 150 words! Keep it punchy."); 
             return; 
         }
-
         if (metrics.badStartCount > 2 || metrics.weakVerbCount > 4) {
             document.getElementById("resultOverlay").style.display = "flex";
             document.getElementById("resultText").innerText = "Mighty Pen is busy! 🖋️\n\nYour writing has too many 'Lazy Starts' or 'Weak Verbs'. Fix those basic errors yourself before the expert coach helps you polish it!";
@@ -1078,8 +905,9 @@
             callAI(text);
         } else {
             document.getElementById("resultOverlay").style.display = "flex";
-            document.getElementById("resultText").innerText = "Practice Mode Success! 🥋\n\nYou've cleared the Gatekeeper and polished your basics. Keep writing and leveling up your crowns!";
-            maybeLevelUp(text);
+            document.getElementById("resultText").innerText = "Practice Mode Success! 🥋\n\nYou've cleared the Gatekeeper and polished your basics. Keep writing and unlocking XP!";
+            // Small random XP reward for passing local gatekeeper in Practice Mode
+            maybeLevelUpPractice();
         }
     }
 
@@ -1101,49 +929,48 @@
             });
             const data = await response.json();
             
-            if (!response.ok) throw new Error("API Offline");
-            
             resText.innerText = data.feedback;
-            maybeLevelUp(text);
+
+            // --- AI PARSER: Map Stars to XP ---
+            if (response.ok && data.feedback) {
+                let totalGained = 0;
+                let changedMsg = [];
+
+                skillDefs.forEach(def => {
+                    const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
+                    const match = data.feedback.match(regex);
+                    if (match && match[1]) {
+                        const stars = match[1].replace(/[^★]/g, '').length;
+                        appState.xp[def.id] = (appState.xp[def.id] || 0) + stars;
+                        totalGained += stars;
+                        if(stars >= 4) changedMsg.push(`${def.name} +${stars}`);
+                    }
+                });
+
+                if (totalGained > 0) {
+                    save();
+                    renderCrowns();
+                    showToast(`🌟 +${totalGained} Total XP Earned!`);
+                }
+            }
             
         } catch (error) {
-            const m = analyse(text);
-            const fallback = `Feedback system offline.\n\nLocal Report:\n• Action Verbs: ${m.strongVerbCount}\n• Complex Structures: ${m.complexSentenceCount}\n• Starts Failed: ${m.badStartCount}\n\nKeep writing to earn crowns!`;
-            
-            resText.innerText = fallback;
-            maybeLevelUp(text);
+            resText.innerText = `Feedback system offline.\n\nKeep writing to earn crowns! (${error.message})`;
         }
     }
 
-    function maybeLevelUp(text) {
-        const metrics = analyse(text);
-        const changed = [];
-        
-        const checks = {
-            activeVerbs: metrics.strongVerbCount >= [0,2,4,6,8][appState.badges.activeVerbs || 0] && metrics.weakVerbCount <= Math.max(4 - (appState.badges.activeVerbs || 0), 1),
-            goodStarts: metrics.badStartCount <= [99,4,3,2,1][appState.badges.goodStarts || 0],
-            adjectives: metrics.adjectiveRatio >= [0,.05,.07,.09,.1][appState.badges.adjectives || 0] && metrics.adjectiveRatio <= .18,
-            complexity: metrics.complexSentenceCount >= [0,1,2,3,4][appState.badges.complexity || 0],
-            repetition: metrics.repetitionScore <= [99,7,6,5,4][appState.badges.repetition || 0],
-            atmosphere: metrics.atmosphereCount >= [0,1,2,3,4][appState.badges.atmosphere || 0],
-            storyDepth: metrics.storyCount >= [0,1,2,3,4][appState.badges.storyDepth || 0],
-            craft: metrics.craftCount >= [0,1,1,2,2][appState.badges.craft || 0],
-            pacing: metrics.complexSentenceCount >= 1 && metrics.words.length >= 60,
-            vocabulary: metrics.strongVerbCount >= 3
-        };
-
-        skillDefs.forEach(def => {
-            if ((appState.badges[def.id] || 0) < 5 && checks[def.id]) {
-                appState.badges[def.id] = (appState.badges[def.id] || 0) + 1;
-                changed.push(def.name);
-            }
-        });
-
-        if (changed.length) {
-            save();
-            renderCrowns();
-            showToast(`👑 Skills Upgraded: ${changed.join(", ")}!`);
+    function maybeLevelUpPractice() {
+        const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
+        let changed = [];
+        // Award +1 XP to 3 random crowns just to reward Practice Mode effort
+        for(let i=0; i<3; i++) {
+            const id = shuffled[i].id;
+            appState.xp[id] = (appState.xp[id] || 0) + 1;
+            changed.push(shuffled[i].name);
         }
+        save();
+        renderCrowns();
+        showToast(`Practice XP Earned: +1 to ${changed.join(", ")}`);
     }
 
     function getWeeklyTopic() {
@@ -1168,7 +995,6 @@
         const text = document.getElementById("paragraph").value.trim();
         const feedback = document.getElementById("resultText").innerText.trim();
         
-        // Combine the student's text and the AI feedback with some spacing
         const emailBody = `${text}\n\n--- MR. C'S FEEDBACK ---\n\n${feedback}`;
         
         window.location.href = `mailto:myessayfeedback@gmail.com?subject=Weekly Mission Submission&body=${encodeURIComponent(emailBody)}`;
