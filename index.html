@@ -616,6 +616,44 @@
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
+    /* --- TOOLTIP OFF-SCREEN FIX --- */
+    
+    /* 1. Left Edge Fix (Columns 1 and 2 of every row) */
+    .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
+    .tooltip-btn:nth-child(8n + 2) .tooltip-pop {
+        left: 0; /* Anchor to the left side of the button instead of the center */
+        transform: translateX(-5px) translateY(10px);
+    }
+    .tooltip-btn:nth-child(8n + 1):hover .tooltip-pop,
+    .tooltip-btn:nth-child(8n + 2):hover .tooltip-pop {
+        transform: translateX(-5px) translateY(0);
+    }
+    /* Move the little pointing arrows so they still aim at the button */
+    .tooltip-btn:nth-child(8n + 1) .tooltip-pop::after,
+    .tooltip-btn:nth-child(8n + 2) .tooltip-pop::after {
+        left: 35px;
+        transform: translateX(-50%);
+    }
+
+    /* 2. Right Edge Fix (Columns 7 and 8 of every row) */
+    .tooltip-btn:nth-child(8n + 7) .tooltip-pop,
+    .tooltip-btn:nth-child(8n + 8) .tooltip-pop {
+        left: auto;
+        right: 0; /* Anchor to the right side to prevent clipping */
+        transform: translateX(5px) translateY(10px);
+    }
+    .tooltip-btn:nth-child(8n + 7):hover .tooltip-pop,
+    .tooltip-btn:nth-child(8n + 8):hover .tooltip-pop {
+        transform: translateX(5px) translateY(0);
+    }
+    /* Move the pointing arrows for the right side */
+    .tooltip-btn:nth-child(8n + 7) .tooltip-pop::after,
+    .tooltip-btn:nth-child(8n + 8) .tooltip-pop::after {
+        left: auto;
+        right: 35px;
+        transform: translateX(50%);
+    }
+
     /* --- RESULTS & TOASTS --- */
    .result-overlay {
     position: absolute;
