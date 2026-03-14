@@ -97,7 +97,7 @@
 
     .firework {
         position: absolute;
-        width: 8px; height: 8px; /* Made particles smaller */
+        width: 8px; height: 8px; 
         border-radius: 50%;
         pointer-events: none;
         bottom: 0px; 
@@ -315,7 +315,7 @@
         width: 100%;
     }
 
-    /* --- MASCOT SLIDE --- */
+    /* --- MASCOT SLIDE & WIGGLE --- */
     .mascot-col {
         position: relative;
         display: flex;
@@ -346,6 +346,18 @@
         object-position: bottom right;
         display: block; 
         filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25)); 
+    }
+
+    /* Mascot Audio Wiggle Effect */
+    @keyframes mascotWiggle {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(-8deg) scale(1.05); }
+        50% { transform: rotate(8deg) scale(1.05); }
+        75% { transform: rotate(-4deg) scale(1.05); }
+        100% { transform: rotate(0deg) scale(1); }
+    }
+    .mascot-img.wiggle {
+        animation: mascotWiggle 0.4s ease-in-out;
     }
 
     /* --- FOG --- */
@@ -387,11 +399,10 @@
         z-index: 500; 
         opacity: 0; 
         animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
-        cursor: pointer; /* Makes the mouse a little hand */
+        cursor: pointer;
         transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    /* Add a little pop when they hover or click */
     .speech-bubble:hover {
         transform: scale(1.15) translateX(0) !important;
     }
@@ -617,36 +628,32 @@
     .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
     /* --- TOOLTIP OFF-SCREEN FIX --- */
-    
-    /* 1. Left Edge Fix (Columns 1 and 2 of every row) */
+    /* 1. Left Edge Fix */
     .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
     .tooltip-btn:nth-child(8n + 2) .tooltip-pop {
-        left: 0; /* Anchor to the left side of the button instead of the center */
+        left: 0; 
         transform: translateX(-5px) translateY(10px);
     }
     .tooltip-btn:nth-child(8n + 1):hover .tooltip-pop,
     .tooltip-btn:nth-child(8n + 2):hover .tooltip-pop {
         transform: translateX(-5px) translateY(0);
     }
-    /* Move the little pointing arrows so they still aim at the button */
     .tooltip-btn:nth-child(8n + 1) .tooltip-pop::after,
     .tooltip-btn:nth-child(8n + 2) .tooltip-pop::after {
         left: 35px;
         transform: translateX(-50%);
     }
-
-    /* 2. Right Edge Fix (Columns 7 and 8 of every row) */
+    /* 2. Right Edge Fix */
     .tooltip-btn:nth-child(8n + 7) .tooltip-pop,
     .tooltip-btn:nth-child(8n + 8) .tooltip-pop {
         left: auto;
-        right: 0; /* Anchor to the right side to prevent clipping */
+        right: 0; 
         transform: translateX(5px) translateY(10px);
     }
     .tooltip-btn:nth-child(8n + 7):hover .tooltip-pop,
     .tooltip-btn:nth-child(8n + 8):hover .tooltip-pop {
         transform: translateX(5px) translateY(0);
     }
-    /* Move the pointing arrows for the right side */
     .tooltip-btn:nth-child(8n + 7) .tooltip-pop::after,
     .tooltip-btn:nth-child(8n + 8) .tooltip-pop::after {
         left: auto;
@@ -661,18 +668,18 @@
     background: rgba(255,255,255,0.98);
     z-index: 300;
     display: none;
-    flex-direction: column; /* Stack vertically */
+    flex-direction: column; 
     border-radius: 40px;
 }
 
 .result-content-container {
-    flex: 1; /* This takes up all available space */
-    overflow-y: auto; /* Allow the text to scroll */
+    flex: 1; 
+    overflow-y: auto; 
     padding: 60px 40px 20px 40px;
 }
 
 .result-buttons-container {
-    background: #f8fafc; /* Slight tint to show it's a separate bar */
+    background: #f8fafc; 
     padding: 20px;
     display: flex;
     gap: 15px;
@@ -887,53 +894,30 @@
 
     <div class="side-drawer" id="toolsDrawer">
         <div class="drawer-content">
-           <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Intro</strong>Paragraph 1. Use 1 action → 2/3 description → 2/3 background & story. Make your character interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
-
-<button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>Setting Intro</strong>Paragraph 2. Use 1 action → 2/3 description → 2/3 location & history. Make the setting interesting. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
-
-<button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose</strong>Paragraph 3. Use 1 action → 2/3 thinking/feeling → 2/3 story. Why are they here? There is a reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
-
-<button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Use 1 action → 2/3 atmosphere → 2/3 story. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
-
-<button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>Complication</strong>Paragraph 5. Use 1 action → 2/3 atmosphere → 2/3 story. Make it worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
-
-<button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The End</strong>Paragraph 6. Use 1 action → 2/3 mixture → finish the story. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
-
-<button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Strong Verbs</strong>Avoid: went, got, did, made, saw. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
-
-<button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Visuals</strong>Help the reader see the scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
-
-<button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>The Why</strong>Add depth about childhood, fears, or secret hopes. Interesting unseen details. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
-
-<button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Mood</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills.</div></button>
-
-<button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Reaction</strong>Show the character's reaction to the situation — thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
-
-<button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “Run,” whispered Maya.</div></button>
-
-<button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: Grinning wildly, Leo vaulted the fence, grabbed the rail, and swung onto the ferry.</div></button>
-
-<button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With muddy boots, a torn sleeve, and blood pounding in his ears, Tyler staggered into the shed.</div></button>
-
-<button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: The hallway — narrow, silent, and smelling of dust — stretched towards the locked office.</div></button>
-
-<button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid: The, It, A, An, I, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
-
-<button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Word Variety</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
-
-<button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A narrow rusted gate blocked the path.</div></button>
-
-<button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions. Example: The old house groaned as wind shoved against the tired walls.</div></button>
-
-<button class="tooltip-btn">POLY <div class="tooltip-pop"><strong>Polysyndeton</strong>Use repeated “and” for intensity. Example: Smoke curled and drifted and thickened across the burning paddock.</div></button>
-
-<button class="tooltip-btn">ASYND <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed and punch. Example: Boots pounded the track, breath burned, fear surged.</div></button>
-
-<button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: From above, the city glittered like scattered jewels; from below, traffic roared through narrow streets.</div></button>
-
-<button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old man, who spent his days beside the river where he once found a rare gem, smiled at memories almost faded.</div></button>
-
-<button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the document he retrieved from the solicitor's office in one hand, and a renewed sense of purpose in the other, Thomas rode home through the busy streets.</div></button>
+            <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>Character Intro</strong>Paragraph 1. Use 1 action → 2/3 description → 2/3 background & story. Make your character interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
+            <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>Setting Intro</strong>Paragraph 2. Use 1 action → 2/3 description → 2/3 location & history. Make the setting interesting. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
+            <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>Purpose</strong>Paragraph 3. Use 1 action → 2/3 thinking/feeling → 2/3 story. Why are they here? There is a reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
+            <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Use 1 action → 2/3 atmosphere → 2/3 story. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
+            <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>Complication</strong>Paragraph 5. Use 1 action → 2/3 atmosphere → 2/3 story. Make it worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
+            <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The End</strong>Paragraph 6. Use 1 action → 2/3 mixture → finish the story. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
+            <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Strong Verbs</strong>Avoid: went, got, did, made, saw. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
+            <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Visuals</strong>Help the reader see the scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
+            <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>The Why</strong>Add depth about childhood, fears, or secret hopes. Interesting unseen details. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
+            <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Mood</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills.</div></button>
+            <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Reaction</strong>Show the character's reaction to the situation — thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
+            <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “Run,” whispered Maya.</div></button>
+            <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: Grinning wildly, Leo vaulted the fence, grabbed the rail, and swung onto the ferry.</div></button>
+            <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With muddy boots, a torn sleeve, and blood pounding in his ears, Tyler staggered into the shed.</div></button>
+            <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: The hallway — narrow, silent, and smelling of dust — stretched towards the locked office.</div></button>
+            <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid: The, It, A, An, I, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
+            <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Word Variety</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
+            <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A narrow rusted gate blocked the path.</div></button>
+            <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions. Example: The old house groaned as wind shoved against the tired walls.</div></button>
+            <button class="tooltip-btn">POLY <div class="tooltip-pop"><strong>Polysyndeton</strong>Use repeated “and” for intensity. Example: Smoke curled and drifted and thickened across the burning paddock.</div></button>
+            <button class="tooltip-btn">ASYND <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed and punch. Example: Boots pounded the track, breath burned, fear surged.</div></button>
+            <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: From above, the city glittered like scattered jewels; from below, traffic roared through narrow streets.</div></button>
+            <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old man, who spent his days beside the river where he once found a rare gem, smiled at memories almost faded.</div></button>
+            <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the document he retrieved from the solicitor's office in one hand, and a renewed sense of purpose in the other, Thomas rode home through the busy streets.</div></button>
         </div>
         <button class="drawer-tab" onclick="toggleTools()">
             <span style="font-size: 0.8rem;">🛠️</span>
@@ -978,7 +962,7 @@
 
     const titles = [
         { xp: 0, name: "Novice Ink-Spiller" },
-        { xp: 100, name: "Apprentice Scribe" }, /* Hacked low for your testing */
+        { xp: 100, name: "Apprentice Scribe" },
         { xp: 300, name: "Journeyman Writer" },
         { xp: 700, name: "Adept Storyteller" },
         { xp: 1300, name: "Master of the Inkwell" },
@@ -1317,21 +1301,17 @@
         text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
         box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
         
-        // The Continuous Spray Engine
         let sprayTimer = setInterval(() => {
-            const buckets = ['20%', '50%', '80%']; // Left, Center, Right
+            const buckets = ['20%', '50%', '80%']; 
             buckets.forEach(position => {
-                // Shoot a couple of particles from each bucket every tick
-                for(let i=0; i<8; i++) { 
+                for(let i=0; i<20; i++) { 
                     createFirework(position); 
                 }
             });
-        }, 50); // Tick every 50ms
+        }, 50); 
 
-        // Stop spraying after 3.5 seconds
         setTimeout(() => clearInterval(sprayTimer), 3500);
 
-        // Hide overlay after 4.5 seconds (gives the last particles time to fade out)
         setTimeout(() => {
             overlay.style.opacity = "0";
             setTimeout(() => {
@@ -1345,19 +1325,15 @@
         const f = document.createElement('div');
         f.className = 'firework';
         
-        // Theme colors: Purple, Orange, Melon, Apricot, Blue, White
         const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9', '#ffffff'];
         f.style.background = colors[Math.floor(Math.random()*colors.length)];
-        
         f.style.left = startX; 
         
-        // Push them UP (negative Y) and let them spread left/right
-        const spreadX = (Math.random() - 0.5) * 300; // Tighter spread so it looks like a stream
-        const shootY = -(Math.random() * 400 + 300); // Shoot 300px to 700px straight up
+        const spreadX = (Math.random() - 0.5) * 300; 
+        const shootY = -(Math.random() * 400 + 300); 
         
         f.style.setProperty('--x', `${spreadX}px`);
         f.style.setProperty('--y', `${shootY}px`);
-        
         f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.6}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
         
         document.getElementById("celebrationBox").appendChild(f);
@@ -1428,7 +1404,7 @@
             return;
         }
 
-        if (appState.checksUsed >= 999) { // Hacked to 999 for testing
+        if (appState.checksUsed >= 3) { 
             showToast("No Mr C feedbacks left this week. Use Practice Mode.");
             return;
         }
@@ -1482,10 +1458,8 @@
                     let newTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
                     let leveledUp = titles.some(t => oldTotalXP < t.xp && newTotalXP >= t.xp);
 
-                    // Fire the giant celebration! (Lasts ~4.5 seconds now)
                     triggerCelebration(totalGained, leveledUp);
 
-                    // Wait 4 seconds (as the spray finishes) to update the sidebar crowns
                     setTimeout(() => {
                         save();
                         renderCrowns(); 
@@ -1583,10 +1557,31 @@
         document.getElementById("proTip").innerText = set.tip;
     }
 
+    // Load auto-saved draft on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedDraft = localStorage.getItem(stateKey + "_draft");
+        if (savedDraft) {
+            const textArea = document.getElementById("paragraph");
+            textArea.value = savedDraft;
+            textArea.dispatchEvent(new Event('input')); 
+        }
+    });
+
     document.getElementById("paragraph").addEventListener("input", function() {
         const count = (this.value.trim().match(/[a-z']+/gi) || []).length;
         document.getElementById("wordCount").innerText = "Words: " + count;
         document.getElementById("wordCount").style.color = (count < 50 || count > 150) ? "red" : "var(--text-muted)";
+        
+        // Auto-save the draft
+        localStorage.setItem(stateKey + "_draft", this.value);
+    });
+
+    // Close Tools Drawer if clicking outside of it
+    document.addEventListener('click', function(event) {
+        const drawer = document.getElementById("toolsDrawer");
+        if (drawer.classList.contains('open') && !drawer.contains(event.target) && !event.target.closest('.drawer-tab')) {
+            drawer.classList.remove('open');
+        }
     });
 
     /* --- GOOGLE SHEETS FETCH LOGIC --- */
@@ -1631,21 +1626,23 @@
             console.warn("Fallback local lessons loaded.");
         }
     }
-/* --- MASCOT EASTER EGG AUDIO --- */
+
+    /* --- MASCOT EASTER EGG AUDIO --- */
     const booyarSound = new Audio('booyar_duck.mp3');
     const bubbleElement = document.getElementById('mascotBubble');
+    const mascotImg = document.querySelector('.mascot-img');
 
-    // Trigger when they click it
-    bubbleElement.addEventListener('click', () => {
-        booyarSound.currentTime = 0; // Resets the sound if they spam click it!
-        booyarSound.play().catch(e => console.log("Audio play failed:", e));
-    });
-
-    // Trigger when they pass over it (hover)
-    bubbleElement.addEventListener('mouseenter', () => {
+    function triggerQuackAndWiggle() {
         booyarSound.currentTime = 0; 
         booyarSound.play().catch(e => console.log("Audio play failed:", e));
-    });
+        
+        mascotImg.classList.remove('wiggle');
+        void mascotImg.offsetWidth; 
+        mascotImg.classList.add('wiggle');
+    }
+
+    bubbleElement.addEventListener('click', triggerQuackAndWiggle);
+    bubbleElement.addEventListener('mouseenter', triggerQuackAndWiggle);
     
     setMode('mission');
     renderCrowns();
