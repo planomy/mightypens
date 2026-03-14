@@ -95,18 +95,19 @@
         white-space: nowrap;
     }
 
-    .firework {
+   .firework {
         position: absolute;
         width: 12px; height: 12px;
         border-radius: 50%;
         pointer-events: none;
+        bottom: -10px; /* Locks them to the foot of the hero box */
+        z-index: -1;   /* Shoots them out from BEHIND the box */
     }
 
-    @keyframes popIn { to { transform: scale(1); } }
-
-    @keyframes fireworkMove {
-        from { transform: translate(0,0) scale(1); opacity: 1; }
-        to { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+    @keyframes fireworkSpray {
+        0% { transform: translate(0, 0) scale(1); opacity: 1; }
+        60% { opacity: 1; }
+        100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
     }
 
     /* --- BACKGROUND STAGING --- */
@@ -1226,7 +1227,7 @@
         document.getElementById("emailBtn").style.display = "none";
     }
 
-    /* --- FIREWORKS & CELEBRATION LOGIC --- */
+   /* --- FIREWORKS & CELEBRATION LOGIC --- */
     function triggerCelebration(xp, isLevelUp) {
         const overlay = document.getElementById("celebrationOverlay");
         const box = document.getElementById("celebrationBox");
@@ -1236,7 +1237,15 @@
         text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
         box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
         
-        for(let i=0; i<40; i++) { createFirework(); }
+        // 3 Buckets at the foot of the box (Left, Center, Right)
+        const buckets = ['15%', '50%', '85%'];
+        
+        // Shoot 25 particles from EACH bucket
+        buckets.forEach(position => {
+            for(let i=0; i<25; i++) { 
+                createFirework(position); 
+            }
+        });
 
         setTimeout(() => {
             overlay.style.opacity = "0";
@@ -1247,19 +1256,24 @@
         }, 2200);
     }
 
-    function createFirework() {
+    function createFirework(startX) {
         const f = document.createElement('div');
         f.className = 'firework';
         const colors = ['#FFC300', '#FF5757', '#7b2cbf', '#fbbf24', '#ffffff', '#10b981'];
         f.style.background = colors[Math.floor(Math.random()*colors.length)];
-        f.style.left = "50%";
-        f.style.top = "50%";
         
-        const x = (Math.random() - 0.5) * 800;
-        const y = (Math.random() - 0.5) * 800;
-        f.style.setProperty('--x', `${x}px`);
-        f.style.setProperty('--y', `${y}px`);
-        f.style.animation = `fireworkMove ${0.8 + Math.random()}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+        // Set the bucket origin point
+        f.style.left = startX; 
+        
+        // Spray Physics: Spread left/right, and shoot high UP (negative Y)
+        const spreadX = (Math.random() - 0.5) * 600; 
+        const shootY = -(Math.random() * 400 + 200); 
+        
+        f.style.setProperty('--x', `${spreadX}px`);
+        f.style.setProperty('--y', `${shootY}px`);
+        
+        // The ease-out mimics gravity slowing them down at the top of the spray
+        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.7}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
         
         document.getElementById("celebrationBox").appendChild(f);
         setTimeout(() => f.remove(), 2000);
