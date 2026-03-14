@@ -555,11 +555,11 @@
     }
     .result-buttons-container { 
         display: flex; 
-        gap: 15px; 
+        gap: 20px; 
         justify-content: center; 
         width: 100%; 
-        margin-top: 40px; 
-        padding-bottom: 20px;
+        margin-top: 70px; 
+        padding-bottom: 35px;
     }
 
     .toastArea { 
@@ -721,7 +721,7 @@
                     </div>
                     <div class="result-buttons-container">
                         <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
-                        <button class="btn-submit" style="background: #10b981;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
+                        <button class="btn-submit" style="background: #10b981; display: none;" id="emailBtn" onclick="sendEmail()">Send to Mr C</button>
                     </div>
                 </div>
 
@@ -1149,6 +1149,7 @@
     function showLocalOverlay(report, mode) {
         document.getElementById("resultOverlay").style.display = "flex";
         document.getElementById("resultText").innerText = buildLocalReport(report, mode);
+        document.getElementById("emailBtn").style.display = "none";
     }
 
     /* --- LOGIC ENGINE --- */
@@ -1235,8 +1236,12 @@
     async function callAI(text) {
         const overlay = document.getElementById("resultOverlay");
         const resText = document.getElementById("resultText");
+        const emailBtn = document.getElementById("emailBtn");
+
         overlay.style.display = "flex";
+        emailBtn.style.display = "inline-flex";
         resText.innerText = "Connecting to the Inkwell... 🧐";
+
         try {
             const response = await fetch("/api/feedback", {
                 method: "POST", 
@@ -1263,6 +1268,7 @@
                 }
             }
         } catch (error) {
+            emailBtn.style.display = "none";
             resText.innerText = "System offline. Keep writing!";
         }
     }
