@@ -49,10 +49,10 @@
     .bg-left {
         bottom: -5vh; 
         left: -2vw; 
-        width: 104vw; /* Adjusted to prevent gap while scaling */
+        width: 104vw;
         max-width: 1800px;
         height: auto; 
-        min-width: 850px; /* Reduced from 1100px so the curve scales properly on smaller screens */
+        min-width: 850px;
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
@@ -230,10 +230,10 @@
         flex: 1; 
         display: grid; 
         grid-template-columns: 1fr 2.5fr 1fr; 
-        grid-template-rows: 1fr; /* Locks the row height so flying animations don't cause layout shift */
+        grid-template-rows: 1fr;
         gap: 40px; 
-        align-items: center; /* Restores the original vertical centering */
-        margin-top: -26vh; /* Restores the correct overlap to sit perfectly on the hills */
+        align-items: center;
+        margin-top: -26vh;
         max-width: 2000px; 
         margin-left: auto; 
         margin-right: auto; 
@@ -647,14 +647,7 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- PRECISION HILL TOP PATH: Lower flat entry, exact dip depth, much shallower second hill -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <!-- 
-      1. Starts much lower at Y=380 (~40% up from the bottom) and stays flat initially.
-      2. Dips precisely to Y=510 to hug the corner (kept exactly as you liked).
-      3. Right hill is 40% shallower (peak at Y=480).
-      4. Early exit at X=930.
-    -->
     <path d="M 0 600 V 320 
              C 350 380, 300 510, 480 510 
              C 500 510, 720 480, 780 485 
@@ -840,21 +833,32 @@
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
-    const stateKey = "mrCMightyPens_v16_xp";
+    const stateKey = "mrCMightyPens_v17_xp";
+
+    function getWeekKey() {
+        const now = new Date();
+        const start = new Date(now);
+        const day = start.getDay();
+        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+        start.setDate(diff);
+        start.setHours(0, 0, 0, 0);
+        return start.toISOString().slice(0, 10);
+    }
     
     let appState = JSON.parse(localStorage.getItem(stateKey)) || {
         xp: {}, 
         checksUsed: 0, 
         emailSent: false, 
-        lastReset: new Date().toDateString()
+        lastReset: getWeekKey()
     };
     
     skillDefs.forEach(s => { if(appState.xp[s.id] === undefined) appState.xp[s.id] = 0; });
 
     function save() { 
-        if (appState.lastReset !== new Date().toDateString()) {
+        if (appState.lastReset !== getWeekKey()) {
             appState.checksUsed = 0;
-            appState.lastReset = new Date().toDateString();
+            appState.emailSent = false;
+            appState.lastReset = getWeekKey();
         }
         localStorage.setItem(stateKey, JSON.stringify(appState)); 
     }
@@ -872,18 +876,285 @@
             const xpArray = rawStr.split('-');
             if (xpArray.length === skillDefs.length) {
                 skillDefs.forEach((def, i) => { appState.xp[def.id] = parseInt(xpArray[i]) || 0; });
-                save(); renderCrowns(); toggleSaveModal(false); showToast("🔓 XP Progress Loaded!");
+                save();
+                renderCrowns();
+                toggleSaveModal(false);
+                showToast("🔓 XP Progress Loaded!");
             }
         } catch(e) { showToast("❌ Invalid Code!"); }
     }
 
     function toggleSaveModal(show) {
-        if(show) { document.getElementById("displayCode").value = generateCode(); document.getElementById("saveModal").style.display = "flex"; }
-        else { document.getElementById("saveModal").style.display = "none"; }
+        if(show) {
+            document.getElementById("displayCode").value = generateCode();
+            document.getElementById("saveModal").style.display = "flex";
+        } else {
+            document.getElementById("saveModal").style.display = "none";
+        }
+    }
+
+    /* --- LOCAL WRITING CHECK MODULE --- */
+    const LOCAL_RULES = {
+        minWords: 50,
+        maxWords: 150,
+        maxBadStarts: 3,
+        maxWeakVerbs: 8,
+        maxBasicWords: 4,
+        maxRepeatWords: 6,
+        maxStopWordRatio: 0.45,
+        minSentenceCount: 3,
+        minUniqueStarts: 3
+    };
+
+    const BAD_STARTS = [
+        "the", "it", "a", "an", "i", "my", "we", "our",
+        "he", "she", "they", "this", "these", "those", "there", "then"
+    ];
+
+    const WEAK_VERBS = [
+        "was", "were", "is", "are", "has", "had", "have", "be", "been", "being"
+    ];
+
+    const BASIC_WORDS = [
+        "got", "went", "very", "really", "stuff", "things", "nice", "good", "bad", "big", "little"
+    ];
+
+    const STOP_WORDS = [
+        "the", "and", "to", "for", "it", "but", "of", "with", "on", "at",
+        "in", "a", "an", "is", "was", "were", "are", "that", "this", "they",
+        "he", "she", "as", "by", "from", "or", "be", "been", "being", "have", "has", "had",
+        "i", "my", "we", "our", "there", "then"
+    ];
+
+    function splitSentences(text) {
+        return text
+            .split(/[.!?]+/)
+            .map(s => s.trim())
+            .filter(Boolean);
+    }
+
+    function getWords(text) {
+        return text.match(/[a-zA-Z']+/g) || [];
+    }
+
+    function getLowerWords(text) {
+        return getWords(text).map(w => w.toLowerCase());
+    }
+
+    function analyseLocalWriting(text) {
+        const words = getLowerWords(text);
+        const sentences = splitSentences(text);
+        const wordCount = words.length;
+
+        const sentenceStarts = sentences.map(sentence => {
+            const firstWord = (sentence.match(/[a-zA-Z']+/) || [""])[0].toLowerCase();
+            return firstWord;
+        });
+
+        const badStarts = sentenceStarts.filter(w => BAD_STARTS.includes(w));
+        const weakVerbHits = words.filter(w => WEAK_VERBS.includes(w));
+        const basicWordHits = words.filter(w => BASIC_WORDS.includes(w));
+        const stopWordHits = words.filter(w => STOP_WORDS.includes(w));
+        const stopWordRatio = wordCount ? stopWordHits.length / wordCount : 0;
+
+        const freq = {};
+        for (const w of words) {
+            if (w.length >= 4 && !STOP_WORDS.includes(w)) {
+                freq[w] = (freq[w] || 0) + 1;
+            }
+        }
+
+        const repeatedWords = Object.entries(freq)
+            .filter(([, count]) => count >= 3)
+            .sort((a, b) => b[1] - a[1]);
+
+        const uniqueStarts = new Set(sentenceStarts.filter(Boolean)).size;
+        const issues = [];
+
+        if (wordCount < LOCAL_RULES.minWords) {
+            issues.push({
+                key: "length-short",
+                severity: "block",
+                message: `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`
+            });
+        }
+
+        if (wordCount > LOCAL_RULES.maxWords) {
+            issues.push({
+                key: "length-long",
+                severity: "block",
+                message: `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`
+            });
+        }
+
+        if (sentences.length < LOCAL_RULES.minSentenceCount) {
+            issues.push({
+                key: "sentence-count",
+                severity: "block",
+                message: `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`
+            });
+        }
+
+        if (badStarts.length > LOCAL_RULES.maxBadStarts) {
+            issues.push({
+                key: "bad-starts",
+                severity: "block",
+                message: `Too many weak sentence starts (${badStarts.length}). Cut back on starts like The, It, A, An, I, My, We and They.`
+            });
+        } else if (badStarts.length > 0) {
+            issues.push({
+                key: "bad-starts-warning",
+                severity: "warn",
+                message: `You have ${badStarts.length} weak sentence start${badStarts.length === 1 ? "" : "s"}. Try stronger openings.`
+            });
+        }
+
+        if (uniqueStarts < LOCAL_RULES.minUniqueStarts) {
+            issues.push({
+                key: "start-variety",
+                severity: "warn",
+                message: `Your sentence openings are too similar. Mix them up more.`
+            });
+        }
+
+        if (weakVerbHits.length > LOCAL_RULES.maxWeakVerbs) {
+            issues.push({
+                key: "weak-verbs",
+                severity: "block",
+                message: `Too many helper verbs (${weakVerbHits.length}). Cut back on was, were, is, are, has and had.`
+            });
+        } else if (weakVerbHits.length > 4) {
+            issues.push({
+                key: "weak-verbs-warning",
+                severity: "warn",
+                message: `You are leaning on helper verbs a bit too much. Try stronger action verbs.`
+            });
+        }
+
+        if (basicWordHits.length > LOCAL_RULES.maxBasicWords) {
+            issues.push({
+                key: "basic-words",
+                severity: "block",
+                message: `Too many basic words (${basicWordHits.length}). Replace words like got, went, very, really, stuff and things.`
+            });
+        } else if (basicWordHits.length > 1) {
+            issues.push({
+                key: "basic-words-warning",
+                severity: "warn",
+                message: `Some vocabulary is too basic. Try sharper words.`
+            });
+        }
+
+        if (stopWordRatio > LOCAL_RULES.maxStopWordRatio) {
+            issues.push({
+                key: "stop-words",
+                severity: "block",
+                message: `Too many stop words. Tighten the paragraph to make it stronger.`
+            });
+        } else if (stopWordRatio > 0.38) {
+            issues.push({
+                key: "stop-words-warning",
+                severity: "warn",
+                message: `This paragraph could be tightened. There are quite a lot of common filler words.`
+            });
+        }
+
+        if (repeatedWords.length > 0) {
+            const topRepeated = repeatedWords.slice(0, 3);
+            const totalHeavyRepeats = topRepeated.reduce((sum, [, count]) => sum + count, 0);
+
+            if (totalHeavyRepeats > LOCAL_RULES.maxRepeatWords) {
+                issues.push({
+                    key: "repetition",
+                    severity: "block",
+                    message: `Too much repetition. Words such as ${topRepeated.map(([w]) => w).join(", ")} appear too often.`
+                });
+            } else {
+                issues.push({
+                    key: "repetition-warning",
+                    severity: "warn",
+                    message: `Watch repetition. You use ${topRepeated.map(([w]) => w).join(", ")} several times.`
+                });
+            }
+        }
+
+        const blockIssues = issues.filter(i => i.severity === "block");
+        const warnIssues = issues.filter(i => i.severity === "warn");
+
+        let score = 100;
+        score -= blockIssues.length * 18;
+        score -= warnIssues.length * 7;
+        score = Math.max(0, score);
+
+        return {
+            wordCount,
+            sentences: sentences.length,
+            sentenceStarts,
+            badStarts,
+            weakVerbHits,
+            basicWordHits,
+            repeatedWords,
+            stopWordRatio,
+            issues,
+            blockIssues,
+            warnIssues,
+            passForMission: blockIssues.length === 0,
+            score
+        };
+    }
+
+    function buildLocalReport(report, mode = "practice") {
+        const lines = [];
+
+        lines.push(mode === "mission" ? "Local Check Complete — before AI feedback" : "Practice Mode Local Check");
+        lines.push("");
+        lines.push(`Words: ${report.wordCount}`);
+        lines.push(`Sentences: ${report.sentences}`);
+        lines.push(`Local Score: ${report.score}/100`);
+        lines.push("");
+
+        if (report.issues.length === 0) {
+            lines.push("Booyar! This is strong enough to pass the local check.");
+            lines.push("Nice work here. Your paragraph looks ready.");
+        } else {
+            if (report.blockIssues.length) {
+                lines.push("Fix these first:");
+                report.blockIssues.forEach(issue => lines.push(`• ${issue.message}`));
+                lines.push("");
+            }
+
+            if (report.warnIssues.length) {
+                lines.push("Quick improvements:");
+                report.warnIssues.forEach(issue => lines.push(`• ${issue.message}`));
+                lines.push("");
+            }
+        }
+
+        if (report.repeatedWords.length) {
+            const sample = report.repeatedWords
+                .slice(0, 5)
+                .map(([word, count]) => `${word} (${count})`)
+                .join(", ");
+            lines.push(`Repeated words spotted: ${sample}`);
+            lines.push("");
+        }
+
+        lines.push(report.passForMission
+            ? "This paragraph passes the local gate."
+            : "This paragraph is not ready for AI feedback yet.");
+
+        return lines.join("\n");
+    }
+
+    function showLocalOverlay(report, mode) {
+        document.getElementById("resultOverlay").style.display = "flex";
+        document.getElementById("resultText").innerText = buildLocalReport(report, mode);
     }
 
     /* --- LOGIC ENGINE --- */
     function renderCrowns() {
+        save();
+
         let totalXP = 0;
         const grid = document.getElementById("crownGrid");
         grid.innerHTML = skillDefs.map(def => {
@@ -903,9 +1174,15 @@
         let currentTitle = titles[0];
         let nextTitle = null;
         for(let i = titles.length - 1; i >= 0; i--) {
-            if(totalXP >= titles[i].xp) { currentTitle = titles[i]; nextTitle = titles[i+1] || null; break; }
+            if(totalXP >= titles[i].xp) {
+                currentTitle = titles[i];
+                nextTitle = titles[i+1] || null;
+                break;
+            }
         }
+
         document.getElementById("playerTitle").innerText = currentTitle.name;
+
         if (nextTitle) {
             const progress = totalXP - currentTitle.xp;
             const percent = (progress / (nextTitle.xp - currentTitle.xp)) * 100;
@@ -915,23 +1192,44 @@
             document.getElementById("xpFill").style.width = `100%`;
             document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
         }
-        document.getElementById("checksLeft").innerText = currentMode === 'mission' ? `${3 - appState.checksUsed} Feedbacks Remaining` : "Practice Mode";
+
+        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
+
+        if (currentMode === 'mission') {
+            document.getElementById("checksLeft").innerText =
+                appState.emailSent
+                    ? `${checksRemaining} AI checks left • Weekly email already sent`
+                    : `${checksRemaining} AI checks left this week`;
+        } else {
+            document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
+        }
     }
 
     function handleCheck() {
         const text = document.getElementById("paragraph").value.trim();
-        const words = text.match(/[a-z']+/gi) || [];
-        if (words.length < 50) { showToast("Mighty Pen: Too short!"); return; }
-        if (words.length > 150) { showToast("Mighty Pen: Too long!"); return; }
+        const report = analyseLocalWriting(text);
 
-        if (currentMode === 'mission') {
-            if (appState.checksUsed >= 3) { showToast("No Feedbacks left!"); return; }
-            appState.checksUsed++; save(); callAI(text);
-        } else {
-            document.getElementById("resultOverlay").style.display = "flex";
-            document.getElementById("resultText").innerText = "Practice Mode Success! 🥋 Keep writing to unlock XP!";
+        if (currentMode === 'practice') {
+            showLocalOverlay(report, "practice");
             maybeLevelUpPractice();
+            return;
         }
+
+        if (appState.checksUsed >= 3) {
+            showToast("No AI feedbacks left this week. Use Practice Mode.");
+            return;
+        }
+
+        if (!report.passForMission) {
+            showLocalOverlay(report, "mission");
+            showToast("Fix the local issues before using AI feedback.");
+            return;
+        }
+
+        appState.checksUsed++;
+        save();
+        renderCrowns();
+        callAI(text);
     }
 
     async function callAI(text) {
@@ -958,39 +1256,76 @@
                         totalGained += stars;
                     }
                 });
-                if (totalGained > 0) { save(); renderCrowns(); showToast(`🌟 +${totalGained} XP Earned!`); }
+                if (totalGained > 0) {
+                    save();
+                    renderCrowns();
+                    showToast(`🌟 +${totalGained} XP Earned!`);
+                }
             }
-        } catch (error) { resText.innerText = "System offline. Keep writing!"; }
+        } catch (error) {
+            resText.innerText = "System offline. Keep writing!";
+        }
     }
 
     function maybeLevelUpPractice() {
+        const count = (document.getElementById("paragraph").value.trim().match(/[a-z']+/gi) || []).length;
+        if (count < 50 || count > 150) return;
+
         const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
-        for(let i=0; i<3; i++) appState.xp[shuffled[i].id] = (appState.xp[shuffled[i].id] || 0) + 1;
-        save(); renderCrowns(); showToast(`Practice XP: +3 Total`);
+        for (let i = 0; i < 2; i++) {
+            appState.xp[shuffled[i].id] = (appState.xp[shuffled[i].id] || 0) + 1;
+        }
+
+        save();
+        renderCrowns();
+        showToast("Practice XP: +2 Total");
     }
 
     function setMode(mode) {
         currentMode = mode;
         document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
         document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
-        document.getElementById("topicText").innerText = mode === 'mission' ? "Weekly Mission: " + topics[Math.floor(new Date().getDate() % topics.length)] : "Practice Mode";
+        document.getElementById("topicText").innerText =
+            mode === 'mission'
+                ? "Weekly Mission: " + topics[Math.floor(new Date().getDate() % topics.length)]
+                : "Practice Mode: Local Writing Check";
         renderCrowns();
     }
 
     function sendEmail() {
+        save();
+
+        if (appState.emailSent) {
+            showToast("You have already sent your weekly mission this week.");
+            return;
+        }
+
         const emailBody = `${document.getElementById("paragraph").value}\n\n--- FEEDBACK ---\n\n${document.getElementById("resultText").innerText}`;
         window.location.href = `mailto:myessayfeedback@gmail.com?subject=Submission&body=${encodeURIComponent(emailBody)}`;
-        appState.emailSent = true; save(); renderCrowns(); showToast("Mission Sent! 🚀");
+
+        appState.emailSent = true;
+        save();
+        renderCrowns();
+        showToast("Mission Sent! 🚀");
     }
 
-    function toggleTools() { document.getElementById("toolsDrawer").classList.toggle("open"); }
-    function closeFeedback() { document.getElementById("resultOverlay").style.display = "none"; }
+    function toggleTools() {
+        document.getElementById("toolsDrawer").classList.toggle("open");
+    }
+
+    function closeFeedback() {
+        document.getElementById("resultOverlay").style.display = "none";
+    }
+
     function showToast(t) {
         const area = document.getElementById("toastArea");
         const toast = document.createElement("div");
-        toast.className = "toast"; toast.innerText = t; area.appendChild(toast);
+        toast.className = "toast";
+        toast.innerText = t;
+        area.appendChild(toast);
         setTimeout(() => { toast.remove(); }, 3500);
     }
+
     function rotateLesson() {
         const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
         document.getElementById("starText").innerText = `"${set.example}"`;
@@ -1038,8 +1373,13 @@
                     newLessons.push({ author: r[0], example: r[1], tip: r[2] });
                 }
             });
-            if (newLessons.length > 0) { lessonSets = newLessons; rotateLesson(); }
-        } catch (error) { console.warn("Fallback local lessons loaded."); }
+            if (newLessons.length > 0) {
+                lessonSets = newLessons;
+                rotateLesson();
+            }
+        } catch (error) {
+            console.warn("Fallback local lessons loaded.");
+        }
     }
 
     setMode('mission');
