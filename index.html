@@ -41,14 +41,17 @@
     /* ----CROWN ANIMATIONS---*/
     @keyframes crownCelebrate {
         0% { transform: scale(1); }
-        30% { transform: scale(1.4) rotate(-15deg); filter: drop-shadow(0 0 20px var(--star-gold)); }
-        50% { transform: scale(1.4) rotate(15deg); }
+        40% { transform: scale(2) rotate(-10deg); filter: drop-shadow(0 0 30px var(--star-gold)); }
+        60% { transform: scale(2) rotate(10deg); }
+        80% { transform: scale(0.85); }
+        90% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
 
     .crown-wrapper.crown-celebrate .crown-svg {
-        animation: crownCelebrate 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: crownCelebrate 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
         z-index: 500;
+        position: relative;
     }
 
     .crown-wrapper.crown-celebrate .crown-xp {
@@ -1389,17 +1392,20 @@
                         renderCrowns(); // This updates the actual numbers and XP bar
                         showToast(`🌟 +${totalGained} XP Saved!`);
 
-                        // Trigger the individual crown jump animations
-                        skillDefs.forEach((def, index) => {
-                            const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
-                            if (data.feedback.match(regex)) {
-                                const crowns = document.querySelectorAll('.crown-wrapper');
-                                if (crowns[index]) {
-                                    crowns[index].classList.add('crown-celebrate');
-                                    setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1000);
+                        // Wait an EXTRA 1 second before exploding the individual crowns
+                        setTimeout(() => {
+                            skillDefs.forEach((def, index) => {
+                                const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
+                                if (data.feedback.match(regex)) {
+                                    const crowns = document.querySelectorAll('.crown-wrapper');
+                                    if (crowns[index]) {
+                                        crowns[index].classList.add('crown-celebrate');
+                                        // Wait 1200ms to remove the class so the full 0.9s bounce finishes safely
+                                        setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1200);
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }, 1000); // <-- The extra 1-second delay
                     }, 1800); 
                 }
             }
@@ -1421,7 +1427,7 @@
                 const crowns = document.querySelectorAll('.crown-wrapper');
                 if (crowns[targetIndex]) {
                     crowns[targetIndex].classList.add('crown-celebrate');
-                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1000);
+                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1200); // Adjusted to 1200ms here too
                 }
             }, 150);
         }
