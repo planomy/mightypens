@@ -1211,7 +1211,7 @@
 
         lines.push(report.passForMission
             ? "This paragraph passes the local gate."
-            : "This paragraph is not ready for AI feedback yet.");
+            : "This paragraph is not ready for Mr C's feedback yet.");
 
         return lines.join("\n");
     }
@@ -1309,8 +1309,8 @@
         if (currentMode === 'mission') {
             document.getElementById("checksLeft").innerText =
                 appState.emailSent
-                    ? `${checksRemaining} AI checks left • Weekly email already sent`
-                    : `${checksRemaining} AI checks left this week`;
+                    ? `${checksRemaining} Checks left • Weekly email already sent`
+                    : `${checksRemaining} Checks left this week`;
         } else {
             document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
         }
@@ -1327,13 +1327,13 @@
         }
 
         if (appState.checksUsed >= 3) {
-            showToast("No AI feedbacks left this week. Use Practice Mode.");
+            showToast("No Mr C feedbacks left this week. Use Practice Mode.");
             return;
         }
 
         if (!report.passForMission) {
             showLocalOverlay(report, "mission");
-            showToast("Fix the local issues before using AI feedback.");
+            showToast("Fix the weaknesses before using Mr C's feedback.");
             return;
         }
 
