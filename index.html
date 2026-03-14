@@ -1406,7 +1406,7 @@
             document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
         }
 
-        const checksRemaining = Math.max(0, 999 - appState.checksUsed); // Hacked to 999 for testing
+        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
 
         if (currentMode === 'mission') {
             document.getElementById("checksLeft").innerText =
