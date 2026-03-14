@@ -81,7 +81,7 @@
         text-align: center;
         box-shadow: 0 0 50px var(--star-gold);
         transform: scale(0);
-        animation: popIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         border: 8px solid var(--star-gold);
         position: relative;
     }
@@ -95,19 +95,22 @@
         white-space: nowrap;
     }
 
-   .firework {
+    .firework {
         position: absolute;
-        width: 12px; height: 12px;
+        width: 14px; height: 14px;
         border-radius: 50%;
         pointer-events: none;
-        bottom: -10px; /* Locks them to the foot of the hero box */
-        z-index: -1;   /* Shoots them out from BEHIND the box */
+        bottom: 0px; /* Lock to the foot */
+        z-index: 100; /* Force them to render IN FRONT of the text/box */
+        box-shadow: 0 0 10px currentColor; /* Makes them glow */
     }
 
+    @keyframes popIn { to { transform: scale(1); } }
+
     @keyframes fireworkSpray {
-        0% { transform: translate(0, 0) scale(1); opacity: 1; }
-        60% { opacity: 1; }
-        100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+        0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        70% { opacity: 1; }
+        100% { transform: translate(calc(-50% + var(--x)), var(--y)) scale(0.2); opacity: 0; }
     }
 
     /* --- BACKGROUND STAGING --- */
@@ -898,7 +901,7 @@
 
     const titles = [
         { xp: 0, name: "Novice Ink-Spiller" },
-        { xp: 10, name: "Apprentice Scribe" },
+        { xp: 10, name: "Apprentice Scribe" }, /* Set low for testing */
         { xp: 300, name: "Journeyman Writer" },
         { xp: 700, name: "Adept Storyteller" },
         { xp: 1300, name: "Master of the Inkwell" },
@@ -1222,12 +1225,12 @@
 
     function showLocalOverlay(report, mode) {
         document.getElementById("resultOverlay").style.display = "flex";
-        document.getElementById("resultOverlay").scrollTop = 0; // Ensures view starts at top
+        document.getElementById("resultOverlay").scrollTop = 0; 
         document.getElementById("resultText").innerText = buildLocalReport(report, mode);
         document.getElementById("emailBtn").style.display = "none";
     }
 
-   /* --- FIREWORKS & CELEBRATION LOGIC --- */
+    /* --- FIREWORKS & CELEBRATION LOGIC --- */
     function triggerCelebration(xp, isLevelUp) {
         const overlay = document.getElementById("celebrationOverlay");
         const box = document.getElementById("celebrationBox");
@@ -1237,23 +1240,24 @@
         text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
         box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
         
-        // 3 Buckets at the foot of the box (Left, Center, Right)
-        const buckets = ['15%', '50%', '85%'];
-        
-        // Shoot 25 particles from EACH bucket
-        buckets.forEach(position => {
-            for(let i=0; i<25; i++) { 
-                createFirework(position); 
-            }
-        });
+        // WAIT 300ms for the white box to finish 'popping in', then spray!
+        setTimeout(() => {
+            const buckets = ['20%', '50%', '80%']; // Left, Center, Right
+            buckets.forEach(position => {
+                for(let i=0; i<30; i++) { 
+                    createFirework(position); 
+                }
+            });
+        }, 300);
 
+        // Hide overlay after 2.4 seconds
         setTimeout(() => {
             overlay.style.opacity = "0";
             setTimeout(() => {
                 overlay.style.display = "none";
                 overlay.style.opacity = "1";
             }, 500);
-        }, 2200);
+        }, 2400);
     }
 
     function createFirework(startX) {
@@ -1262,21 +1266,19 @@
         const colors = ['#FFC300', '#FF5757', '#7b2cbf', '#fbbf24', '#ffffff', '#10b981'];
         f.style.background = colors[Math.floor(Math.random()*colors.length)];
         
-        // Set the bucket origin point
         f.style.left = startX; 
         
-        // Spray Physics: Spread left/right, and shoot high UP (negative Y)
-        const spreadX = (Math.random() - 0.5) * 600; 
-        const shootY = -(Math.random() * 400 + 200); 
+        // Push them UP (negative Y) and let them spread left/right
+        const spreadX = (Math.random() - 0.5) * 400; // Spread horizontally
+        const shootY = -(Math.random() * 300 + 200); // Shoot 200px to 500px straight up
         
         f.style.setProperty('--x', `${spreadX}px`);
         f.style.setProperty('--y', `${shootY}px`);
         
-        // The ease-out mimics gravity slowing them down at the top of the spray
-        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.7}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+        f.style.animation = `fireworkSpray ${0.6 + Math.random() * 0.5}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
         
         document.getElementById("celebrationBox").appendChild(f);
-        setTimeout(() => f.remove(), 2000);
+        setTimeout(() => f.remove(), 1500);
     }
 
     /* --- LOGIC ENGINE --- */
@@ -1321,7 +1323,7 @@
             document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
         }
 
-        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
+        const checksRemaining = Math.max(0, 999 - appState.checksUsed); // Hacked to 999 for testing
 
         if (currentMode === 'mission') {
             document.getElementById("checksLeft").innerText =
@@ -1343,7 +1345,7 @@
             return;
         }
 
-        if (appState.checksUsed >= 3) {
+        if (appState.checksUsed >= 999) { // Hacked to 999 for testing
             showToast("No Mr C feedbacks left this week. Use Practice Mode.");
             return;
         }
@@ -1400,10 +1402,10 @@
                     // Fire the giant celebration!
                     triggerCelebration(totalGained, leveledUp);
 
-                    // Wait 1.8 seconds for the celebration to finish before updating crowns
+                    // Wait 2.0 seconds for the celebration to finish before updating crowns
                     setTimeout(() => {
                         save();
-                        renderCrowns(); // This updates the actual numbers and XP bar
+                        renderCrowns(); 
                         showToast(`🌟 +${totalGained} XP Saved!`);
 
                         // Wait an EXTRA 1 second before exploding the individual crowns
@@ -1414,13 +1416,12 @@
                                     const crowns = document.querySelectorAll('.crown-wrapper');
                                     if (crowns[index]) {
                                         crowns[index].classList.add('crown-celebrate');
-                                        // Wait 1200ms to remove the class so the full 0.9s bounce finishes safely
                                         setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1200);
                                     }
                                 }
                             });
-                        }, 1000); // <-- The extra 1-second delay
-                    }, 1800); 
+                        }, 1000); 
+                    }, 2000); 
                 }
             }
         } catch (error) {
@@ -1433,7 +1434,6 @@
         const count = (document.getElementById("paragraph").value.trim().match(/[a-z']+/gi) || []).length;
         if (count < 50 || count > 150) return;
 
-        // Visual Sparkle only! We do NOT add to appState.xp here.
         const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
         for (let i = 0; i < 2; i++) {
             const targetIndex = skillDefs.findIndex(s => s.id === shuffled[i].id);
@@ -1441,7 +1441,7 @@
                 const crowns = document.querySelectorAll('.crown-wrapper');
                 if (crowns[targetIndex]) {
                     crowns[targetIndex].classList.add('crown-celebrate');
-                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1200); // Adjusted to 1200ms here too
+                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1200);
                 }
             }, 150);
         }
