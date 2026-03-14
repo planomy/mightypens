@@ -49,10 +49,10 @@
     .bg-left {
         bottom: -5vh; 
         left: -5vw; 
-        width: 90vw;
-        max-width: 1600px;
+        width: 95vw;
+        max-width: 1800px;
         height: auto; 
-        min-width: 1000px; 
+        min-width: 1100px; 
         filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
     }
 
@@ -534,9 +534,9 @@
         z-index: 300;
         display: none; 
         flex-direction: column; 
-        justify-content: flex-start; /* Start from top but with massive padding */
+        justify-content: flex-start; 
         align-items: center;
-        padding: 100px 50px 40px 50px; /* Top padding (100px) clears the Mission Pill */
+        padding: 100px 50px 40px 50px; 
         text-align: center; 
         border-radius: 40px; 
         overflow-y: auto; 
@@ -546,7 +546,7 @@
         align-items: center; 
         justify-content: center; 
         width: 100%; 
-        min-height: 200px; /* Ensures text has its own space */
+        min-height: 200px; 
     }
     .result-buttons-container { 
         display: flex; 
@@ -636,9 +636,9 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- UPDATED BG PATH: DIP IS NOW PULLED TIGHTER TO THE EDITOR BOX CORNER AND BROUGHT UP -->
+<!-- RESTORED SMOOTH CORAL PATH: Deep, graceful cubic bezier curve dipping under the box -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 600 L 0 150 C 100 150 250 430 450 430 C 650 430 850 400 1000 500 L 1000 600 Z" fill="var(--coral-red)" />
+    <path d="M 0 600 V 200 C 100 200 250 500 500 500 C 750 500 900 450 1000 550 V 600 Z" fill="var(--coral-red)" />
 </svg>
 
 <svg class="bg-shape bg-right-wave" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
@@ -776,7 +776,6 @@
 
 <script>
     /* --- DATA & CONFIG --- */
-    
     const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
 
     const topics = [
@@ -831,9 +830,7 @@
                 row.push(val.trim()); val = '';
             } else if (c === '\n' && !inQuotes) {
                 row.push(val.trim()); rows.push(row); row = []; val = '';
-            } else if (c !== '\r') {
-                val += c;
-            }
+            } else if (c !== '\r') { val += c; }
         }
         if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
         return rows;
