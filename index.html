@@ -100,16 +100,16 @@
         width: 14px; height: 14px;
         border-radius: 50%;
         pointer-events: none;
-        bottom: 0px; /* Lock to the foot */
-        z-index: 100; /* Force them to render IN FRONT of the text/box */
-        box-shadow: 0 0 10px currentColor; /* Makes them glow */
+        bottom: 0px; 
+        z-index: 100; 
+        box-shadow: 0 0 8px currentColor;
     }
 
     @keyframes popIn { to { transform: scale(1); } }
 
     @keyframes fireworkSpray {
         0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
-        70% { opacity: 1; }
+        60% { opacity: 1; }
         100% { transform: translate(calc(-50% + var(--x)), var(--y)) scale(0.2); opacity: 0; }
     }
 
@@ -634,7 +634,7 @@
 }
 
     .toastArea { 
-        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
+        position: fixed top: 30px; left: 50%; transform: translateX(-50%); 
         display: flex; flex-direction: column; gap: 12px; z-index: 2000; 
     }
     .toast {
@@ -901,7 +901,7 @@
 
     const titles = [
         { xp: 0, name: "Novice Ink-Spiller" },
-        { xp: 10, name: "Apprentice Scribe" }, /* Set low for testing */
+        { xp: 10, name: "Apprentice Scribe" }, /* Hacked low for your testing */
         { xp: 300, name: "Journeyman Writer" },
         { xp: 700, name: "Adept Storyteller" },
         { xp: 1300, name: "Master of the Inkwell" },
@@ -1240,42 +1240,48 @@
         text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
         box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
         
-        // WAIT 300ms for the white box to finish 'popping in', then spray!
-        setTimeout(() => {
+        // The Continuous Spray Engine
+        let sprayTimer = setInterval(() => {
             const buckets = ['20%', '50%', '80%']; // Left, Center, Right
             buckets.forEach(position => {
-                for(let i=0; i<30; i++) { 
+                // Shoot a couple of particles from each bucket every tick
+                for(let i=0; i<2; i++) { 
                     createFirework(position); 
                 }
             });
-        }, 300);
+        }, 50); // Tick every 50ms
 
-        // Hide overlay after 2.4 seconds
+        // Stop spraying after 3.5 seconds
+        setTimeout(() => clearInterval(sprayTimer), 3500);
+
+        // Hide overlay after 4.5 seconds (gives the last particles time to fade out)
         setTimeout(() => {
             overlay.style.opacity = "0";
             setTimeout(() => {
                 overlay.style.display = "none";
                 overlay.style.opacity = "1";
             }, 500);
-        }, 2400);
+        }, 4500);
     }
 
     function createFirework(startX) {
         const f = document.createElement('div');
         f.className = 'firework';
-        const colors = ['#FFC300', '#FF5757', '#7b2cbf', '#fbbf24', '#ffffff', '#10b981'];
+        
+        // Theme colors: Purple, Orange, Melon, Apricot, Blue
+        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9'];
         f.style.background = colors[Math.floor(Math.random()*colors.length)];
         
         f.style.left = startX; 
         
         // Push them UP (negative Y) and let them spread left/right
-        const spreadX = (Math.random() - 0.5) * 400; // Spread horizontally
-        const shootY = -(Math.random() * 300 + 200); // Shoot 200px to 500px straight up
+        const spreadX = (Math.random() - 0.5) * 300; // Tighter spread so it looks like a stream
+        const shootY = -(Math.random() * 400 + 300); // Shoot 300px to 700px straight up
         
         f.style.setProperty('--x', `${spreadX}px`);
         f.style.setProperty('--y', `${shootY}px`);
         
-        f.style.animation = `fireworkSpray ${0.6 + Math.random() * 0.5}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.6}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
         
         document.getElementById("celebrationBox").appendChild(f);
         setTimeout(() => f.remove(), 1500);
@@ -1399,16 +1405,15 @@
                     let newTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
                     let leveledUp = titles.some(t => oldTotalXP < t.xp && newTotalXP >= t.xp);
 
-                    // Fire the giant celebration!
+                    // Fire the giant celebration! (Lasts ~4.5 seconds now)
                     triggerCelebration(totalGained, leveledUp);
 
-                    // Wait 2.0 seconds for the celebration to finish before updating crowns
+                    // Wait 4 seconds (as the spray finishes) to update the sidebar crowns
                     setTimeout(() => {
                         save();
                         renderCrowns(); 
                         showToast(`🌟 +${totalGained} XP Saved!`);
 
-                        // Wait an EXTRA 1 second before exploding the individual crowns
                         setTimeout(() => {
                             skillDefs.forEach((def, index) => {
                                 const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
@@ -1421,7 +1426,7 @@
                                 }
                             });
                         }, 1000); 
-                    }, 2000); 
+                    }, 4000); 
                 }
             }
         } catch (error) {
