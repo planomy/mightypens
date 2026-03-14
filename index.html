@@ -625,8 +625,15 @@
     }
     
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
-
+    .tooltip-pop > strong:first-child {
+    display: block;
+    color: var(--purple-main);
+    font-size: 1.1rem;
+    margin-bottom: 6px;
+}
+    .tooltip-pop strong {
+    display: inline;
+}
     /* --- TOOLTIP OFF-SCREEN FIX --- */
     /* 1. Left Edge Fix */
     .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
