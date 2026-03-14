@@ -1,18 +1,25 @@
 export default async function handler(req, res) {
-    // 1. Only allow POST requests (since we are sending text to be analyzed)
+    // 1. Only allow POST requests
     if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Method not allowed. Use POST.' });
+        return res.status(200).json({ feedback: '🛑 ERROR: Method not allowed. Use POST.' });
     }
 
     try {
-        // 2. Grab the student's text and the topic from the frontend
-        const { text, topic } = req.body;
-
-        if (!text) {
-            return res.status(400).json({ error: 'No text provided.' });
+        // PROACTIVE DEBUGGER: Check if the API key is actually visible to Vercel
+        if (!process.env.OPENAI_API_KEY) {
+            return res.status(200).json({ 
+                feedback: "🛑 VERCEL ERROR: Your OPENAI_API_KEY is missing!\n\nVercel cannot see your key. Go to Vercel > Settings > Environment Variables, make sure it is saved, and critically, click 'Redeploy' on your project." 
+            });
         }
 
-        // 3. Set up the detailed system prompt for "Mr. C's Mighty Pen"
+        // 2. Grab the student's text and the topic
+        const { text, topic } = req.body || {};
+
+        if (!text) {
+            return res.status(200).json({ feedback: '🛑 ERROR: No text was sent to the API.' });
+        }
+
+        // 3. Set up the detailed system prompt
         const systemPrompt = `You are a writing coach giving feedback to students aged 9–13.
 The student has written a narrative paragraph between 50 and 150 words about the topic: "${topic}". Evaluate the writing using the rules below.
 
@@ -94,7 +101,7 @@ Use language similar to:
 "This part works really well…"
 Keep the feedback 3–4 sentences maximum and easy for a 9–13 year old student to understand.`;
 
-        // 4. Call the OpenAI API (Ensure you have OPENAI_API_KEY set in Vercel Environment Variables)
+        // 4. Call the OpenAI API
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
             headers: {
@@ -102,22 +109,24 @@ Keep the feedback 3–4 sentences maximum and easy for a 9–13 year old student
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'gpt-4o-mini', // FIXED: 'gpt-4o-mini' is the actual name, with the letter 'o'
+                model: 'gpt-4o-mini', 
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: text }
                 ],
-                max_tokens: 500, // Increased to ensure the stars and paragraph aren't cut off
+                max_tokens: 500,
                 temperature: 0.7
             })
         });
 
         const data = await response.json();
 
-        // Catch API errors (like running out of credits or bad model name)
+        // PROACTIVE DEBUGGER: Catch OpenAI specific errors and send them to the screen
         if (!response.ok) {
-            console.error("OpenAI API Error:", data);
-            throw new Error(data.error?.message || "Error from LLM API");
+            const errorMsg = data.error?.message || "Unknown OpenAI Error";
+            return res.status(200).json({ 
+                feedback: `🛑 OPENAI ERROR: ${errorMsg}\n\n(Hint: If this says 'quota exceeded', you need to add credit to your OpenAI billing page. If it says 'incorrect API key', double check your Vercel settings.)` 
+            });
         }
 
         // 5. Extract the feedback text and send it back to the frontend
@@ -126,9 +135,9 @@ Keep the feedback 3–4 sentences maximum and easy for a 9–13 year old student
         return res.status(200).json({ feedback: aiFeedback });
 
     } catch (error) {
-        console.error('API Route Error:', error);
-        return res.status(500).json({ 
-            feedback: "The Inkwell is jammed! (API Error). Keep practicing while Mr. C fixes the magic pen." 
+        // PROACTIVE DEBUGGER: Catch any server/code crashes
+        return res.status(200).json({ 
+            feedback: `🛑 SERVER ERROR: ${error.message}\n\nSomething broke in the Vercel function itself.` 
         });
     }
 }
