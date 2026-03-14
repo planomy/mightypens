@@ -636,18 +636,18 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- PRECISION HILL TOP PATH: Matching the high-peak markup provided by user -->
+<!-- PRECISION HILL TOP PATH: Matching user markup with higher dip and shallower hill -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <!-- 
       - Entry (Left edge) starts flat at Y=220. 
-      - Dip goes deep down to Y=570 to hug the corner.
-      - Hill arches up significantly to peak at Y=440.
-      - Early Bottom Exit drops off at X=950.
+      - Dip is now HIGHER (Y=510 instead of 570) to hug the corner better.
+      - Second hill is 40% SHALLOWER (peak lowered from Y=440 to Y=480).
+      - Exit drops off at X=960.
     -->
     <path d="M 0 600 V 220 
-             C 150 220, 250 570, 450 570 
-             C 650 570, 700 440, 820 440 
-             C 900 440, 930 550, 950 600 
+             C 150 220, 280 510, 480 510 
+             C 650 510, 750 480, 850 480 
+             C 920 480, 940 550, 960 600 
              Z" fill="var(--coral-red)" />
 </svg>
 
@@ -786,6 +786,8 @@
 
 <script>
     /* --- DATA & CONFIG --- */
+    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
+
     const topics = [
         "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
         "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
