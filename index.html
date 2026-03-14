@@ -282,8 +282,15 @@
     }
 
     .speech-bubble::after {
-        content: ''; position: absolute; top: 50%; left: -12px; transform: translateY(-50%);
-        border-width: 8px 12px 8px 0; border-style: solid; border-color: transparent #333 transparent transparent;
+        content: ''; 
+        position: absolute; 
+        top: 68%; /* Positioned lower on the bubble */
+        left: -18px; /* Tucked 4px deeply inside the bubble to guarantee NO gaps */
+        transform: translateY(-50%) rotate(-25deg); /* Tilted down to 7 o'clock */
+        border-width: 7px 22px 7px 0; /* Elongated isosceles triangle */
+        border-style: solid; 
+        border-color: transparent #333 transparent transparent;
+        transform-origin: right center; /* Hinges cleanly from the bubble */
     }
 
     /* --- EDITOR --- */
