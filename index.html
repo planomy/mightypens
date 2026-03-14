@@ -617,12 +617,29 @@
     }
 
     .tooltip-pop {
-        position: absolute; bottom: calc(100% + 15px); left: 50%; transform: translateX(-50%) translateY(10px);
-        width: max-content; max-width: 280px; white-space: normal; background: white;
-        color: var(--text-main); padding: 18px; border-radius: 15px; font-size: 0.95rem;
-        line-height: 1.5; text-align: left; text-transform: none; opacity: 0; visibility: hidden; 
-        transition: all 0.2s; box-shadow: 0 15px 35px rgba(0,0,0,0.25); pointer-events: none; z-index: 250;
-    }
+    position: absolute;
+    bottom: calc(100% + 15px);
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: max-content;
+    max-width: 280px;
+    white-space: normal;
+    background: white;
+    color: var(--text-main);
+    padding: 18px;
+    border-radius: 15px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+    text-transform: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    pointer-events: none;
+    z-index: 250;
+}
     
     .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
     .tooltip-pop > strong:first-child {
@@ -631,8 +648,8 @@
     font-size: 1.1rem;
     margin-bottom: 6px;
 }
-    .tooltip-pop strong {
-    display: inline;
+   .tooltip-pop strong {
+    font-weight: 900;
 }
     /* --- TOOLTIP OFF-SCREEN FIX --- */
     /* 1. Left Edge Fix */
