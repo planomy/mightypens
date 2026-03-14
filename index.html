@@ -636,18 +636,18 @@
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
-<!-- PRECISION HILL TOP PATH: Flat entry, exact dip depth, shallower & pulled back peak -->
+<!-- PRECISION HILL TOP PATH: Lower flat entry, exact dip depth, much shallower second hill -->
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
     <!-- 
-      1. Starts flat at Y=220 and stays completely flat to X=250.
-      2. Dips precisely to Y=510 at the corner.
-      3. Right hill peak pulled back left (X=760) and 40% shallower (Y=450).
-      4. Early exit at X=920 to frame the right side cleanly. 
+      1. Starts much lower at Y=380 (~40% up from the bottom) and stays flat initially.
+      2. Dips precisely to Y=510 to hug the corner (kept exactly as you liked).
+      3. Right hill is 40% shallower (peak at Y=480).
+      4. Early exit at X=930.
     -->
-    <path d="M 0 600 V 220 
-             C 250 220, 350 510, 480 510 
-             C 580 510, 660 450, 760 450 
-             C 830 450, 870 550, 920 600 
+    <path d="M 0 600 V 380 
+             C 150 380, 300 510, 480 510 
+             C 600 510, 680 480, 780 480 
+             C 850 480, 880 550, 930 600 
              Z" fill="var(--coral-red)" />
 </svg>
 
