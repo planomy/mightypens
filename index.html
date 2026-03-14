@@ -97,12 +97,12 @@
 
     .firework {
         position: absolute;
-        width: 14px; height: 14px;
+        width: 8px; height: 8px; /* Made particles smaller */
         border-radius: 50%;
         pointer-events: none;
         bottom: 0px; 
         z-index: 100; 
-        box-shadow: 0 0 8px currentColor;
+        box-shadow: 0 0 6px currentColor;
     }
 
     @keyframes popIn { to { transform: scale(1); } }
@@ -634,7 +634,7 @@
 }
 
     .toastArea { 
-        position: fixed top: 30px; left: 50%; transform: translateX(-50%); 
+        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
         display: flex; flex-direction: column; gap: 12px; z-index: 2000; 
     }
     .toast {
@@ -1268,8 +1268,8 @@
         const f = document.createElement('div');
         f.className = 'firework';
         
-        // Theme colors: Purple, Orange, Melon, Apricot, Blue
-        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9'];
+        // Theme colors: Purple, Orange, Melon, Apricot, Blue, White
+        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9', '#ffffff'];
         f.style.background = colors[Math.floor(Math.random()*colors.length)];
         
         f.style.left = startX; 
