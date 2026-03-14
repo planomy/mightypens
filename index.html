@@ -532,35 +532,31 @@
     .tooltip-pop strong { display: block; color: var(--purple-main); font-size: 1.1rem; margin-bottom: 6px; }
 
     /* --- RESULTS & TOASTS --- */
-    .result-overlay {
-        position: absolute; 
-        inset: 0; 
-        background: rgba(255,255,255,0.98); 
-        z-index: 300;
-        display: none; 
-        flex-direction: column; 
-        justify-content: flex-start; 
-        align-items: center;
-        padding: 100px 50px 40px 50px; 
-        text-align: center; 
-        border-radius: 40px; 
-        overflow-y: auto; 
-    }
-    .result-content-container { 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        width: 100%; 
-        min-height: 200px; 
-    }
-    .result-buttons-container { 
-        display: flex; 
-        gap: 20px; 
-        justify-content: center; 
-        width: 100%; 
-        margin-top: 70px; 
-        padding-bottom: 35px;
-    }
+   .result-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.98);
+    z-index: 300;
+    display: none;
+    flex-direction: column; /* Stack vertically */
+    border-radius: 40px;
+}
+
+.result-content-container {
+    flex: 1; /* This takes up all available space */
+    overflow-y: auto; /* Allow the text to scroll */
+    padding: 60px 40px 20px 40px;
+}
+
+.result-buttons-container {
+    background: #f8fafc; /* Slight tint to show it's a separate bar */
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    border-top: 1px solid #e2e8f0;
+    border-radius: 0 0 40px 40px;
+}
 
     .toastArea { 
         position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
