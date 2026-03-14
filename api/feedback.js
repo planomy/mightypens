@@ -102,7 +102,7 @@ Keep the feedback 3–4 sentences maximum and easy for a 9–13 year old student
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
             },
             body: JSON.stringify({
-                model: 'gpt-4.1-mini', // Updated to use the recommended GPT-4.1-mini model
+                model: 'gpt-4o-mini', // FIXED: 'gpt-4o-mini' is the actual name, with the letter 'o'
                 messages: [
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: text }
@@ -114,7 +114,7 @@ Keep the feedback 3–4 sentences maximum and easy for a 9–13 year old student
 
         const data = await response.json();
 
-        // Catch API errors (like running out of credits)
+        // Catch API errors (like running out of credits or bad model name)
         if (!response.ok) {
             console.error("OpenAI API Error:", data);
             throw new Error(data.error?.message || "Error from LLM API");
