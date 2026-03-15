@@ -1517,12 +1517,14 @@
     async function callAI(text) {
         const overlay = document.getElementById("resultOverlay");
         const resText = document.getElementById("resultText");
-        const emailBtn = document.getElementById("emailBtn");
+        const copyBtn = document.getElementById("copyBtn"); // Changed to copyBtn
 
         overlay.style.display = "flex";
         document.getElementById("resultOverlay").scrollTop = 0;
-        emailBtn.style.display = "inline-flex";
+        copyBtn.style.display = "inline-flex"; // Changed to copyBtn
         resText.innerText = "Connecting to the Inkwell... 🧐";
+        
+        // ... rest of the function stays exactly the same
 
         try {
             const response = await fetch("/api/feedback", {
@@ -1609,21 +1611,26 @@
         renderCrowns();
     }
 
-    function sendEmail() {
-        save();
+   function copyMission() {
+        const text = document.getElementById("paragraph").value.trim();
+        const feedback = document.getElementById("resultText").innerText;
+        const rank = document.getElementById("playerTitle").innerText;
+        
+        // Calculate their total XP to include in the copy paste!
+        const totalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
 
-        if (appState.emailSent) {
-            showToast("You have already sent your weekly mission this week.");
-            return;
-        }
+        // Format it nicely for when they paste it into a doc
+        const clipboardText = `--- MIGHTY PENS MISSION ---\n\n` +
+                              `AUTHOR RANK: ${rank} (${totalXP} XP)\n\n` +
+                              `MY WRITING:\n${text}\n\n` +
+                              `--- MR C'S FEEDBACK ---\n${feedback}`;
 
-        const emailBody = `${document.getElementById("paragraph").value}\n\n--- FEEDBACK ---\n\n${document.getElementById("resultText").innerText}`;
-        window.location.href = `mailto:myessayfeedback@gmail.com?subject=Submission&body=${encodeURIComponent(emailBody)}`;
-
-        appState.emailSent = true;
-        save();
-        renderCrowns();
-        showToast("Mission Sent! 🚀");
+        // Copy to clipboard
+        navigator.clipboard.writeText(clipboardText).then(() => {
+            showToast("Mission Copied! Ready to paste. 📋");
+        }).catch(err => {
+            showToast("Clipboard blocked! Please highlight and copy manually.");
+        });
     }
 
     function toggleTools() {
