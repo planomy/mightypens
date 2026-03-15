@@ -6,686 +6,686 @@
 <title>Mighty Pens - Classroom Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Lilita+One&display=swap" rel="stylesheet">
 <style>
-    /* --- DESIGNER'S COLOR PALETTE --- */
-    :root {
-        --bg-yellow: #FFC300;
-        --bg-orange: #FF7B00;
-        --coral-red: #FF5757;
-        --peach-light: #FF9F1C;
-        --purple-main: #7b2cbf;
-        --purple-dark: #3b0f69;
-        --purple-tooltip: #a855f7;
-        --logo-stroke: #ffa600;
-        --text-main: #1e293b;
-        --text-muted: #64748b;
-        --star-gold: #fbbf24;
-        --tip-orange: #ffedcc; 
-        --tip-accent: #f59e0b;
-    }
+    /* --- DESIGNER'S COLOR PALETTE --- */
+    :root {
+        --bg-yellow: #FFC300;
+        --bg-orange: #FF7B00;
+        --coral-red: #FF5757;
+        --peach-light: #FF9F1C;
+        --purple-main: #7b2cbf;
+        --purple-dark: #3b0f69;
+        --purple-tooltip: #a855f7;
+        --logo-stroke: #ffa600;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --star-gold: #fbbf24;
+        --tip-orange: #ffedcc; 
+        --tip-accent: #f59e0b;
+    }
 
-    * { 
-        box-sizing: border-box; 
-    }
-    
-    html, body {
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        width: 100vw;
-        overflow: hidden; 
-        font-family: 'Nunito', system-ui, sans-serif;
-        background: linear-gradient(135deg, var(--bg-yellow) 0%, var(--bg-orange) 100%);
-        color: var(--text-main);
-    }
+    * { 
+        box-sizing: border-box; 
+    }
+    
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden; 
+        font-family: 'Nunito', system-ui, sans-serif;
+        background: linear-gradient(135deg, var(--bg-yellow) 0%, var(--bg-orange) 100%);
+        color: var(--text-main);
+    }
 
-    /* ----CROWN ANIMATIONS---*/
-    @keyframes crownCelebrate {
-        0% { transform: scale(1); }
-        40% { transform: scale(2) rotate(-10deg); filter: drop-shadow(0 0 30px var(--star-gold)); }
-        60% { transform: scale(2) rotate(10deg); }
-        80% { transform: scale(0.85); }
-        90% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
+    /* ----CROWN ANIMATIONS---*/
+    @keyframes crownCelebrate {
+        0% { transform: scale(1); }
+        40% { transform: scale(2) rotate(-10deg); filter: drop-shadow(0 0 30px var(--star-gold)); }
+        60% { transform: scale(2) rotate(10deg); }
+        80% { transform: scale(0.85); }
+        90% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
 
-    .crown-wrapper.crown-celebrate .crown-svg {
-        animation: crownCelebrate 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: 500;
-        position: relative;
-    }
+    .crown-wrapper.crown-celebrate .crown-svg {
+        animation: crownCelebrate 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 500;
+        position: relative;
+    }
 
-    .crown-wrapper.crown-celebrate .crown-xp {
-        background: var(--star-gold) !important;
-        color: white !important;
-        transform: scale(1.2);
-        transition: all 0.3s;
-    }
+    .crown-wrapper.crown-celebrate .crown-xp {
+        background: var(--star-gold) !important;
+        color: white !important;
+        transform: scale(1.2);
+        transition: all 0.3s;
+    }
 
-    /* --- CELEBRATION OVERLAY --- */
-    .celebration-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(8px);
-        pointer-events: none;
-    }
+    /* --- CELEBRATION OVERLAY --- */
+    .celebration-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(8px);
+        pointer-events: none;
+    }
 
-    .celebration-box {
-        background: white;
-        padding: 40px 80px;
-        border-radius: 40px;
-        text-align: center;
-        box-shadow: 0 0 50px var(--star-gold);
-        transform: scale(0);
-        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        border: 8px solid var(--star-gold);
-        position: relative;
-    }
+    .celebration-box {
+        background: white;
+        padding: 40px 80px;
+        border-radius: 40px;
+        text-align: center;
+        box-shadow: 0 0 50px var(--star-gold);
+        transform: scale(0);
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        border: 8px solid var(--star-gold);
+        position: relative;
+    }
 
-    .celebration-box h1 {
-        font-family: 'Lilita One', sans-serif;
-        font-size: 4rem;
-        margin: 0;
-        color: var(--purple-main);
-        text-shadow: 3px 3px 0px var(--bg-yellow);
-        white-space: nowrap;
-    }
+    .celebration-box h1 {
+        font-family: 'Lilita One', sans-serif;
+        font-size: 4rem;
+        margin: 0;
+        color: var(--purple-main);
+        text-shadow: 3px 3px 0px var(--bg-yellow);
+        white-space: nowrap;
+    }
 
-    .firework {
-        position: absolute;
-        width: 8px; height: 8px; 
-        border-radius: 50%;
-        pointer-events: none;
-        bottom: 0px; 
-        z-index: 100; 
-        box-shadow: 0 0 6px currentColor;
-    }
+    .firework {
+        position: absolute;
+        width: 8px; height: 8px; 
+        border-radius: 50%;
+        pointer-events: none;
+        bottom: 0px; 
+        z-index: 100; 
+        box-shadow: 0 0 6px currentColor;
+    }
 
-    @keyframes popIn { to { transform: scale(1); } }
+    @keyframes popIn { to { transform: scale(1); } }
 
-    @keyframes fireworkSpray {
-        0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
-        60% { opacity: 1; }
-        100% { transform: translate(calc(-50% + var(--x)), var(--y)) scale(0.2); opacity: 0; }
-    }
+    @keyframes fireworkSpray {
+        0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
+        60% { opacity: 1; }
+        100% { transform: translate(calc(-50% + var(--x)), var(--y)) scale(0.2); opacity: 0; }
+    }
 
-    /* --- BACKGROUND STAGING --- */
-    .bg-shape {
-        position: absolute;
-        z-index: 0; 
-        opacity: 1; 
-        pointer-events: none;
-    }
+    /* --- BACKGROUND STAGING --- */
+    .bg-shape {
+        position: absolute;
+        z-index: 0; 
+        opacity: 1; 
+        pointer-events: none;
+    }
 
-    .bg-left {
-        bottom: -5vh; 
-        left: -2vw; 
-        width: 104vw;
-        max-width: 1800px;
-        height: auto; 
-        min-width: 850px;
-        filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
-    }
+    .bg-left {
+        bottom: -5vh; 
+        left: -2vw; 
+        width: 104vw;
+        max-width: 1800px;
+        height: auto; 
+        min-width: 850px;
+        filter: drop-shadow(15px -5px 25px rgba(200, 70, 0, 0.35));
+    }
 
-    .bg-right-wave {
-        top: -5vh; 
-        right: -5vw; 
-        width: 35vw; 
-        max-width: 600px;
-        height: auto; 
-        min-width: 350px; 
-        filter: drop-shadow(-15px 10px 25px rgba(200, 70, 0, 0.25));
-    }
+    .bg-right-wave {
+        top: -5vh; 
+        right: -5vw; 
+        width: 35vw; 
+        max-width: 600px;
+        height: auto; 
+        min-width: 350px; 
+        filter: drop-shadow(-15px 10px 25px rgba(200, 70, 0, 0.25));
+    }
 
-    /* --- APP LAYOUT --- */
-    .app-container {
-        position: relative; 
-        z-index: 10; 
-        display: flex; 
-        flex-direction: column;
-        height: 100vh; 
-        width: 100vw; 
-        padding: 1% 40px 20px; 
-    }
+    /* --- APP LAYOUT --- */
+    .app-container {
+        position: relative; 
+        z-index: 10; 
+        display: flex; 
+        flex-direction: column;
+        height: 100vh; 
+        width: 100vw; 
+        padding: 1% 40px 20px; 
+    }
 
-    .top-bar {
-        display: flex; 
-        justify-content: space-between; 
-        align-items: flex-start; 
-        height: 140px;
-    }
+    .top-bar {
+        display: flex; 
+        justify-content: space-between; 
+        align-items: flex-start; 
+        height: 140px;
+    }
 
-    /* --- PLAYER DASHBOARD & XP SYSTEM --- */
-    .player-dashboard {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        margin-top: 40px;
-        min-width: 350px;
-        z-index: 100;
-    }
+    /* --- PLAYER DASHBOARD & XP SYSTEM --- */
+    .player-dashboard {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        margin-top: 40px;
+        min-width: 350px;
+        z-index: 100;
+    }
 
-    .title-xp-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
+    .title-xp-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
 
-    .player-title {
-        font-size: 1.15rem;
-        font-weight: 900;
-        color: var(--text-main);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 0px;
-        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
-        white-space: nowrap;
-        min-width: 230px;
-    }
+    .player-title {
+        font-size: 1.15rem;
+        font-weight: 900;
+        color: var(--text-main);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0px;
+        text-shadow: 0 2px 10px rgba(255, 255, 255, 0.8);
+        white-space: nowrap;
+        min-width: 230px;
+    }
 
-    .xp-track {
-        position: relative;
-        flex: 1;
-        max-width: 250px;
-        height: 20px;
-        background: rgba(255, 255, 255, 0.35);
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-    }
+    .xp-track {
+        position: relative;
+        flex: 1;
+        max-width: 250px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.35);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+    }
 
-    .xp-fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--star-gold), var(--bg-orange));
-        width: 0%;
-        transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-        border-radius: 12px;
-    }
+    .xp-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--star-gold), var(--bg-orange));
+        width: 0%;
+        transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        border-radius: 12px;
+    }
 
-    .xp-text {
-        position: absolute;
-        top: 0; left: 0; width: 100%; height: 100%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 0.85rem; font-weight: 900; color: #1e293b;
-        text-shadow: 0 1px 2px rgba(255,255,255,0.9);
-        white-space: nowrap;
-    }
+    .xp-text {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.85rem; font-weight: 900; color: #1e293b;
+        text-shadow: 0 1px 2px rgba(255,255,255,0.9);
+        white-space: nowrap;
+    }
 
-    .crowns-container { 
-        display: flex; 
-        gap: 8px; 
-        margin-top: 0px;
-    }
+    .crowns-container { 
+        display: flex; 
+        gap: 8px; 
+        margin-top: 0px;
+    }
 
-    .crown-wrapper { 
-        position: relative; 
-        width: 42px; 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-    }
+    .crown-wrapper { 
+        position: relative; 
+        width: 42px; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
 
-    .crown-svg { 
-        width: 100%; 
-        height: auto; 
-        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
-        transition: transform 0.2s; 
-    }
-    
-    .crown-wrapper:hover .crown-svg {
-        transform: scale(1.2) rotate(-15deg);
-    }
+    .crown-svg { 
+        width: 100%; 
+        height: auto; 
+        filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
+        transition: transform 0.2s; 
+    }
+    
+    .crown-wrapper:hover .crown-svg {
+        transform: scale(1.2) rotate(-15deg);
+    }
 
-    .crown-tooltip {
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%) translateY(0);
-        background: var(--text-main);
-        color: white;
-        padding: 5px 12px;
-        border-radius: 8px;
-        font-size: 0.8rem;
-        font-weight: 800;
-        white-space: nowrap;
-        pointer-events: none;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.15s ease-out;
-        z-index: 200;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
+    .crown-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) translateY(0);
+        background: var(--text-main);
+        color: white;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        white-space: nowrap;
+        pointer-events: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.15s ease-out;
+        z-index: 200;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
 
-    .crown-tooltip::after {
-        content: '';
-        position: absolute;
-        top: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        border-width: 5px 5px 0 5px;
-        border-style: solid;
-        border-color: var(--text-main) transparent transparent transparent;
-    }
+    .crown-tooltip::after {
+        content: '';
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 5px 5px 0 5px;
+        border-style: solid;
+        border-color: var(--text-main) transparent transparent transparent;
+    }
 
-    .crown-wrapper:hover .crown-tooltip {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(-8px);
-    }
+    .crown-wrapper:hover .crown-tooltip {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(-8px);
+    }
 
-    .crown-xp {
-        font-size: 0.75rem;
-        font-weight: 900;
-        color: var(--text-main);
-        background: rgba(255, 255, 255, 0.5);
-        padding: 1px 6px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }
+    .crown-xp {
+        font-size: 0.75rem;
+        font-weight: 900;
+        color: var(--text-main);
+        background: rgba(255, 255, 255, 0.5);
+        padding: 1px 6px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 
-    .logo-img {
-        width: clamp(300px, 35vw, 600px); 
-        height: auto;
-        filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -20px; 
-        margin-right: -10px; 
-        position: relative; 
-        z-index: 200;
-    }
+    .logo-img {
+        width: clamp(300px, 35vw, 600px); 
+        height: auto;
+        filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+        margin-top: -20px; 
+        margin-right: -10px; 
+        position: relative; 
+        z-index: 200;
+    }
 
-    /* --- DASHBOARD GRID --- */
-    .dashboard-grid {
-        flex: 1; 
-        display: grid; 
-        grid-template-columns: 1fr 2.5fr 1fr; 
-        grid-template-rows: 1fr;
-        gap: 40px; 
-        align-items: center;
-        margin-top: -26vh;
-        max-width: 2000px; 
-        margin-left: auto; 
-        margin-right: auto; 
-        width: 100%;
-    }
+    /* --- DASHBOARD GRID --- */
+    .dashboard-grid {
+        flex: 1; 
+        display: grid; 
+        grid-template-columns: 1fr 2.5fr 1fr; 
+        grid-template-rows: 1fr;
+        gap: 40px; 
+        align-items: center;
+        margin-top: -26vh;
+        max-width: 2000px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        width: 100%;
+    }
 
-    /* --- MASCOT SLIDE & WIGGLE --- */
-    .mascot-col {
-        position: relative;
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-bottom: 20px;
-    }
+    /* --- MASCOT SLIDE & WIGGLE --- */
+    .mascot-col {
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+        padding-bottom: 20px;
+    }
 
-    .mascot-area {
-        position: relative; 
-        width: 420px; 
-        max-width: 24vw;
-        transform: translate(-300px, -200px) rotate(-15deg);
-        opacity: 0; 
-        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
-        z-index: 100;
-    }
+    .mascot-area {
+        position: relative; 
+        width: 420px; 
+        max-width: 24vw;
+        transform: translate(-300px, -200px) rotate(-15deg);
+        opacity: 0; 
+        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
+        z-index: 100;
+    }
 
-    @keyframes mascotSlide { 
-        to { transform: translate(0, 0) rotate(0deg); opacity: 1; } 
-    }
+    @keyframes mascotSlide { 
+        to { transform: translate(0, 0) rotate(0deg); opacity: 1; } 
+    }
 
-    .mascot-img { 
-        width: 100%; 
-        height: auto; 
-        max-height: 50vh;
-        object-fit: contain;
-        object-position: bottom right;
-        display: block; 
-        filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25)); 
-    }
+    .mascot-img { 
+        width: 100%; 
+        height: auto; 
+        max-height: 50vh;
+        object-fit: contain;
+        object-position: bottom right;
+        display: block; 
+        filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25)); 
+    }
 
-    @keyframes mascotWiggle {
-        0% { transform: rotate(0deg); }
-        25% { transform: rotate(-8deg) scale(1.05); }
-        50% { transform: rotate(8deg) scale(1.05); }
-        75% { transform: rotate(-4deg) scale(1.05); }
-        100% { transform: rotate(0deg) scale(1); }
-    }
-    .mascot-img.wiggle {
-        animation: mascotWiggle 0.4s ease-in-out;
-    }
+    @keyframes mascotWiggle {
+        0% { transform: rotate(0deg); }
+        25% { transform: rotate(-8deg) scale(1.05); }
+        50% { transform: rotate(8deg) scale(1.05); }
+        75% { transform: rotate(-4deg) scale(1.05); }
+        100% { transform: rotate(0deg) scale(1); }
+    }
+    .mascot-img.wiggle {
+        animation: mascotWiggle 0.4s ease-in-out;
+    }
 
-    /* --- FOG --- */
-    .smoke-puff {
-        position: absolute; 
-        bottom: 0px; 
-        left: -50px; 
-        width: 250px; 
-        height: 150px;
-        pointer-events: none; 
-        opacity: 0; 
-        z-index: 150; 
-        filter: blur(10px);
-    }
+    /* --- FOG --- */
+    .smoke-puff {
+        position: absolute; 
+        bottom: 0px; 
+        left: -50px; 
+        width: 250px; 
+        height: 150px;
+        pointer-events: none; 
+        opacity: 0; 
+        z-index: 150; 
+        filter: blur(10px);
+    }
 
-    .smoke-puff.animate { 
-        animation: fogFade 2.5s ease-out forwards 0.5s; 
-    }
+    .smoke-puff.animate { 
+        animation: fogFade 2.5s ease-out forwards 0.5s; 
+    }
 
-    @keyframes fogFade { 
-        0% { transform: scale(0.3) translateY(20px); opacity: 0; } 
-        20% { opacity: 0.8; } 
-        100% { transform: scale(2) translateY(-60px); opacity: 0; } 
-    }
+    @keyframes fogFade { 
+        0% { transform: scale(0.3) translateY(20px); opacity: 0; } 
+        20% { opacity: 0.8; } 
+        100% { transform: scale(2) translateY(-60px); opacity: 0; } 
+    }
 
-    /* --- SPEECH BUBBLE (Shifted to the Right) --- */
-    .speech-bubble {
-        position: absolute; 
-        top: 22%; 
-        left: 75%; 
-        background: #333; 
-        color: white;
-        padding: 14px 22px; 
-        border-radius: 20px; 
-        font-weight: 800;
-        font-size: clamp(0.9rem, 1.1vw, 1.1rem); 
-        white-space: nowrap;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
-        z-index: 500; 
-        opacity: 0; 
-        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
-        cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    /* --- SPEECH BUBBLE (Shifted to the Right) --- */
+    .speech-bubble {
+        position: absolute; 
+        top: 22%; 
+        left: 75%; 
+        background: #333; 
+        color: white;
+        padding: 14px 22px; 
+        border-radius: 20px; 
+        font-weight: 800;
+        font-size: clamp(0.9rem, 1.1vw, 1.1rem); 
+        white-space: nowrap;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+        z-index: 500; 
+        opacity: 0; 
+        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
+        cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
 
-    .speech-bubble:hover {
-        transform: scale(1.15) translateX(0) !important;
-    }
-    .speech-bubble:active {
-        transform: scale(0.95) translateX(0) !important;
-    }
+    .speech-bubble:hover {
+        transform: scale(1.15) translateX(0) !important;
+    }
+    .speech-bubble:active {
+        transform: scale(0.95) translateX(0) !important;
+    }
 
-    @keyframes bubblePop { 
-        from { transform: scale(0) translateX(-20px); opacity: 0; } 
-        to { transform: scale(1) translateX(0); opacity: 1; } 
-    }
+    @keyframes bubblePop { 
+        from { transform: scale(0) translateX(-20px); opacity: 0; } 
+        to { transform: scale(1) translateX(0); opacity: 1; } 
+    }
 
-    .speech-bubble::after {
-        content: ''; 
-        position: absolute; 
-        top: 68%;
-        left: -18px; 
-        transform: translateY(-50%) rotate(-25deg); 
-        border-width: 7px 22px 7px 0; 
-        border-style: solid; 
-        border-color: transparent #333 transparent transparent; 
-        transform-origin: right center;
-    }
+    .speech-bubble::after {
+        content: ''; 
+        position: absolute; 
+        top: 68%;
+        left: -18px; 
+        transform: translateY(-50%) rotate(-25deg); 
+        border-width: 7px 22px 7px 0; 
+        border-style: solid; 
+        border-color: transparent #333 transparent transparent; 
+        transform-origin: right center;
+    }
 
-    /* --- EDITOR --- */
-    .editor-box {
-        background: #ffffff; 
-        border-radius: 40px; 
-        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
-        display: flex; 
-        flex-direction: column; 
-        height: 62vh; 
-        overflow: visible; 
-        border: 4px solid #fff; 
-        position: relative; 
-        z-index: 10;
-    }
+    /* --- EDITOR --- */
+    .editor-box {
+        background: #ffffff; 
+        border-radius: 40px; 
+        box-shadow: 0 30px 60px rgba(0,0,0,0.12);
+        display: flex; 
+        flex-direction: column; 
+        height: 62vh; 
+        overflow: visible; 
+        border: 4px solid #fff; 
+        position: relative; 
+        z-index: 10;
+    }
 
-    .topic-pill {
-        position: absolute; 
-        top: -24px; 
-        left: 50%; 
-        transform: translateX(-50%) translateY(-300px);
-        background: var(--coral-red); 
-        color: white; 
-        padding: 10px 30px; 
-        border-radius: 50px;
-        font-weight: 900; 
-        font-size: 1.2rem; 
-        box-shadow: 0 10px 20px rgba(255, 120, 110, 0.3);
-        z-index: 500; 
-        white-space: nowrap; 
-        opacity: 0; 
-        animation: topicDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s; 
-    }
+    .topic-pill {
+        position: absolute; 
+        top: -24px; 
+        left: 50%; 
+        transform: translateX(-50%) translateY(-300px);
+        background: var(--coral-red); 
+        color: white; 
+        padding: 10px 30px; 
+        border-radius: 50px;
+        font-weight: 900; 
+        font-size: 1.2rem; 
+        box-shadow: 0 10px 20px rgba(255, 120, 110, 0.3);
+        z-index: 500; 
+        white-space: nowrap; 
+        opacity: 0; 
+        animation: topicDrop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s; 
+    }
 
-    @keyframes topicDrop { 
-        to { transform: translateX(-50%) translateY(0); opacity: 1; } 
-    }
+    @keyframes topicDrop { 
+        to { transform: translateX(-50%) translateY(0); opacity: 1; } 
+    }
 
-    /* --- THE SPELLBOOK BUTTON (With border and outline) --- */
-    @keyframes quickGlow {
-        0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 1); }
-        30% { box-shadow: 0 0 0 25px rgba(251, 191, 36, 0); }
-        50%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
-    }
-    
-    .spell-btn {
-        position: absolute;
-        top: 20px;
-        left: 25px; 
-        width: 45px; height: 45px;
-        border-radius: 50%;
-        background: var(--star-gold);
-        color: white;
-        border: 1.5px solid #000;
-        font-size: 1.5rem;
-        cursor: pointer;
-        box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
-        transition: all 0.2s;
-        z-index: 100;
-        display: flex; justify-content: center; align-items: center;
-        animation: quickGlow 0.6s ease-out 2 forwards; 
+    /* --- THE SPELLBOOK BUTTON (With border and outline) --- */
+    @keyframes quickGlow {
+        0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 1); }
+        30% { box-shadow: 0 0 0 25px rgba(251, 191, 36, 0); }
+        50%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+    }
+    
+    .spell-btn {
+        position: absolute;
+        top: 20px;
+        left: 25px; 
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        background: var(--star-gold);
+        color: white;
+        border: 1.5px solid #000;
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+        transition: all 0.2s;
+        z-index: 100;
+        display: flex; justify-content: center; align-items: center;
+        animation: quickGlow 0.6s ease-out 2 forwards; 
         text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    }
-    
-    .spell-btn:hover {
-        transform: scale(1.1) rotate(-10deg);
-        background: #f59e0b;
-    }
+    }
+    
+    .spell-btn:hover {
+        transform: scale(1.1) rotate(-10deg);
+        background: #f59e0b;
+    }
 
-    textarea {
-        flex: 1; width: calc(100% - 60px); margin: 40px 30px 15px 30px; 
-        border: 2px solid #f5f3ff; border-radius: 28px; padding: 35px; 
-        font-family: inherit; font-size: clamp(1.3rem, 1.7vw, 1.8rem);
-        font-weight: 700; line-height: 1.6; resize: none; background: #ffffff;
-        box-shadow: inset 0 4px 15px rgba(123, 44, 191, 0.03); 
-        transition: all 0.2s ease;
-    }
+    textarea {
+        flex: 1; width: calc(100% - 60px); margin: 40px 30px 15px 30px; 
+        border: 2px solid #f5f3ff; border-radius: 28px; padding: 35px; 
+        font-family: inherit; font-size: clamp(1.3rem, 1.7vw, 1.8rem);
+        font-weight: 700; line-height: 1.6; resize: none; background: #ffffff;
+        box-shadow: inset 0 4px 15px rgba(123, 44, 191, 0.03); 
+        transition: all 0.2s ease;
+    }
 
-    textarea:focus { outline: none; border-color: #d8b4fe; }
+    textarea:focus { outline: none; border-color: #d8b4fe; }
 
-    .editor-controls {
-        background: #faf5ff; padding: 18px 30px; display: flex; 
-        justify-content: space-between; align-items: center; 
-        border-top: 2px solid #f3e8ff; border-radius: 0 0 36px 36px;
-    }
+    .editor-controls {
+        background: #faf5ff; padding: 18px 30px; display: flex; 
+        justify-content: space-between; align-items: center; 
+        border-top: 2px solid #f3e8ff; border-radius: 0 0 36px 36px;
+    }
 
-    /* --- SIDEBAR --- */
-    .sidebar-col { display: flex; flex-direction: column; gap: 30px; }
+    /* --- SIDEBAR --- */
+    .sidebar-col { display: flex; flex-direction: column; gap: 30px; }
 
-    .info-card {
-        background: #fff; padding: 28px; border-radius: 35px; 
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; 
-        border: 2px solid #fff; transition: transform 0.3s;
-    }
+    .info-card {
+        background: #fff; padding: 28px; border-radius: 35px; 
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; 
+        border: 2px solid #fff; transition: transform 0.3s;
+    }
 
-    .info-card.star { transform: rotate(1.5deg); }
-    .info-card.tip { transform: rotate(-1.5deg); background: var(--tip-orange); border: 2px solid #fbd38d; }
+    .info-card.star { transform: rotate(1.5deg); }
+    .info-card.tip { transform: rotate(-1.5deg); background: var(--tip-orange); border: 2px solid #fbd38d; }
 
-    .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-weight: 900; font-size: 1.2rem; }
-    .star .card-header { color: var(--bg-orange); }
-    .tip .card-header { color: #92400e; }
+    .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-weight: 900; font-size: 1.2rem; }
+    .star .card-header { color: var(--bg-orange); }
+    .tip .card-header { color: #92400e; }
 
-    .card-body { font-style: italic; font-size: 1.05rem; color: var(--text-main); line-height: 1.5; padding-left: 18px; }
-    .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
-    .tip .card-body { border-left: 5px solid #d97706; font-style: normal; }
+    .card-body { font-style: italic; font-size: 1.05rem; color: var(--text-main); line-height: 1.5; padding-left: 18px; }
+    .star .card-body { border-left: 5px solid var(--star-gold); color: var(--text-muted); }
+    .tip .card-body { border-left: 5px solid #d97706; font-style: normal; }
 
-    .card-badge {
-        position: absolute; top: -15px; right: -15px; width: 55px; height: 55px;
-        border-radius: 50%; display: flex; align-items: center; justify-content: center;
-        font-size: 1.6rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white;
-    }
+    .card-badge {
+        position: absolute; top: -15px; right: -15px; width: 55px; height: 55px;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        font-size: 1.6rem; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white;
+    }
 
-    .star .card-badge { background: var(--star-gold); }
-    .tip .card-badge { background: var(--purple-main); }
+    .star .card-badge { background: var(--star-gold); }
+    .tip .card-badge { background: var(--purple-main); }
 
-    .card-footer { margin-top: 15px; font-weight: 800; font-size: 0.95rem; text-align: right; color: var(--text-main); }
+    .card-footer { margin-top: 15px; font-weight: 800; font-size: 0.95rem; text-align: right; color: var(--text-main); }
 
-    /* --- BUTTONS --- */
-    .btn-submit {
-        background: var(--purple-main); color: white; font-weight: 900; padding: 16px 45px;
-        border-radius: 100px; border: none; cursor: pointer; font-size: 1.2rem;
-        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25); transition: transform 0.1s, background 0.2s;
-    }
-    .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: scale(1.02); }
-    .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
+    /* --- BUTTONS --- */
+    .btn-submit {
+        background: var(--purple-main); color: white; font-weight: 900; padding: 16px 45px;
+        border-radius: 100px; border: none; cursor: pointer; font-size: 1.2rem;
+        box-shadow: 0 10px 20px rgba(123, 44, 191, 0.25); transition: transform 0.1s, background 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) { background: var(--purple-dark); transform: scale(1.02); }
+    .btn-submit:disabled { background: #cbd5e1; cursor: not-allowed; box-shadow: none; }
 
-    #checkBtn {
-        height: 48px; 
-        padding: 0 30px; 
-        font-size: 0.95rem; 
-        white-space: nowrap; 
-        letter-spacing: 0.5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+    #checkBtn {
+        height: 48px; 
+        padding: 0 30px; 
+        font-size: 0.95rem; 
+        white-space: nowrap; 
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-    /* --- TOOLKIT DRAWER --- */
-    .side-drawer {
-        position: fixed;
-        bottom: 15px;
-        left: 0;
-        z-index: 600;
-        transform: translateX(-100%);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        display: flex;
-        align-items: center;
-    }
+    /* --- TOOLKIT DRAWER --- */
+    .side-drawer {
+        position: fixed;
+        bottom: 15px;
+        left: 0;
+        z-index: 600;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        display: flex;
+        align-items: center;
+    }
 
-    .side-drawer.open {
-        transform: translateX(0);
-    }
+    .side-drawer.open {
+        transform: translateX(0);
+    }
 
-    .drawer-content {
-        background: #334155;
-        padding: 15px 18px 8px 18px;
-        border-radius: 0 21px 21px 0; 
-        box-shadow: 6px 6px 24px rgba(0,0,0,0.25);
-        display: flex;
-        flex-direction: column;
-        gap: 12px; 
-        max-width: 720px; 
-        width: 85vw;
-        border: 3px solid #475569;
-        border-left: none;
-        position: relative;
-        z-index: 2;
-    }
+    .drawer-content {
+        background: #334155;
+        padding: 15px 18px 8px 18px;
+        border-radius: 0 21px 21px 0; 
+        box-shadow: 6px 6px 24px rgba(0,0,0,0.25);
+        display: flex;
+        flex-direction: column;
+        gap: 12px; 
+        max-width: 720px; 
+        width: 85vw;
+        border: 3px solid #475569;
+        border-left: none;
+        position: relative;
+        z-index: 2;
+    }
 
-    .drawer-header {
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        padding-bottom: 12px;
-        border-bottom: 2px solid #475569;
-        margin-bottom: 4px;
-    }
+    .drawer-header {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        padding-bottom: 12px;
+        border-bottom: 2px solid #475569;
+        margin-bottom: 4px;
+    }
 
-    .drawer-switch {
-        display: flex; 
-        gap: 4px; 
-        background: #1e293b; 
-        padding: 4px; 
-        border-radius: 100px;
-    }
+    .drawer-switch {
+        display: flex; 
+        gap: 4px; 
+        background: #1e293b; 
+        padding: 4px; 
+        border-radius: 100px;
+    }
 
-    .drawer-switch-btn {
-        border: none; 
-        padding: 6px 20px; 
-        border-radius: 100px; 
-        font-weight: 900; 
-        cursor: pointer; 
-        transition: all 0.2s; 
-        background: none; 
-        color: #94a3b8; 
-        font-size: 0.8rem;
-        letter-spacing: 0.5px;
-    }
+    .drawer-switch-btn {
+        border: none; 
+        padding: 6px 20px; 
+        border-radius: 100px; 
+        font-weight: 900; 
+        cursor: pointer; 
+        transition: all 0.2s; 
+        background: none; 
+        color: #94a3b8; 
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
 
-    .drawer-switch-btn.active {
-        background: var(--purple-tooltip); 
-        color: white;
-    }
+    .drawer-switch-btn.active {
+        background: var(--purple-tooltip); 
+        color: white;
+    }
 
-    .tool-grid {
-        display: none;
-        flex-wrap: wrap;
-        gap: 8px;
-        width: 100%;
-    }
+    .tool-grid {
+        display: none;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
 
-    .tool-grid.active-grid {
-        display: flex;
-    }
+    .tool-grid.active-grid {
+        display: flex;
+    }
 
-    .drawer-tab {
-        position: absolute;
-        top: 50%;
-        right: -27px; 
-        transform: translateY(-50%);
-        width: 27px; 
-        height: 96px; 
-        background: #334155;
-        color: #cbd5e1; 
-        border: none;
-        border-radius: 0 10px 10px 0;
-        font-weight: 900;
-        font-size: 0.75rem; 
-        cursor: pointer;
-        box-shadow: 4px 0 10px rgba(0,0,0,0.15);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        z-index: 1;
-    }
+    .drawer-tab {
+        position: absolute;
+        top: 50%;
+        right: -27px; 
+        transform: translateY(-50%);
+        width: 27px; 
+        height: 96px; 
+        background: #334155;
+        color: #cbd5e1; 
+        border: none;
+        border-radius: 0 10px 10px 0;
+        font-weight: 900;
+        font-size: 0.75rem; 
+        cursor: pointer;
+        box-shadow: 4px 0 10px rgba(0,0,0,0.15);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 1;
+    }
 
-    .drawer-tab:hover {
-        right: -33px; 
-        width: 33px;
-        background: #1e293b;
-    }
+    .drawer-tab:hover {
+        right: -33px; 
+        width: 33px;
+        background: #1e293b;
+    }
 
-    .tab-text {
-        writing-mode: vertical-rl;
-        text-orientation: upright; 
-        letter-spacing: 1px;
-        margin-top: 4px;
-    }
+    .tab-text {
+        writing-mode: vertical-rl;
+        text-orientation: upright; 
+        letter-spacing: 1px;
+        margin-top: 4px;
+    }
 
-    .tooltip-btn {
-        background: var(--purple-tooltip); color: white; border: none; 
-        padding: 8px 12px; 
-        border-radius: 12px; 
-        font-weight: 900; font-size: 0.65rem; 
-        cursor: help;
-        position: relative; text-transform: uppercase; 
-        flex: 0 1 calc(12.5% - 8px); 
-        min-width: 66px; 
-        white-space: nowrap; transition: background 0.2s, transform 0.1s;
-    }
+    .tooltip-btn {
+        background: var(--purple-tooltip); color: white; border: none; 
+        padding: 8px 12px; 
+        border-radius: 12px; 
+        font-weight: 900; font-size: 0.65rem; 
+        cursor: help;
+        position: relative; text-transform: uppercase; 
+        flex: 0 1 calc(12.5% - 8px); 
+        min-width: 66px; 
+        white-space: nowrap; transition: background 0.2s, transform 0.1s;
+    }
 
     .flex-break {
         flex-basis: 100%;
@@ -693,1275 +693,1275 @@
         margin: 0;
     }
 
-    .tooltip-btn:hover {
-        transform: scale(1.05); 
-        z-index: 10;
-    }
+    .tooltip-btn:hover {
+        transform: scale(1.05); 
+        z-index: 10;
+    }
 
-    .tooltip-pop {
-        position: absolute;
-        bottom: calc(100% + 15px);
-        left: 50%;
-        transform: translateX(-50%) translateY(10px);
-        width: max-content;
-        max-width: 280px;
-        white-space: normal;
-        background: white;
-        color: var(--text-main);
-        padding: 18px;
-        border-radius: 15px;
-        font-size: 0.95rem;
-        font-weight: 500;
-        line-height: 1.5;
-        text-align: left;
-        text-transform: none;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.2s;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        pointer-events: none;
-        z-index: 250;
-    }
-    
-    .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-    
-    .tooltip-pop > strong:first-child {
-        display: block;
-        color: var(--purple-main);
-        font-size: 1.1rem;
-        margin-bottom: 6px;
-    }
-    
-    .tooltip-pop strong {
-        font-weight: 900;
-    }
-    
-    /* --- TOOLTIP OFF-SCREEN FIX --- */
-    
-    /* 1. Left Edge Fix */
+    .tooltip-pop {
+        position: absolute;
+        bottom: calc(100% + 15px);
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        width: max-content;
+        max-width: 280px;
+        white-space: normal;
+        background: white;
+        color: var(--text-main);
+        padding: 18px;
+        border-radius: 15px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        line-height: 1.5;
+        text-align: left;
+        text-transform: none;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        pointer-events: none;
+        z-index: 250;
+    }
+    
+    .tooltip-btn:hover .tooltip-pop { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+    
+    .tooltip-pop > strong:first-child {
+        display: block;
+        color: var(--purple-main);
+        font-size: 1.1rem;
+        margin-bottom: 6px;
+    }
+    
+    .tooltip-pop strong {
+        font-weight: 900;
+    }
+    
+    /* --- TOOLTIP OFF-SCREEN FIX --- */
+    
+    /* 1. Left Edge Fix */
     #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23)) .tooltip-pop,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 1), :nth-child(8n + 2)) .tooltip-pop {
-        left: 0; 
-        transform: translateX(-5px) translateY(10px);
-    }
+        left: 0; 
+        transform: translateX(-5px) translateY(10px);
+    }
     #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23)):hover .tooltip-pop,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 1), :nth-child(8n + 2)):hover .tooltip-pop {
-        transform: translateX(-5px) translateY(0);
-    }
+        transform: translateX(-5px) translateY(0);
+    }
     #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23)) .tooltip-pop::after,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 1), :nth-child(8n + 2)) .tooltip-pop::after {
-        left: 35px;
-        transform: translateX(-50%);
-    }
+        left: 35px;
+        transform: translateX(-50%);
+    }
 
-    /* 2. Right Edge Fix */
+    /* 2. Right Edge Fix */
     #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)) .tooltip-pop,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 7), :nth-child(8n + 8)) .tooltip-pop {
-        left: auto;
-        right: 0; 
-        transform: translateX(5px) translateY(10px);
-    }
+        left: auto;
+        right: 0; 
+        transform: translateX(5px) translateY(10px);
+    }
     #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)):hover .tooltip-pop,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 7), :nth-child(8n + 8)):hover .tooltip-pop {
-        transform: translateX(5px) translateY(0);
-    }
+        transform: translateX(5px) translateY(0);
+    }
     #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)) .tooltip-pop::after,
     #gridDevices .tooltip-btn:is(:nth-child(8n + 7), :nth-child(8n + 8)) .tooltip-pop::after {
-        left: auto;
-        right: 35px;
-        transform: translateX(50%);
-    }
+        left: auto;
+        right: 35px;
+        transform: translateX(50%);
+    }
 
-    /* --- RESULTS & TOASTS --- */
-   .result-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(255,255,255,0.98);
-    z-index: 300;
-    display: none;
-    flex-direction: column; 
-    border-radius: 40px;
+    /* --- RESULTS & TOASTS --- */
+   .result-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.98);
+    z-index: 300;
+    display: none;
+    flex-direction: column; 
+    border-radius: 40px;
 }
 
 .result-content-container {
-    flex: 1; 
-    overflow-y: auto; 
-    padding: 60px 40px 20px 40px;
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 60px 40px 20px 40px;
 }
 
 .result-buttons-container {
-    background: #f8fafc; 
-    padding: 20px;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    border-top: 1px solid #e2e8f0;
-    border-radius: 0 0 40px 40px;
+    background: #f8fafc; 
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    border-top: 1px solid #e2e8f0;
+    border-radius: 0 0 40px 40px;
 }
 
-    .toastArea { 
-        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
-        display: flex; flex-direction: column; gap: 12px; z-index: 2000; 
-    }
-    .toast {
-        background: #1e293b; color: white; border-radius: 100px; padding: 14px 40px; 
-        font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: toastDrop 0.4s forwards;
-    }
-    @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    .toastArea { 
+        position: fixed; top: 30px; left: 50%; transform: translateX(-50%); 
+        display: flex; flex-direction: column; gap: 12px; z-index: 2000; 
+    }
+    .toast {
+        background: #1e293b; color: white; border-radius: 100px; padding: 14px 40px; 
+        font-weight: 800; box-shadow: 0 10px 25px rgba(0,0,0,0.3); animation: toastDrop 0.4s forwards;
+    }
+    @keyframes toastDrop { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* --- TOGGLE SWITCH --- */
-    .mode-switch {
-        display: flex; gap: 8px; background: white; padding: 5px; border-radius: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-        height: 48px;
-    }
-    .mode-btn { 
-        border: none; padding: 0 16px; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; background: none; 
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .mode-btn.active { background: var(--purple-main); color: white; }
+    /* --- TOGGLE SWITCH --- */
+    .mode-switch {
+        display: flex; gap: 8px; background: white; padding: 5px; border-radius: 100px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        height: 48px;
+    }
+    .mode-btn { 
+        border: none; padding: 0 16px; border-radius: 100px; font-weight: 800; cursor: pointer; transition: all 0.2s; background: none; 
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .mode-btn.active { background: var(--purple-main); color: white; }
 
-    /* --- DISCRETE SAVE PILL & MODAL --- */
-    .discrete-btn {
-        position: absolute; top: 15px; left: 40px; background: rgba(255, 255, 255, 0.4);
-        color: var(--purple-dark); border: none; padding: 6px 14px; border-radius: 20px;
-        font-size: 0.8rem; font-weight: 900; cursor: pointer; opacity: 0.5; transition: all 0.2s; z-index: 300;
-    }
-    .discrete-btn:hover { opacity: 1; background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    .save-modal {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
-        z-index: 3000; display: none; justify-content: center; align-items: center;
-    }
-    .save-box {
-        background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 450px;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.25); text-align: center;
-    }
-    .save-input {
-        width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #e2e8f0;
-        font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 15px;
-        font-family: monospace; letter-spacing: 2px;
-    }
+    /* --- DISCRETE SAVE PILL & MODAL --- */
+    .discrete-btn {
+        position: absolute; top: 15px; left: 40px; background: rgba(255, 255, 255, 0.4);
+        color: var(--purple-dark); border: none; padding: 6px 14px; border-radius: 20px;
+        font-size: 0.8rem; font-weight: 900; cursor: pointer; opacity: 0.5; transition: all 0.2s; z-index: 300;
+    }
+    .discrete-btn:hover { opacity: 1; background: rgba(255, 255, 255, 0.9); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .save-modal {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(5px);
+        z-index: 3000; display: none; justify-content: center; align-items: center;
+    }
+    .save-box {
+        background: white; padding: 40px; border-radius: 30px; width: 90%; max-width: 450px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.25); text-align: center;
+    }
+    .save-input {
+        width: 100%; padding: 15px; border-radius: 15px; border: 2px solid #e2e8f0;
+        font-size: 1.1rem; font-weight: 700; text-align: center; margin-bottom: 15px;
+        font-family: monospace; letter-spacing: 2px;
+    }
 
-    /* --- SPELLBOOK MODAL --- */
-    .spellbook-overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
-        z-index: 4000; display: none; justify-content: center; align-items: center;
-    }
-    .spellbook-modal {
-        background: #1e293b; color: white; width: 90%; max-width: 1000px; max-height: 85vh;
-        border-radius: 30px; padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-        display: flex; flex-direction: column; position: relative; border: 4px solid #334155;
-    }
-    .spellbook-modal h2 { margin-top: 0; color: var(--star-gold); text-align: center; font-family: 'Lilita One', sans-serif; font-size: 2.5rem; letter-spacing: 1px; }
-    .spellbook-modal p { text-align: center; color: #94a3b8; margin-bottom: 30px; font-weight: 700; font-size: 1.1rem; }
-    .close-spellbook {
-        position: absolute; top: 20px; right: 25px; background: none; border: none;
-        color: #94a3b8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
-    }
-    .close-spellbook:hover { color: white; }
-    
-    .spellbook-cols { display: flex; gap: 30px; overflow-y: auto; padding-right: 10px; }
-    .spell-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
-    .spell-col h3 { margin: 0 0 10px 0; color: white; font-weight: 900; font-size: 1.4rem; border-bottom: 2px solid #334155; padding-bottom: 10px;}
-    
-    .spell-category { background: #334155; border-radius: 15px; overflow: hidden; margin-bottom: 15px; }
-    .spell-cat-title {
-        background: #475569; padding: 10px 15px; font-weight: 900; font-size: 1rem;
-        color: var(--peach-light); letter-spacing: 0.5px; text-transform: uppercase;
-    }
-    .spell-list { display: flex; flex-direction: column; width: 100%; }
-    .spell-item {
-        background: none; border: none; border-bottom: 1px solid #475569; display: block; width: 100%;
-        color: #cbd5e1; padding: 12px 15px; text-align: left; font-size: 1.05rem;
-        cursor: pointer; transition: all 0.2s; font-family: inherit;
-    }
-    .spell-item:last-child { border-bottom: none; }
-    .spell-item:hover { background: var(--purple-main); color: white; padding-left: 20px; font-weight: bold; }
-    
-    .spellbook-cols::-webkit-scrollbar { width: 8px; }
-    .spellbook-cols::-webkit-scrollbar-track { background: #1e293b; }
-    .spellbook-cols::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    /* --- SPELLBOOK MODAL --- */
+    .spellbook-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+        z-index: 4000; display: none; justify-content: center; align-items: center;
+    }
+    .spellbook-modal {
+        background: #1e293b; color: white; width: 90%; max-width: 1000px; max-height: 85vh;
+        border-radius: 30px; padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        display: flex; flex-direction: column; position: relative; border: 4px solid #334155;
+    }
+    .spellbook-modal h2 { margin-top: 0; color: var(--star-gold); text-align: center; font-family: 'Lilita One', sans-serif; font-size: 2.5rem; letter-spacing: 1px; }
+    .spellbook-modal p { text-align: center; color: #94a3b8; margin-bottom: 30px; font-weight: 700; font-size: 1.1rem; }
+    .close-spellbook {
+        position: absolute; top: 20px; right: 25px; background: none; border: none;
+        color: #94a3b8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
+    }
+    .close-spellbook:hover { color: white; }
+    
+    .spellbook-cols { display: flex; gap: 30px; overflow-y: auto; padding-right: 10px; }
+    .spell-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .spell-col h3 { margin: 0 0 10px 0; color: white; font-weight: 900; font-size: 1.4rem; border-bottom: 2px solid #334155; padding-bottom: 10px;}
+    
+    .spell-category { background: #334155; border-radius: 15px; overflow: hidden; margin-bottom: 15px; }
+    .spell-cat-title {
+        background: #475569; padding: 10px 15px; font-weight: 900; font-size: 1rem;
+        color: var(--peach-light); letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .spell-list { display: flex; flex-direction: column; width: 100%; }
+    .spell-item {
+        background: none; border: none; border-bottom: 1px solid #475569; display: block; width: 100%;
+        color: #cbd5e1; padding: 12px 15px; text-align: left; font-size: 1.05rem;
+        cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .spell-item:last-child { border-bottom: none; }
+    .spell-item:hover { background: var(--purple-main); color: white; padding-left: 20px; font-weight: bold; }
+    
+    .spellbook-cols::-webkit-scrollbar { width: 8px; }
+    .spellbook-cols::-webkit-scrollbar-track { background: #1e293b; }
+    .spellbook-cols::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
 
-    /* =========================================================
-       RESPONSIVE DESIGN 
-       ========================================================= */
-    @media (max-width: 1600px) { 
-        .logo-img { margin-top: -15px; } 
-        .dashboard-grid { margin-top: -18vh; gap: 25px; } 
-        .mascot-area { width: 360px; }
-        .sidebar-col { margin-top: 40px; } 
-    }
-    @media (max-width: 1440px), (max-height: 950px) { 
-        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -14vh; gap: 30px; } 
-        .logo-img { margin-top: -10px; width: clamp(280px, 30vw, 450px); }
-        .player-dashboard { min-width: 300px; padding: 0; }
-        .mascot-area { width: 240px; margin-right: 4vw; } 
-        .speech-bubble { font-size: 0.85rem; padding: 10px 18px; } 
-        .sidebar-col { display: flex; gap: 20px; margin-top: 60px; } 
-        .info-card { padding: 18px; border-radius: 25px; }
-        .card-header { font-size: 1rem; margin-bottom: 8px; }
-        .card-body { font-size: 0.9rem; padding-left: 12px; }
-        .card-badge { width: 45px; height: 45px; font-size: 1.3rem; top: -12px; right: -12px; }
-        textarea { margin: 35px 20px 10px 20px; padding: 25px; font-size: 1.2rem; }
-        .editor-box { height: 60vh; }
-    }
-    @media (max-width: 1100px) {
-        .dashboard-grid { grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-top: -8vh; }
-        .mascot-area { width: 200px; margin-right: 2vw; } 
-        .speech-bubble { font-size: 0.75rem; padding: 8px 14px; top: 10%; }
-        .mode-switch { flex-direction: column; gap: 2px; height: auto; }
-        .mode-btn { padding: 6px 10px; font-size: 0.75rem; height: auto; }
-        #checkBtn { height: auto; padding: 10px 20px; }
-        .sidebar-col { margin-top: 70px; }
-        .player-dashboard { min-width: 250px; }
-        .crown-wrapper { width: 35px; }
-        .spellbook-cols { flex-direction: column; gap: 20px; }
-    }
+    /* =========================================================
+       RESPONSIVE DESIGN 
+       ========================================================= */
+    @media (max-width: 1600px) { 
+        .logo-img { margin-top: -15px; } 
+        .dashboard-grid { margin-top: -18vh; gap: 25px; } 
+        .mascot-area { width: 360px; }
+        .sidebar-col { margin-top: 40px; } 
+    }
+    @media (max-width: 1440px), (max-height: 950px) { 
+        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -14vh; gap: 30px; } 
+        .logo-img { margin-top: -10px; width: clamp(280px, 30vw, 450px); }
+        .player-dashboard { min-width: 300px; padding: 0; }
+        .mascot-area { width: 240px; margin-right: 4vw; } 
+        .speech-bubble { font-size: 0.85rem; padding: 10px 18px; } 
+        .sidebar-col { display: flex; gap: 20px; margin-top: 60px; } 
+        .info-card { padding: 18px; border-radius: 25px; }
+        .card-header { font-size: 1rem; margin-bottom: 8px; }
+        .card-body { font-size: 0.9rem; padding-left: 12px; }
+        .card-badge { width: 45px; height: 45px; font-size: 1.3rem; top: -12px; right: -12px; }
+        textarea { margin: 35px 20px 10px 20px; padding: 25px; font-size: 1.2rem; }
+        .editor-box { height: 60vh; }
+    }
+    @media (max-width: 1100px) {
+        .dashboard-grid { grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-top: -8vh; }
+        .mascot-area { width: 200px; margin-right: 2vw; } 
+        .speech-bubble { font-size: 0.75rem; padding: 8px 14px; top: 10%; }
+        .mode-switch { flex-direction: column; gap: 2px; height: auto; }
+        .mode-btn { padding: 6px 10px; font-size: 0.75rem; height: auto; }
+        #checkBtn { height: auto; padding: 10px 20px; }
+        .sidebar-col { margin-top: 70px; }
+        .player-dashboard { min-width: 250px; }
+        .crown-wrapper { width: 35px; }
+        .spellbook-cols { flex-direction: column; gap: 20px; }
+    }
 </style>
 </head>
 <body>
 
 <div id="celebrationOverlay" class="celebration-overlay">
-    <div id="celebrationBox" class="celebration-box">
-        <h1 id="celebrationText">XP EXPLOSION!</h1>
-    </div>
+    <div id="celebrationBox" class="celebration-box">
+        <h1 id="celebrationText">XP EXPLOSION!</h1>
+    </div>
 </div>
 
 <div class="spellbook-overlay" id="spellbookOverlay" onclick="closeSpellbook(event)">
-    <div class="spellbook-modal">
-        <button class="close-spellbook" onclick="closeSpellbook(event, true)">✖</button>
-        <h2>⚡ The Author's Spellbook</h2>
-        <p>Click an author's start to instantly inject it into your mission report!</p>
-        <div class="spellbook-cols">
-            <div class="spell-col" id="noviceSpells">
-                <h3>Apprentice Starts</h3>
-                </div>
-            <div class="spell-col" id="masterSpells">
-                <h3>Master Starts</h3>
-                </div>
-        </div>
-    </div>
+    <div class="spellbook-modal">
+        <button class="close-spellbook" onclick="closeSpellbook(event, true)">✖</button>
+        <h2>⚡ The Author's Spellbook</h2>
+        <p>Click an author's start to instantly inject it into your mission report!</p>
+        <div class="spellbook-cols">
+            <div class="spell-col" id="noviceSpells">
+                <h3>Apprentice Starts</h3>
+                </div>
+            <div class="spell-col" id="masterSpells">
+                <h3>Master Starts</h3>
+                </div>
+        </div>
+    </div>
 </div>
 
 <button class="discrete-btn" onclick="toggleSaveModal(true)">🔑 Save/Load Progress</button>
 
 <svg class="bg-shape bg-left" viewBox="0 0 1000 600" preserveAspectRatio="xMinYMax meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 0 600 V 320 
-             C 350 380, 300 510, 480 510 
-             C 500 510, 720 480, 780 485 
-             C 850 480, 880 550, 930 600 
-             Z" fill="var(--coral-red)" />
+    <path d="M 0 600 V 320 
+             C 350 380, 300 510, 480 510 
+             C 500 510, 720 480, 780 485 
+             C 850 480, 880 550, 930 600 
+             Z" fill="var(--coral-red)" />
 </svg>
 
 <svg class="bg-shape bg-right-wave" viewBox="0 0 400 1000" preserveAspectRatio="xMaxYMin meet" xmlns="http://www.w3.org/2000/svg">
-    <path d="M 150 0 C 300 200 0 450 150 700 C 250 900 50 1000 50 1000 L 400 1000 L 400 0 Z" fill="var(--peach-light)" />
+    <path d="M 150 0 C 300 200 0 450 150 700 C 250 900 50 1000 50 1000 L 400 1000 L 400 0 Z" fill="var(--peach-light)" />
 </svg>
 
 <div class="toastArea" id="toastArea"></div>
 
 <div class="save-modal" id="saveModal">
-    <div class="save-box">
-        <h2 style="margin-top:0; color: var(--purple-main); font-weight: 900;">Mighty Code</h2>
-        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px;">
-            Copy this secret code to save your XP. You can paste it on any computer to load your progress!
-        </p>
-        
-        <input type="text" id="displayCode" class="save-input" readonly value="">
-        
-        <hr style="border:0; height:2px; background:#f1f5f9; margin: 30px 0;">
-        
-        <h3 style="margin-top:0; color: var(--text-main); font-weight: 900;">Load Progress</h3>
-        <input type="text" id="inputCode" class="save-input" placeholder="Paste code here...">
-        <div style="display:flex; gap: 10px;">
-            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem;" onclick="processLoadCode()">LOAD</button>
-            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem; background: #cbd5e1; color:#333; box-shadow:none;" onclick="toggleSaveModal(false)">CLOSE</button>
-        </div>
-    </div>
+    <div class="save-box">
+        <h2 style="margin-top:0; color: var(--purple-main); font-weight: 900;">Mighty Code</h2>
+        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 20px;">
+            Copy this secret code to save your XP. You can paste it on any computer to load your progress!
+        </p>
+        
+        <input type="text" id="displayCode" class="save-input" readonly value="">
+        
+        <hr style="border:0; height:2px; background:#f1f5f9; margin: 30px 0;">
+        
+        <h3 style="margin-top:0; color: var(--text-main); font-weight: 900;">Load Progress</h3>
+        <input type="text" id="inputCode" class="save-input" placeholder="Paste code here...">
+        <div style="display:flex; gap: 10px;">
+            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem;" onclick="processLoadCode()">LOAD</button>
+            <button class="btn-submit" style="flex:1; padding: 12px; font-size:1rem; background: #cbd5e1; color:#333; box-shadow:none;" onclick="toggleSaveModal(false)">CLOSE</button>
+        </div>
+    </div>
 </div>
 
 <div class="app-container">
-    <div class="top-bar">
-        <div class="player-dashboard">
-            <div class="title-xp-row">
-                <div class="player-title" id="playerTitle">Novice Ink-Spiller</div>
-                <div class="xp-track">
-                    <div class="xp-fill" id="xpFill"></div>
-                    <div class="xp-text" id="xpText">0 / 100 XP to Apprentice</div>
-                </div>
-            </div>
-            <div class="crowns-container" id="crownGrid"></div>
-        </div>
+    <div class="top-bar">
+        <div class="player-dashboard">
+            <div class="title-xp-row">
+                <div class="player-title" id="playerTitle">Novice Ink-Spiller</div>
+                <div class="xp-track">
+                    <div class="xp-fill" id="xpFill"></div>
+                    <div class="xp-text" id="xpText">0 / 100 XP to Apprentice</div>
+                </div>
+            </div>
+            <div class="crowns-container" id="crownGrid"></div>
+        </div>
 
-        <img src="logo.png" alt="Mighty Pens" class="logo-img">
-    </div>
+        <img src="logo.png" alt="Mighty Pens" class="logo-img">
+    </div>
 
-    <div class="dashboard-grid">
-        <div class="mascot-col">
-            <div class="mascot-area">
-                <div class="speech-bubble" id="mascotBubble">Booyar amigos!</div>
-                <svg class="smoke-puff animate" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="60" cy="80" r="40" fill="white" opacity="0.4" />
-                    <circle cx="100" cy="60" r="50" fill="white" opacity="0.5" />
-                    <circle cx="140" cy="90" r="45" fill="white" opacity="0.4" />
-                    <circle cx="100" cy="100" r="30" fill="white" opacity="0.3" />
-                </svg>
-                <img src="mascot.png" alt="Mighty Pen" class="mascot-img">
-            </div>
-        </div>
+    <div class="dashboard-grid">
+        <div class="mascot-col">
+            <div class="mascot-area">
+                <div class="speech-bubble" id="mascotBubble">Booyar amigos!</div>
+                <svg class="smoke-puff animate" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="60" cy="80" r="40" fill="white" opacity="0.4" />
+                    <circle cx="100" cy="60" r="50" fill="white" opacity="0.5" />
+                    <circle cx="140" cy="90" r="45" fill="white" opacity="0.4" />
+                    <circle cx="100" cy="100" r="30" fill="white" opacity="0.3" />
+                </svg>
+                <img src="mascot.png" alt="Mighty Pen" class="mascot-img">
+            </div>
+        </div>
 
-        <div class="editor-col">
-            <div class="editor-box">
-                <div id="topicText" class="topic-pill">Topic: Loading...</div>
-                
-                <button class="spell-btn" onclick="openSpellbook()" title="Need a Start?">⚡</button>
-                
-                <div class="result-overlay" id="resultOverlay">
-                    <div class="result-content-container">
-                        <div id="resultText" style="font-size: 1.1rem; font-weight: 700; color: var(--purple-main); max-width: 800px; line-height: 1.6; white-space: pre-wrap; text-align: left;"></div>
-                    </div>
-                    <div class="result-buttons-container">
-                        <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
-                        <button class="btn-submit" style="background: #10b981; display: none;" id="copyBtn" onclick="copyMission()">Copy Final Mission</button>
-                    </div>
-                </div>
+        <div class="editor-col">
+            <div class="editor-box">
+                <div id="topicText" class="topic-pill">Topic: Loading...</div>
+                
+                <button class="spell-btn" onclick="openSpellbook()" title="Need a Start?">⚡</button>
+                
+                <div class="result-overlay" id="resultOverlay">
+                    <div class="result-content-container">
+                        <div id="resultText" style="font-size: 1.1rem; font-weight: 700; color: var(--purple-main); max-width: 800px; line-height: 1.6; white-space: pre-wrap; text-align: left;"></div>
+                    </div>
+                    <div class="result-buttons-container">
+                        <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
+                        <button class="btn-submit" style="background: #10b981; display: none;" id="copyBtn" onclick="copyMission()">Copy Final Mission</button>
+                    </div>
+                </div>
 
-                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
-                
-                <div class="editor-controls">
-                    <div style="display:flex; gap:10px; align-items:center;">
-                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
-                        <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.9rem;"></div>
-                    </div>
-                    <div style="display:flex; gap:15px; align-items:center;">
-                        <div class="mode-switch">
-                            <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
-                            <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
-                        </div>
-                        <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
+                
+                <div class="editor-controls">
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
+                        <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.9rem;"></div>
+                    </div>
+                    <div style="display:flex; gap:15px; align-items:center;">
+                        <div class="mode-switch">
+                            <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
+                            <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
+                        </div>
+                        <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div class="sidebar-col">
-            <div class="info-card star">
-                <div class="card-badge">⭐</div>
-                <div class="card-header">STAR OF THE WEEK</div>
-                <div class="card-body" id="starText">"The rusted gate groaned—a warning from the past—as Marcus lunged forward."</div>
-                <div class="card-footer" id="starAuthor">- Sarah, Year 5</div>
-            </div>
-            
-            <div class="info-card tip">
-                <div class="card-badge">💡</div>
-                <div class="card-header">PRO LESSON</div>
-                <div class="card-body" id="proTip">Use an em-dash — like this — to add extra detail mid-sentence.</div>
-                <div class="card-footer" style="color: #92400e">Try it now!</div>
-            </div>
-        </div>
-    </div>
+        <div class="sidebar-col">
+            <div class="info-card star">
+                <div class="card-badge">⭐</div>
+                <div class="card-header">STAR OF THE WEEK</div>
+                <div class="card-body" id="starText">"The rusted gate groaned—a warning from the past—as Marcus lunged forward."</div>
+                <div class="card-footer" id="starAuthor">- Sarah, Year 5</div>
+            </div>
+            
+            <div class="info-card tip">
+                <div class="card-badge">💡</div>
+                <div class="card-header">PRO LESSON</div>
+                <div class="card-body" id="proTip">Use an em-dash — like this — to add extra detail mid-sentence.</div>
+                <div class="card-footer" style="color: #92400e">Try it now!</div>
+            </div>
+        </div>
+    </div>
 
-    <div class="side-drawer" id="toolsDrawer">
-        <div class="drawer-content">
-            
-            <div class="drawer-header">
-                <div class="drawer-switch">
-                    <button class="drawer-switch-btn active" id="tabStory" onclick="switchDrawerTab('story')">STORY TOOLS</button>
-                    <button class="drawer-switch-btn" id="tabDevices" onclick="switchDrawerTab('devices')">LITERARY DEVICES</button>
-                </div>
-            </div>
+    <div class="side-drawer" id="toolsDrawer">
+        <div class="drawer-content">
+            
+            <div class="drawer-header">
+                <div class="drawer-switch">
+                    <button class="drawer-switch-btn active" id="tabStory" onclick="switchDrawerTab('story')">STORY TOOLS</button>
+                    <button class="drawer-switch-btn" id="tabDevices" onclick="switchDrawerTab('devices')">LITERARY DEVICES</button>
+                </div>
+            </div>
 
-            <div class="tool-grid active-grid" id="gridStory">
-                <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>The WHO paragraph</strong>Paragraph 1. Introduce your character. Make them interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
-                <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>The WHERE paragraph</strong>Paragraph 2. Introduce the setting. Make it interesting. Add location and history. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
-                <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>The WHAT paragraph</strong>Paragraph 3. Why is the character here? There must be a good reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
-                <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
-                <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
-                <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The Resolution</strong>Paragraph 6. Finish your story. The reader must care about your character. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
-
-                <div class="flex-break"></div>
-
-                <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Action sentences</strong>Avoid: went, got, did, made, saw etc. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
-                <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Description sentences</strong>Help the reader see the character and scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
-                <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
-                <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
-                <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
-                <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
+            <div class="tool-grid active-grid" id="gridStory">
+                <button class="tooltip-btn">WHO <div class="tooltip-pop"><strong>The WHO paragraph</strong>Paragraph 1. Introduce your character. Make them interesting. Example: Clutching the battered notebook, Marcus scanned the empty platform. Tall, restless, always watching, he carried the habits of a boy who had spent years moving from town to town.</div></button>
+                <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>The WHERE paragraph</strong>Paragraph 2. Introduce the setting. Make it interesting. Add location and history. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
+                <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>The WHAT paragraph</strong>Paragraph 3. Why is the character here? There must be a good reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
+                <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
+                <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
+                <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The Resolution</strong>Paragraph 6. Finish your story. The reader must care about your character. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
 
                 <div class="flex-break"></div>
 
-                <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
-                <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With <u>muddy boots</u>, a <u>torn sleeve</u>, and <u>blood</u> pounding in his ears, Tyler staggered into the shed.</div></button>
-                <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: As she approached the dark alley, all sounds <strong>- the drone of traffic, the babble of tourists -</strong> ceased, and the figure emerged from the shadows.</div></button>
-                <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
-                <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
-                <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
-                <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: <strong>From above</strong>, the city glittered like scattered jewels; <strong>from below</strong>, traffic roared through narrow streets.</div></button>
-                <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old propspector, <strong>who spent his days beside the tranquil river where he once found a rare gem</strong>, smiled at memories it bought him.</div></button>
-                <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the <strong>document</strong> he retrieved from the solicitor's office in one hand, and <strong>a renewed sense of purpose</strong> in the other, Thomas rode home through the busy streets.</div></button>
-            </div>
+                <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Action sentences</strong>Avoid: went, got, did, made, saw etc. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
+                <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Description sentences</strong>Help the reader see the character and scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
+                <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
+                <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
+                <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
+                <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
 
-            <div class="tool-grid" id="gridDevices">
-                <button class="tooltip-btn">SIMILE <div class="tooltip-pop"><strong>Simile</strong>Compare using “like” or “as”.<br><br>&bull; The moon hung above the paddock like a silver coin.<br>&bull; Cold wind cut across the field like a sharpened blade.<br>&bull; The playground roared like a stadium after the bell rang.<br>&bull; Dust rose behind the bike like a ghostly cloud.<br>&bull; His voice cracked like dry wood in a fire.</div></button>
-                <button class="tooltip-btn">METAPHOR <div class="tooltip-pop"><strong>Metaphor</strong>Say one thing is another.<br><br>&bull; The city at night was a river of light.<br>&bull; The classroom was a pressure cooker before the exam.<br>&bull; Her mind was a locked vault.<br>&bull; The desert was an endless ocean of sand.<br>&bull; His anger was a storm building on the horizon.</div></button>
-                <button class="tooltip-btn">IMAGERY <div class="tooltip-pop"><strong>Imagery</strong>Use strong sensory description.<br><br>&bull; Warm sunlight spilled across the dusty oval.<br>&bull; Salt wind stung his face as waves hammered the rocks.<br>&bull; The forest floor smelled of wet leaves and dark soil.<br>&bull; Frost glittered on the fence wires in the pale morning light.<br>&bull; The engine coughed, rattled, and shuddered to life.</div></button>
-                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions.<br><br>&bull; The old house groaned as wind shoved against the walls.<br>&bull; The river whispered over the smooth stones.<br>&bull; The storm clouds marched across the sky.<br>&bull; The rusty gate complained every time it opened.<br>&bull; The shadows crept across the empty road.</div></button>
-                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Repeat “and” for intensity.<br><br>&bull; Smoke curled and drifted and thickened across the paddock.<br>&bull; He ran and stumbled and scrambled up the hill.<br>&bull; The wind howled and rattled and slammed the loose shutters.<br>&bull; The crowd shouted and pushed and surged toward the gate.<br>&bull; Rain hammered the roof and the windows and the tin gutters.</div></button>
-                <button class="tooltip-btn">ASYNDETON <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed.<br><br>&bull; Boots pounded, breath burned, fear surged.<br>&bull; The siren wailed, doors slammed, engines roared.<br>&bull; Leaves rustled, branches cracked, footsteps approached.<br>&bull; He turned, ran, vanished into the fog.<br>&bull; Wind rose, clouds gathered, thunder rolled.</div></button>
-                <button class="tooltip-btn">SYNECDOCHE <div class="tooltip-pop"><strong>Synecdoche</strong>A part represents the whole.<br><br>&bull; All eyes turned to the stage.<br>&bull; New wheels rolled into the driveway.<br>&bull; More hands were needed to lift the boat.<br>&bull; The captain called for every head on deck.<br>&bull; The crowd waited for fresh legs to enter the game.</div></button>
-                <button class="tooltip-btn">HYPERBOLE <div class="tooltip-pop"><strong>Hyperbole</strong>Extreme exaggeration.<br><br>&bull; The backpack weighed a ton.<br>&bull; I waited a thousand years for the bell.<br>&bull; The heat could melt the road.<br>&bull; He ran faster than lightning across the field.<br>&bull; The queue stretched to the end of the world.</div></button>
-                <button class="tooltip-btn">ALLITERAT <div class="tooltip-pop"><strong>Alliteration</strong>Repeated starting sounds.<br><br>&bull; Silent shadows slid across the street.<br>&bull; Blazing bonfires burned beside the beach.<br>&bull; Wild wind whipped across the water.<br>&bull; Cold clouds crept over the canyon.<br>&bull; Dusty dirt drifted down the track.</div></button>
-                <button class="tooltip-btn">CONTRAST <div class="tooltip-pop"><strong>Contrast (Antithesis)</strong>Opposing ideas side-by-side.<br><br>&bull; Above, the stars glittered; below, the city roared.<br>&bull; Outside, the storm raged; inside, the room stayed silent.<br>&bull; Some ran forward, others froze in fear.<br>&bull; The road ahead glowed, the forest behind darkened.<br>&bull; Hope rose, fear lingered.</div></button>
-            </div>
-            
-        </div>
-        <button class="drawer-tab" onclick="toggleTools()">
-            <span style="font-size: 0.8rem;">🛠️</span>
-            <span class="tab-text">TOOLS</span>
-        </button>
-    </div>
+                <div class="flex-break"></div>
+
+                <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
+                <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With <u>muddy boots</u>, a <u>torn sleeve</u>, and <u>blood</u> pounding in his ears, Tyler staggered into the shed.</div></button>
+                <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: As she approached the dark alley, all sounds <strong>- the drone of traffic, the babble of tourists -</strong> ceased, and the figure emerged from the shadows.</div></button>
+                <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
+                <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
+                <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
+                <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: <strong>From above</strong>, the city glittered like scattered jewels; <strong>from below</strong>, traffic roared through narrow streets.</div></button>
+                <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old propspector, <strong>who spent his days beside the tranquil river where he once found a rare gem</strong>, smiled at memories it bought him.</div></button>
+                <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the <strong>document</strong> he retrieved from the solicitor's office in one hand, and <strong>a renewed sense of purpose</strong> in the other, Thomas rode home through the busy streets.</div></button>
+            </div>
+
+            <div class="tool-grid" id="gridDevices">
+                <button class="tooltip-btn">SIMILE <div class="tooltip-pop"><strong>Simile</strong>Compare using “like” or “as”.<br><br>&bull; The moon hung above the paddock like a silver coin.<br>&bull; Cold wind cut across the field like a sharpened blade.<br>&bull; The playground roared like a stadium after the bell rang.<br>&bull; Dust rose behind the bike like a ghostly cloud.<br>&bull; His voice cracked like dry wood in a fire.</div></button>
+                <button class="tooltip-btn">METAPHOR <div class="tooltip-pop"><strong>Metaphor</strong>Say one thing is another.<br><br>&bull; The city at night was a river of light.<br>&bull; The classroom was a pressure cooker before the exam.<br>&bull; Her mind was a locked vault.<br>&bull; The desert was an endless ocean of sand.<br>&bull; His anger was a storm building on the horizon.</div></button>
+                <button class="tooltip-btn">IMAGERY <div class="tooltip-pop"><strong>Imagery</strong>Use strong sensory description.<br><br>&bull; Warm sunlight spilled across the dusty oval.<br>&bull; Salt wind stung his face as waves hammered the rocks.<br>&bull; The forest floor smelled of wet leaves and dark soil.<br>&bull; Frost glittered on the fence wires in the pale morning light.<br>&bull; The engine coughed, rattled, and shuddered to life.</div></button>
+                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions.<br><br>&bull; The old house groaned as wind shoved against the walls.<br>&bull; The river whispered over the smooth stones.<br>&bull; The storm clouds marched across the sky.<br>&bull; The rusty gate complained every time it opened.<br>&bull; The shadows crept across the empty road.</div></button>
+                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Repeat “and” for intensity.<br><br>&bull; Smoke curled and drifted and thickened across the paddock.<br>&bull; He ran and stumbled and scrambled up the hill.<br>&bull; The wind howled and rattled and slammed the loose shutters.<br>&bull; The crowd shouted and pushed and surged toward the gate.<br>&bull; Rain hammered the roof and the windows and the tin gutters.</div></button>
+                <button class="tooltip-btn">ASYNDETON <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed.<br><br>&bull; Boots pounded, breath burned, fear surged.<br>&bull; The siren wailed, doors slammed, engines roared.<br>&bull; Leaves rustled, branches cracked, footsteps approached.<br>&bull; He turned, ran, vanished into the fog.<br>&bull; Wind rose, clouds gathered, thunder rolled.</div></button>
+                <button class="tooltip-btn">SYNECDOCHE <div class="tooltip-pop"><strong>Synecdoche</strong>A part represents the whole.<br><br>&bull; All eyes turned to the stage.<br>&bull; New wheels rolled into the driveway.<br>&bull; More hands were needed to lift the boat.<br>&bull; The captain called for every head on deck.<br>&bull; The crowd waited for fresh legs to enter the game.</div></button>
+                <button class="tooltip-btn">HYPERBOLE <div class="tooltip-pop"><strong>Hyperbole</strong>Extreme exaggeration.<br><br>&bull; The backpack weighed a ton.<br>&bull; I waited a thousand years for the bell.<br>&bull; The heat could melt the road.<br>&bull; He ran faster than lightning across the field.<br>&bull; The queue stretched to the end of the world.</div></button>
+                <button class="tooltip-btn">ALLITERAT <div class="tooltip-pop"><strong>Alliteration</strong>Repeated starting sounds.<br><br>&bull; Silent shadows slid across the street.<br>&bull; Blazing bonfires burned beside the beach.<br>&bull; Wild wind whipped across the water.<br>&bull; Cold clouds crept over the canyon.<br>&bull; Dusty dirt drifted down the track.</div></button>
+                <button class="tooltip-btn">CONTRAST <div class="tooltip-pop"><strong>Contrast (Antithesis)</strong>Opposing ideas side-by-side.<br><br>&bull; Above, the stars glittered; below, the city roared.<br>&bull; Outside, the storm raged; inside, the room stayed silent.<br>&bull; Some ran forward, others froze in fear.<br>&bull; The road ahead glowed, the forest behind darkened.<br>&bull; Hope rose, fear lingered.</div></button>
+            </div>
+            
+        </div>
+        <button class="drawer-tab" onclick="toggleTools()">
+            <span style="font-size: 0.8rem;">🛠️</span>
+            <span class="tab-text">TOOLS</span>
+        </button>
+    </div>
 </div>
 
 <script>
-    /* --- DATA & CONFIG --- */
-    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
-
-    const topics = [
-        "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
-        "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
-        "The Warning", "The Dare", "The Lie", "The Promise", "The Map", 
-        "The Last Bus", "The Code", "The Vault", "The Climb", "The Descent", 
-        "The Island", "The Ruins", "The Signal", "The Chase", "The Echo", 
-        "The Footsteps", "The Mirror", "The Box", "The Message", "The River", 
-        "The Forest", "The Cave", "The Fog", "The Bridge", "The Secret", 
-        "The Watcher", "The Return", "The Journey", "The Flight", "The Rescue", 
-        "The Alarm", "The Gate", "The Ticket", "The Compass", "The Lantern", 
-        "The Train", "The Letter", "The Window", "The Trap", "The Choice", 
-        "The Illusion", "The Arrival"
-    ];
-    
-    let lessonSets = [
-        { example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", author: "Sarah, Year 5", tip: "Use an em-dash — like this — to add extra detail mid-sentence." },
-        { example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", author: "James, Year 6", tip: "Start with an -ing word followed by three past-tense verbs for high energy!" }
-    ];
-
-    const skillDefs = [
-        { id: "starts", name: "Sentence Starts", match: /Sentence Starts/i },
-        { id: "verbs", name: "Active Verbs", match: /Active Verbs/i },
-        { id: "vocab", name: "Vocabulary", match: /Vocabulary Strength/i },
-        { id: "variety", name: "Sentence Variety", match: /Sentence Variety/i },
-        { id: "structure", name: "Story Structure", match: /Story Structure/i },
-        { id: "repetition", name: "Word Choice", match: /Word Choice/i },
-        { id: "stopwords", name: "Stop Words", match: /Stop Word/i },
-        { id: "grammar", name: "Punctuation", match: /Punctuation/i }
-    ];
-
-    const titles = [
-        { xp: 0, name: "Novice Ink-Spiller" },
-        { xp: 100, name: "Apprentice Scribe" },
-        { xp: 300, name: "Journeyman Writer" },
-        { xp: 700, name: "Adept Storyteller" },
-        { xp: 1300, name: "Master of the Inkwell" },
-        { xp: 2000, name: "Grandmaster Pen" }
-    ];
-
-    /* --- SPELLBOOK DATA --- */
-    const authorStarts = {
-        novice: [
-            { category: "Time shifts", phrases: ["After a long pause,", "In that moment,", "Moments later,", "Within seconds,", "Before anyone noticed,"] },
-            { category: "Discovery", phrases: ["From the edge of the clearing,", "Just beyond the gate,", "Out of the corner of his eye,", "Beneath the broken fence,", "Across the empty yard,"] },
-            { category: "Realisation", phrases: ["Suddenly aware that,", "For the first time,", "Only then did he realise,", "At last he understood,", "Without warning,"] },
-            { category: "Movement", phrases: ["Stepping forward,", "Racing across the yard,", "Gripping the handle tightly,", "Ducking beneath the branch,", "Pushing the door open,"] },
-            { category: "Atmosphere", phrases: ["In the fading light,", "Beneath the dark clouds,", "In the heavy silence,", "Through the drifting fog,", "Under the pale moon,"] },
-            { category: "Suspense", phrases: ["For one uneasy moment,", "With a sudden jolt of fear,", "Heart pounding wildly,", "Holding his breath,", "Listening carefully,"] },
-            { category: "Character emotion", phrases: ["With growing confidence,", "With quiet determination,", "With a nervous glance,", "With a burst of courage,", "With a sinking feeling,"] },
-            { category: "Reaction", phrases: ["Without thinking,", "Almost immediately,", "Before he could stop himself,", "In a flash of panic,", "With a startled gasp,"] }
-        ],
-        master: [
-            { category: "Reflective", phrases: ["As if waking from a dream,", "For reasons he could not explain,", "With the strange certainty that,", "Against every instinct,", "In a way that felt inevitable,"] },
-            { category: "Observation", phrases: ["From where she stood,", "Across the silent valley,", "Between the leaning buildings,", "Along the narrow track,", "At the far end of the corridor,"] },
-            { category: "Memory", phrases: ["For years he had avoided,", "Since that distant summer,", "Long before anyone realised,", "Ever since that day,", "From childhood onward,"] },
-            { category: "Thought", phrases: ["If there was one thing he knew,", "For a brief uneasy second,", "Though he hated to admit it,", "Whether he liked it or not,", "As the realisation settled in,"] },
-            { category: "Contrast", phrases: ["Despite the growing danger,", "Even as the wind rose,", "Though the street seemed empty,", "While the others celebrated,", "Although nothing appeared wrong,"] },
-            { category: "Slow tension", phrases: ["With careful, deliberate steps,", "With the quiet patience of a hunter,", "With a growing sense of dread,", "With every nerve alert,", "With the world suddenly very still,"] },
-            { category: "Setting depth", phrases: ["Beyond the rusted gate,", "Beneath the towering cliffs,", "Along the abandoned railway line,", "At the edge of the forest,", "Under the flickering streetlight,"] },
-            { category: "Climactic moment", phrases: ["In a moment of desperation,", "With nothing left to lose,", "As the final seconds slipped away,", "Just before everything changed,", "At the last possible moment,"] }
-        ]
-    };
-
-    /* --- PERSISTENT STATE --- */
-    let currentMode = 'mission';
-    const stateKey = "mrCMightyPens_v17_xp";
-
-    function getWeekKey() {
-        const now = new Date();
-        const start = new Date(now);
-        const day = start.getDay();
-        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
-        start.setDate(diff);
-        start.setHours(0, 0, 0, 0);
-        return start.toISOString().slice(0, 10);
-    }
-    
-    let appState = JSON.parse(localStorage.getItem(stateKey)) || {
-        xp: {}, 
-        checksUsed: 0, 
-        emailSent: false, 
-        lastReset: getWeekKey()
-    };
-    
-    skillDefs.forEach(s => { if(appState.xp[s.id] === undefined) appState.xp[s.id] = 0; });
-
-    function save() { 
-        if (appState.lastReset !== getWeekKey()) {
-            appState.checksUsed = 0;
-            appState.emailSent = false;
-            appState.lastReset = getWeekKey();
-        }
-        localStorage.setItem(stateKey, JSON.stringify(appState)); 
-    }
-
-    function generateCode() {
-        const xpArray = skillDefs.map(def => appState.xp[def.id] || 0);
-        return `MP-${btoa(xpArray.join('-')).replace(/=/g, '')}`;
-    }
-
-    function processLoadCode() {
-        let codeStr = document.getElementById("inputCode").value.trim();
-        if (!codeStr.startsWith("MP-")) { showToast("❌ Invalid format!"); return; }
-        try {
-            const rawStr = atob(codeStr.substring(3));
-            const xpArray = rawStr.split('-');
-            if (xpArray.length === skillDefs.length) {
-                skillDefs.forEach((def, i) => { appState.xp[def.id] = parseInt(xpArray[i]) || 0; });
-                save();
-                renderCrowns();
-                toggleSaveModal(false);
-                showToast("🔓 XP Progress Loaded!");
-            }
-        } catch(e) { showToast("❌ Invalid Code!"); }
-    }
-
-    function toggleSaveModal(show) {
-        if(show) {
-            document.getElementById("displayCode").value = generateCode();
-            document.getElementById("saveModal").style.display = "flex";
-        } else {
-            document.getElementById("saveModal").style.display = "none";
-        }
-    }
-
-    /* --- LOCAL WRITING CHECK MODULE --- */
-    const LOCAL_RULES = {
-        minWords: 50,
-        maxWords: 150,
-        maxBadStarts: 3,
-        maxWeakVerbs: 8,
-        maxBasicWords: 4,
-        maxRepeatWords: 6,
-        maxStopWordRatio: 0.45,
-        minSentenceCount: 3,
-        minUniqueStarts: 3
-    };
-
-    const BAD_STARTS = [
-        "the", "it", "a", "an", "i", "my", "we", "our",
-        "he", "she", "they", "this", "these", "those", "there", "then"
-    ];
-
-    const WEAK_VERBS = [
-        "was", "were", "is", "are", "has", "had", "have", "be", "been", "being"
-    ];
-
-    const BASIC_WORDS = [
-        "got", "went", "very", "really", "stuff", "things", "nice", "good", "bad", "big", "little"
-    ];
-
-    const STOP_WORDS = [
-        "the", "and", "to", "for", "it", "but", "of", "with", "on", "at",
-        "in", "a", "an", "is", "was", "were", "are", "that", "this", "they",
-        "he", "she", "as", "by", "from", "or", "be", "been", "being", "have", "has", "had",
-        "i", "my", "we", "our", "there", "then"
-    ];
-
-    function splitSentences(text) {
-        return text
-            .split(/[.!?]+/)
-            .map(s => s.trim())
-            .filter(Boolean);
-    }
-
-    function getWords(text) {
-        return text.match(/[a-zA-Z']+/g) || [];
-    }
-
-    function getLowerWords(text) {
-        return getWords(text).map(w => w.toLowerCase());
-    }
-
-    function analyseLocalWriting(text) {
-        const words = getLowerWords(text);
-        const sentences = splitSentences(text);
-        const wordCount = words.length;
-
-        const sentenceStarts = sentences.map(sentence => {
-            const firstWord = (sentence.match(/[a-zA-Z']+/) || [""])[0].toLowerCase();
-            return firstWord;
-        });
-
-        const badStarts = sentenceStarts.filter(w => BAD_STARTS.includes(w));
-        const weakVerbHits = words.filter(w => WEAK_VERBS.includes(w));
-        const basicWordHits = words.filter(w => BASIC_WORDS.includes(w));
-        const stopWordHits = words.filter(w => STOP_WORDS.includes(w));
-        const stopWordRatio = wordCount ? stopWordHits.length / wordCount : 0;
-
-        const freq = {};
-        for (const w of words) {
-            if (w.length >= 4 && !STOP_WORDS.includes(w)) {
-                freq[w] = (freq[w] || 0) + 1;
-            }
-        }
-
-        const repeatedWords = Object.entries(freq)
-            .filter(([, count]) => count >= 3)
-            .sort((a, b) => b[1] - a[1]);
-
-        const uniqueStarts = new Set(sentenceStarts.filter(Boolean)).size;
-        const issues = [];
-
-        if (wordCount < LOCAL_RULES.minWords) {
-            issues.push({
-                key: "length-short",
-                severity: "block",
-                message: `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`
-            });
-        }
-
-        if (wordCount > LOCAL_RULES.maxWords) {
-            issues.push({
-                key: "length-long",
-                severity: "block",
-                message: `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`
-            });
-        }
-
-        if (sentences.length < LOCAL_RULES.minSentenceCount) {
-            issues.push({
-                key: "sentence-count",
-                severity: "block",
-                message: `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`
-            });
-        }
-
-        if (badStarts.length > LOCAL_RULES.maxBadStarts) {
-            issues.push({
-                key: "bad-starts",
-                severity: "block",
-                message: `Too many weak sentence starts (${badStarts.length}). Cut back on starts like The, It, A, An, I, My, We and They.`
-            });
-        } else if (badStarts.length > 0) {
-            issues.push({
-                key: "bad-starts-warning",
-                severity: "warn",
-                message: `You have ${badStarts.length} weak sentence start${badStarts.length === 1 ? "" : "s"}. Try stronger openings.`
-            });
-        }
-
-        if (uniqueStarts < LOCAL_RULES.minUniqueStarts) {
-            issues.push({
-                key: "start-variety",
-                severity: "warn",
-                message: `Your sentence openings are too similar. Mix them up more.`
-            });
-        }
-
-        if (weakVerbHits.length > LOCAL_RULES.maxWeakVerbs) {
-            issues.push({
-                key: "weak-verbs",
-                severity: "block",
-                message: `Too many helper verbs (${weakVerbHits.length}). Cut back on was, were, is, are, has and had.`
-            });
-        } else if (weakVerbHits.length > 4) {
-            issues.push({
-                key: "weak-verbs-warning",
-                severity: "warn",
-                message: `You are leaning on helper verbs a bit too much. Try stronger action verbs.`
-            });
-        }
-
-        if (basicWordHits.length > LOCAL_RULES.maxBasicWords) {
-            issues.push({
-                key: "basic-words",
-                severity: "block",
-                message: `Too many basic words (${basicWordHits.length}). Replace words like got, went, very, really, stuff and things.`
-            });
-        } else if (basicWordHits.length > 1) {
-            issues.push({
-                key: "basic-words-warning",
-                severity: "warn",
-                message: `Some vocabulary is too basic. Try sharper words.`
-            });
-        }
-
-        if (stopWordRatio > LOCAL_RULES.maxStopWordRatio) {
-            issues.push({
-                key: "stop-words",
-                severity: "block",
-                message: `Too many stop words. Tighten the paragraph to make it stronger.`
-            });
-        } else if (stopWordRatio > 0.38) {
-            issues.push({
-                key: "stop-words-warning",
-                severity: "warn",
-                message: `This paragraph could be tightened. There are quite a lot of common filler words.`
-            });
-        }
-
-        if (repeatedWords.length > 0) {
-            const topRepeated = repeatedWords.slice(0, 3);
-            const totalHeavyRepeats = topRepeated.reduce((sum, [, count]) => sum + count, 0);
-
-            if (totalHeavyRepeats > LOCAL_RULES.maxRepeatWords) {
-                issues.push({
-                    key: "repetition",
-                    severity: "block",
-                    message: `Too much repetition. Words such as ${topRepeated.map(([w]) => w).join(", ")} appear too often.`
-                });
-            } else {
-                issues.push({
-                    key: "repetition-warning",
-                    severity: "warn",
-                    message: `Watch repetition. You use ${topRepeated.map(([w]) => w).join(", ")} several times.`
-                });
-            }
-        }
-
-        const blockIssues = issues.filter(i => i.severity === "block");
-        const warnIssues = issues.filter(i => i.severity === "warn");
-
-        let score = 100;
-        score -= blockIssues.length * 18;
-        score -= warnIssues.length * 7;
-        score = Math.max(0, score);
-
-        return {
-            wordCount,
-            sentences: sentences.length,
-            sentenceStarts,
-            badStarts,
-            weakVerbHits,
-            basicWordHits,
-            repeatedWords,
-            stopWordRatio,
-            issues,
-            blockIssues,
-            warnIssues,
-            passForMission: blockIssues.length === 0,
-            score
-        };
-    }
-
-    function buildLocalReport(report, mode = "practice") {
-        const lines = [];
-
-        lines.push(mode === "mission" ? "Local Check Complete — before AI feedback" : "Practice Mode Local Check");
-        lines.push("");
-        lines.push(`Words: ${report.wordCount}`);
-        lines.push(`Sentences: ${report.sentences}`);
-        lines.push(`Local Score: ${report.score}/100`);
-        lines.push("");
-
-        if (report.issues.length === 0) {
-            lines.push("Booyar! This is strong enough to pass the local check.");
-            lines.push("Nice work here. Your paragraph looks ready.");
-        } else {
-            if (report.blockIssues.length) {
-                lines.push("Fix these first:");
-                report.blockIssues.forEach(issue => lines.push(`• ${issue.message}`));
-                lines.push("");
-            }
-
-            if (report.warnIssues.length) {
-                lines.push("Quick improvements:");
-                report.warnIssues.forEach(issue => lines.push(`• ${issue.message}`));
-                lines.push("");
-            }
-        }
-
-        if (report.repeatedWords.length) {
-            const sample = report.repeatedWords
-                .slice(0, 5)
-                .map(([word, count]) => `${word} (${count})`)
-                .join(", ");
-            lines.push(`Repeated words spotted: ${sample}`);
-            lines.push("");
-        }
-
-        lines.push(report.passForMission
-            ? "This paragraph passes the local gate."
-            : "This paragraph is not ready for Mr C's feedback yet.");
-
-        return lines.join("\n");
-    }
-
-    function showLocalOverlay(report, mode) {
-        document.getElementById("resultOverlay").style.display = "flex";
-        document.getElementById("resultOverlay").scrollTop = 0; 
-        document.getElementById("resultText").innerText = buildLocalReport(report, mode);
-        document.getElementById("copyBtn").style.display = "none";
-    }
-
-    /* --- FIREWORKS & CELEBRATION LOGIC --- */
-    function triggerCelebration(xp, isLevelUp) {
-        const overlay = document.getElementById("celebrationOverlay");
-        const box = document.getElementById("celebrationBox");
-        const text = document.getElementById("celebrationText");
-
-        overlay.style.display = "flex";
-        text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
-        box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
-        
-        let sprayTimer = setInterval(() => {
-            const buckets = ['20%', '50%', '80%']; 
-            buckets.forEach(position => {
-                for(let i=0; i<20; i++) { 
-                    createFirework(position); 
-                }
-            });
-        }, 50); 
-
-        setTimeout(() => clearInterval(sprayTimer), 3500);
-
-        setTimeout(() => {
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-                overlay.style.display = "none";
-                overlay.style.opacity = "1";
-            }, 500);
-        }, 4500);
-    }
-
-    function createFirework(startX) {
-        const f = document.createElement('div');
-        f.className = 'firework';
-        
-        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9', '#ffffff'];
-        f.style.background = colors[Math.floor(Math.random()*colors.length)];
-        f.style.left = startX; 
-        
-        const spreadX = (Math.random() - 0.5) * 300; 
-        const shootY = -(Math.random() * 400 + 300); 
-        
-        f.style.setProperty('--x', `${spreadX}px`);
-        f.style.setProperty('--y', `${shootY}px`);
-        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.6}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
-        
-        document.getElementById("celebrationBox").appendChild(f);
-        setTimeout(() => f.remove(), 1500);
-    }
-
-    /* --- LOGIC ENGINE --- */
-    function renderCrowns() {
-        save();
-        
-        // Force-fix any glitched data from our 999 developer hack
-        if (appState.checksUsed < 0 || appState.checksUsed > 3) {
-            appState.checksUsed = 0;
-            save(); // ensure the fix is saved permanently
-        }
-
-        let totalXP = 0;
-        const grid = document.getElementById("crownGrid");
-        grid.innerHTML = skillDefs.map(def => {
-            const xp = appState.xp[def.id] || 0;
-            totalXP += xp;
-            const fill = xp > 0 ? "#ffd700" : "rgba(230, 210, 150, 0.3)";
-            return `
-            <div class="crown-wrapper">
-                <div class="crown-tooltip">${def.name}: ${xp} XP</div>
-                <svg class="crown-svg" viewBox="0 0 100 80">
-                    <path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" fill="${fill}" stroke="${xp > 0 ? '#b8860b' : '#8b6508'}" stroke-width="3" stroke-linejoin="round"/>
-                </svg>
-                <div class="crown-xp">${xp}</div>
-            </div>`;
-        }).join("");
-        
-        let currentTitle = titles[0];
-        let nextTitle = null;
-        for(let i = titles.length - 1; i >= 0; i--) {
-            if(totalXP >= titles[i].xp) {
-                currentTitle = titles[i];
-                nextTitle = titles[i+1] || null;
-                break;
-            }
-        }
-
-        document.getElementById("playerTitle").innerText = currentTitle.name;
-
-        if (nextTitle) {
-            const progress = totalXP - currentTitle.xp;
-            const percent = (progress / (nextTitle.xp - currentTitle.xp)) * 100;
-            document.getElementById("xpFill").style.width = `${percent}%`;
-            document.getElementById("xpText").innerText = `LEVEL UP IN ${nextTitle.xp - totalXP} XP`;
-        } else {
-            document.getElementById("xpFill").style.width = `100%`;
-            document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
-        }
-
-        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
-
-        if (currentMode === 'mission') {
-            document.getElementById("checksLeft").innerText = `${checksRemaining} Checks left this week`;
-        } else {
-            document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
-        }
-    }
-
-    function handleCheck() {
-        const text = document.getElementById("paragraph").value.trim();
-        const report = analyseLocalWriting(text);
-
-        if (currentMode === 'practice') {
-            showLocalOverlay(report, "practice");
-            maybeLevelUpPractice();
-            return;
-        }
-
-        if (appState.checksUsed >= 3) { 
-            showToast("No Mr C feedbacks left this week. Use Practice Mode.");
-            return;
-        }
-
-        if (!report.passForMission) {
-            showLocalOverlay(report, "mission");
-            showToast("Fix the weaknesses before using Mr C's feedback.");
-            return;
-        }
-
-        appState.checksUsed++;
-        save();
-        renderCrowns();
-        callAI(text);
-    }
-
-    async function callAI(text) {
-        const overlay = document.getElementById("resultOverlay");
-        const resText = document.getElementById("resultText");
-        const copyBtn = document.getElementById("copyBtn");
-
-        overlay.style.display = "flex";
-        document.getElementById("resultOverlay").scrollTop = 0;
-        copyBtn.style.display = "inline-flex";
-        resText.innerText = "Connecting to the Inkwell... 🧐";
-
-        try {
-            const response = await fetch("/api/feedback", {
-                method: "POST", 
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text, topic: document.getElementById("topicText").innerText })
-            });
-            const data = await response.json();
-            resText.innerText = data.feedback;
-            
-            if (response.ok && data.feedback) {
-                let totalGained = 0;
-                let oldTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-
-                skillDefs.forEach((def) => {
-                    const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
-                    const match = data.feedback.match(regex);
-                    if (match && match[1]) {
-                        const stars = match[1].length;
-                        appState.xp[def.id] = (appState.xp[def.id] || 0) + stars;
-                        totalGained += stars;
-                    }
-                });
-
-                if (totalGained > 0) {
-                    let newTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-                    let leveledUp = titles.some(t => oldTotalXP < t.xp && newTotalXP >= t.xp);
-
-                    triggerCelebration(totalGained, leveledUp);
-
-                    setTimeout(() => {
-                        save();
-                        renderCrowns(); 
-                        showToast(`🌟 +${totalGained} XP Saved!`);
-
-                        setTimeout(() => {
-                            skillDefs.forEach((def, index) => {
-                                const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
-                                if (data.feedback.match(regex)) {
-                                    const crowns = document.querySelectorAll('.crown-wrapper');
-                                    if (crowns[index]) {
-                                        crowns[index].classList.add('crown-celebrate');
-                                        setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1200);
-                                    }
-                                }
-                            });
-                        }, 1000); 
-                    }, 4000); 
-                }
-            }
-        } catch (error) {
-            copyBtn.style.display = "none";
-            resText.innerText = "System offline. Keep writing!";
-        }
-    }
-
-    function maybeLevelUpPractice() {
-        const count = (document.getElementById("paragraph").value.trim().match(/[a-z']+/gi) || []).length;
-        if (count < 50 || count > 150) return;
-
-        const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
-        for (let i = 0; i < 2; i++) {
-            const targetIndex = skillDefs.findIndex(s => s.id === shuffled[i].id);
-            setTimeout(() => {
-                const crowns = document.querySelectorAll('.crown-wrapper');
-                if (crowns[targetIndex]) {
-                    crowns[targetIndex].classList.add('crown-celebrate');
-                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1200);
-                }
-            }, 150);
-        }
-        
-        showToast("Great practice! Skills sparkling! ✨");
-    }
-
-    function setMode(mode) {
-        currentMode = mode;
-        document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
-        document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
-        document.getElementById("topicText").innerText =
-            mode === 'mission'
-                ? "Weekly Mission: " + topics[Math.floor(new Date().getDate() % topics.length)]
-                : "Practice Mode: Local Writing Check";
-        renderCrowns();
-    }
-
-    /* --- THE NEW COPY BUTTON LOGIC --- */
-    function copyMission() {
-        const text = document.getElementById("paragraph").value.trim();
-        const feedback = document.getElementById("resultText").innerText;
-        const rank = document.getElementById("playerTitle").innerText;
-        
-        const totalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-
-        const clipboardText = `--- MIGHTY PENS MISSION ---\n\n` +
-                              `AUTHOR RANK: ${rank} (${totalXP} XP)\n\n` +
-                              `MY WRITING:\n${text}\n\n` +
-                              `--- MR C'S FEEDBACK ---\n${feedback}`;
-
-        navigator.clipboard.writeText(clipboardText).then(() => {
-            showToast("Mission Copied! Ready to paste. 📋");
-        }).catch(err => {
-            showToast("Clipboard blocked! Please highlight and copy manually.");
-        });
-        
-        appState.emailSent = true;
-        save();
-    }
-
-    function toggleTools() {
-        document.getElementById("toolsDrawer").classList.toggle("open");
-    }
-
-    // Toggle Drawer Tabs Function
-    function switchDrawerTab(tab) {
-        document.getElementById('tabStory').classList.toggle('active', tab === 'story');
-        document.getElementById('tabDevices').classList.toggle('active', tab === 'devices');
-        document.getElementById('gridStory').classList.toggle('active-grid', tab === 'story');
-        document.getElementById('gridDevices').classList.toggle('active-grid', tab === 'devices');
-    }
-
-    function closeFeedback() {
-        document.getElementById("resultOverlay").style.display = "none";
-    }
-
-    function showToast(t) {
-        const area = document.getElementById("toastArea");
-        const toast = document.createElement("div");
-        toast.className = "toast";
-        toast.innerText = t;
-        area.appendChild(toast);
-        setTimeout(() => { toast.remove(); }, 3500);
-    }
-
-    function rotateLesson() {
-        const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
-        document.getElementById("starText").innerText = `"${set.example}"`;
-        document.getElementById("starAuthor").innerText = `- ${set.author}`;
-        document.getElementById("proTip").innerText = set.tip;
-    }
-
-    // Load auto-saved draft on page load
-    window.addEventListener('DOMContentLoaded', () => {
-        const savedDraft = localStorage.getItem(stateKey + "_draft");
-        if (savedDraft) {
-            const textArea = document.getElementById("paragraph");
-            textArea.value = savedDraft;
-            textArea.dispatchEvent(new Event('input')); 
-        }
-        
-        // Initialize the Spellbook content
-        initSpellbook();
-    });
-
-    document.getElementById("paragraph").addEventListener("input", function() {
-        const count = (this.value.trim().match(/[a-z']+/gi) || []).length;
-        document.getElementById("wordCount").innerText = "Words: " + count;
-        document.getElementById("wordCount").style.color = (count < 50 || count > 150) ? "red" : "var(--text-muted)";
-        
-        // Auto-save the draft
-        localStorage.setItem(stateKey + "_draft", this.value);
-    });
-
-    // Close Tools Drawer if clicking outside of it
-    document.addEventListener('click', function(event) {
-        const drawer = document.getElementById("toolsDrawer");
-        if (drawer.classList.contains('open') && !drawer.contains(event.target) && !event.target.closest('.drawer-tab')) {
-            drawer.classList.remove('open');
-        }
-    });
-
-    /* --- SPELLBOOK JAVASCRIPT --- */
-    function initSpellbook() {
-        const noviceContainer = document.getElementById("noviceSpells");
-        const masterContainer = document.getElementById("masterSpells");
+    /* --- DATA & CONFIG --- */
+    const GOOGLE_SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTKAjQ06v_mM40OmdANoK-mEcSGop-Xx8lrNpurrKD_vMxOACOwDLTtFURx1o42y7-CRSY6pAAlpE1a/pubhtml'; 
+
+    const topics = [
+        "The Storm", "The Key", "The Escape", "The Discovery", "Lost", 
+        "The Whisper", "The Shadow", "The Stranger", "Overboard", "The Shortcut", 
+        "The Warning", "The Dare", "The Lie", "The Promise", "The Map", 
+        "The Last Bus", "The Code", "The Vault", "The Climb", "The Descent", 
+        "The Island", "The Ruins", "The Signal", "The Chase", "The Echo", 
+        "The Footsteps", "The Mirror", "The Box", "The Message", "The River", 
+        "The Forest", "The Cave", "The Fog", "The Bridge", "The Secret", 
+        "The Watcher", "The Return", "The Journey", "The Flight", "The Rescue", 
+        "The Alarm", "The Gate", "The Ticket", "The Compass", "The Lantern", 
+        "The Train", "The Letter", "The Window", "The Trap", "The Choice", 
+        "The Illusion", "The Arrival"
+    ];
+    
+    let lessonSets = [
+        { example: "The rusted gate groaned—a warning from the past—as Marcus lunged forward.", author: "Sarah, Year 5", tip: "Use an em-dash — like this — to add extra detail mid-sentence." },
+        { example: "Sprinting across the muddy field, he ducked, twisted, and dived behind the wall.", author: "James, Year 6", tip: "Start with an -ing word followed by three past-tense verbs for high energy!" }
+    ];
+
+    const skillDefs = [
+        { id: "starts", name: "Sentence Starts", match: /Sentence Starts/i },
+        { id: "verbs", name: "Active Verbs", match: /Active Verbs/i },
+        { id: "vocab", name: "Vocabulary", match: /Vocabulary Strength/i },
+        { id: "variety", name: "Sentence Variety", match: /Sentence Variety/i },
+        { id: "structure", name: "Story Structure", match: /Story Structure/i },
+        { id: "repetition", name: "Word Choice", match: /Word Choice/i },
+        { id: "stopwords", name: "Stop Words", match: /Stop Word/i },
+        { id: "grammar", name: "Punctuation", match: /Punctuation/i }
+    ];
+
+    const titles = [
+        { xp: 0, name: "Novice Ink-Spiller" },
+        { xp: 100, name: "Apprentice Scribe" },
+        { xp: 300, name: "Journeyman Writer" },
+        { xp: 700, name: "Adept Storyteller" },
+        { xp: 1300, name: "Master of the Inkwell" },
+        { xp: 2000, name: "Grandmaster Pen" }
+    ];
+
+    /* --- SPELLBOOK DATA --- */
+    const authorStarts = {
+        novice: [
+            { category: "Time shifts", phrases: ["After a long pause,", "In that moment,", "Moments later,", "Within seconds,", "Before anyone noticed,"] },
+            { category: "Discovery", phrases: ["From the edge of the clearing,", "Just beyond the gate,", "Out of the corner of his eye,", "Beneath the broken fence,", "Across the empty yard,"] },
+            { category: "Realisation", phrases: ["Suddenly aware that,", "For the first time,", "Only then did he realise,", "At last he understood,", "Without warning,"] },
+            { category: "Movement", phrases: ["Stepping forward,", "Racing across the yard,", "Gripping the handle tightly,", "Ducking beneath the branch,", "Pushing the door open,"] },
+            { category: "Atmosphere", phrases: ["In the fading light,", "Beneath the dark clouds,", "In the heavy silence,", "Through the drifting fog,", "Under the pale moon,"] },
+            { category: "Suspense", phrases: ["For one uneasy moment,", "With a sudden jolt of fear,", "Heart pounding wildly,", "Holding his breath,", "Listening carefully,"] },
+            { category: "Character emotion", phrases: ["With growing confidence,", "With quiet determination,", "With a nervous glance,", "With a burst of courage,", "With a sinking feeling,"] },
+            { category: "Reaction", phrases: ["Without thinking,", "Almost immediately,", "Before he could stop himself,", "In a flash of panic,", "With a startled gasp,"] }
+        ],
+        master: [
+            { category: "Reflective", phrases: ["As if waking from a dream,", "For reasons he could not explain,", "With the strange certainty that,", "Against every instinct,", "In a way that felt inevitable,"] },
+            { category: "Observation", phrases: ["From where she stood,", "Across the silent valley,", "Between the leaning buildings,", "Along the narrow track,", "At the far end of the corridor,"] },
+            { category: "Memory", phrases: ["For years he had avoided,", "Since that distant summer,", "Long before anyone realised,", "Ever since that day,", "From childhood onward,"] },
+            { category: "Thought", phrases: ["If there was one thing he knew,", "For a brief uneasy second,", "Though he hated to admit it,", "Whether he liked it or not,", "As the realisation settled in,"] },
+            { category: "Contrast", phrases: ["Despite the growing danger,", "Even as the wind rose,", "Though the street seemed empty,", "While the others celebrated,", "Although nothing appeared wrong,"] },
+            { category: "Slow tension", phrases: ["With careful, deliberate steps,", "With the quiet patience of a hunter,", "With a growing sense of dread,", "With every nerve alert,", "With the world suddenly very still,"] },
+            { category: "Setting depth", phrases: ["Beyond the rusted gate,", "Beneath the towering cliffs,", "Along the abandoned railway line,", "At the edge of the forest,", "Under the flickering streetlight,"] },
+            { category: "Climactic moment", phrases: ["In a moment of desperation,", "With nothing left to lose,", "As the final seconds slipped away,", "Just before everything changed,", "At the last possible moment,"] }
+        ]
+    };
+
+    /* --- PERSISTENT STATE --- */
+    let currentMode = 'mission';
+    const stateKey = "mrCMightyPens_v17_xp";
+
+    function getWeekKey() {
+        const now = new Date();
+        const start = new Date(now);
+        const day = start.getDay();
+        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
+        start.setDate(diff);
+        start.setHours(0, 0, 0, 0);
+        return start.toISOString().slice(0, 10);
+    }
+    
+    let appState = JSON.parse(localStorage.getItem(stateKey)) || {
+        xp: {}, 
+        checksUsed: 0, 
+        emailSent: false, 
+        lastReset: getWeekKey()
+    };
+    
+    skillDefs.forEach(s => { if(appState.xp[s.id] === undefined) appState.xp[s.id] = 0; });
+
+    function save() { 
+        if (appState.lastReset !== getWeekKey()) {
+            appState.checksUsed = 0;
+            appState.emailSent = false;
+            appState.lastReset = getWeekKey();
+        }
+        localStorage.setItem(stateKey, JSON.stringify(appState)); 
+    }
+
+    function generateCode() {
+        const xpArray = skillDefs.map(def => appState.xp[def.id] || 0);
+        return `MP-${btoa(xpArray.join('-')).replace(/=/g, '')}`;
+    }
+
+    function processLoadCode() {
+        let codeStr = document.getElementById("inputCode").value.trim();
+        if (!codeStr.startsWith("MP-")) { showToast("❌ Invalid format!"); return; }
+        try {
+            const rawStr = atob(codeStr.substring(3));
+            const xpArray = rawStr.split('-');
+            if (xpArray.length === skillDefs.length) {
+                skillDefs.forEach((def, i) => { appState.xp[def.id] = parseInt(xpArray[i]) || 0; });
+                save();
+                renderCrowns();
+                toggleSaveModal(false);
+                showToast("🔓 XP Progress Loaded!");
+            }
+        } catch(e) { showToast("❌ Invalid Code!"); }
+    }
+
+    function toggleSaveModal(show) {
+        if(show) {
+            document.getElementById("displayCode").value = generateCode();
+            document.getElementById("saveModal").style.display = "flex";
+        } else {
+            document.getElementById("saveModal").style.display = "none";
+        }
+    }
+
+    /* --- LOCAL WRITING CHECK MODULE --- */
+    const LOCAL_RULES = {
+        minWords: 50,
+        maxWords: 150,
+        maxBadStarts: 3,
+        maxWeakVerbs: 8,
+        maxBasicWords: 4,
+        maxRepeatWords: 6,
+        maxStopWordRatio: 0.45,
+        minSentenceCount: 3,
+        minUniqueStarts: 3
+    };
+
+    const BAD_STARTS = [
+        "the", "it", "a", "an", "i", "my", "we", "our",
+        "he", "she", "they", "this", "these", "those", "there", "then"
+    ];
+
+    const WEAK_VERBS = [
+        "was", "were", "is", "are", "has", "had", "have", "be", "been", "being"
+    ];
+
+    const BASIC_WORDS = [
+        "got", "went", "very", "really", "stuff", "things", "nice", "good", "bad", "big", "little"
+    ];
+
+    const STOP_WORDS = [
+        "the", "and", "to", "for", "it", "but", "of", "with", "on", "at",
+        "in", "a", "an", "is", "was", "were", "are", "that", "this", "they",
+        "he", "she", "as", "by", "from", "or", "be", "been", "being", "have", "has", "had",
+        "i", "my", "we", "our", "there", "then"
+    ];
+
+    function splitSentences(text) {
+        return text
+            .split(/[.!?]+/)
+            .map(s => s.trim())
+            .filter(Boolean);
+    }
+
+    function getWords(text) {
+        return text.match(/[a-zA-Z']+/g) || [];
+    }
+
+    function getLowerWords(text) {
+        return getWords(text).map(w => w.toLowerCase());
+    }
+
+    function analyseLocalWriting(text) {
+        const words = getLowerWords(text);
+        const sentences = splitSentences(text);
+        const wordCount = words.length;
+
+        const sentenceStarts = sentences.map(sentence => {
+            const firstWord = (sentence.match(/[a-zA-Z']+/) || [""])[0].toLowerCase();
+            return firstWord;
+        });
+
+        const badStarts = sentenceStarts.filter(w => BAD_STARTS.includes(w));
+        const weakVerbHits = words.filter(w => WEAK_VERBS.includes(w));
+        const basicWordHits = words.filter(w => BASIC_WORDS.includes(w));
+        const stopWordHits = words.filter(w => STOP_WORDS.includes(w));
+        const stopWordRatio = wordCount ? stopWordHits.length / wordCount : 0;
+
+        const freq = {};
+        for (const w of words) {
+            if (w.length >= 4 && !STOP_WORDS.includes(w)) {
+                freq[w] = (freq[w] || 0) + 1;
+            }
+        }
+
+        const repeatedWords = Object.entries(freq)
+            .filter(([, count]) => count >= 3)
+            .sort((a, b) => b[1] - a[1]);
+
+        const uniqueStarts = new Set(sentenceStarts.filter(Boolean)).size;
+        const issues = [];
+
+        if (wordCount < LOCAL_RULES.minWords) {
+            issues.push({
+                key: "length-short",
+                severity: "block",
+                message: `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`
+            });
+        }
+
+        if (wordCount > LOCAL_RULES.maxWords) {
+            issues.push({
+                key: "length-long",
+                severity: "block",
+                message: `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`
+            });
+        }
+
+        if (sentences.length < LOCAL_RULES.minSentenceCount) {
+            issues.push({
+                key: "sentence-count",
+                severity: "block",
+                message: `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`
+            });
+        }
+
+        if (badStarts.length > LOCAL_RULES.maxBadStarts) {
+            issues.push({
+                key: "bad-starts",
+                severity: "block",
+                message: `Too many weak sentence starts (${badStarts.length}). Cut back on starts like The, It, A, An, I, My, We and They.`
+            });
+        } else if (badStarts.length > 0) {
+            issues.push({
+                key: "bad-starts-warning",
+                severity: "warn",
+                message: `You have ${badStarts.length} weak sentence start${badStarts.length === 1 ? "" : "s"}. Try stronger openings.`
+            });
+        }
+
+        if (uniqueStarts < LOCAL_RULES.minUniqueStarts) {
+            issues.push({
+                key: "start-variety",
+                severity: "warn",
+                message: `Your sentence openings are too similar. Mix them up more.`
+            });
+        }
+
+        if (weakVerbHits.length > LOCAL_RULES.maxWeakVerbs) {
+            issues.push({
+                key: "weak-verbs",
+                severity: "block",
+                message: `Too many helper verbs (${weakVerbHits.length}). Cut back on was, were, is, are, has and had.`
+            });
+        } else if (weakVerbHits.length > 4) {
+            issues.push({
+                key: "weak-verbs-warning",
+                severity: "warn",
+                message: `You are leaning on helper verbs a bit too much. Try stronger action verbs.`
+            });
+        }
+
+        if (basicWordHits.length > LOCAL_RULES.maxBasicWords) {
+            issues.push({
+                key: "basic-words",
+                severity: "block",
+                message: `Too many basic words (${basicWordHits.length}). Replace words like got, went, very, really, stuff and things.`
+            });
+        } else if (basicWordHits.length > 1) {
+            issues.push({
+                key: "basic-words-warning",
+                severity: "warn",
+                message: `Some vocabulary is too basic. Try sharper words.`
+            });
+        }
+
+        if (stopWordRatio > LOCAL_RULES.maxStopWordRatio) {
+            issues.push({
+                key: "stop-words",
+                severity: "block",
+                message: `Too many stop words. Tighten the paragraph to make it stronger.`
+            });
+        } else if (stopWordRatio > 0.38) {
+            issues.push({
+                key: "stop-words-warning",
+                severity: "warn",
+                message: `This paragraph could be tightened. There are quite a lot of common filler words.`
+            });
+        }
+
+        if (repeatedWords.length > 0) {
+            const topRepeated = repeatedWords.slice(0, 3);
+            const totalHeavyRepeats = topRepeated.reduce((sum, [, count]) => sum + count, 0);
+
+            if (totalHeavyRepeats > LOCAL_RULES.maxRepeatWords) {
+                issues.push({
+                    key: "repetition",
+                    severity: "block",
+                    message: `Too much repetition. Words such as ${topRepeated.map(([w]) => w).join(", ")} appear too often.`
+                });
+            } else {
+                issues.push({
+                    key: "repetition-warning",
+                    severity: "warn",
+                    message: `Watch repetition. You use ${topRepeated.map(([w]) => w).join(", ")} several times.`
+                });
+            }
+        }
+
+        const blockIssues = issues.filter(i => i.severity === "block");
+        const warnIssues = issues.filter(i => i.severity === "warn");
+
+        let score = 100;
+        score -= blockIssues.length * 18;
+        score -= warnIssues.length * 7;
+        score = Math.max(0, score);
+
+        return {
+            wordCount,
+            sentences: sentences.length,
+            sentenceStarts,
+            badStarts,
+            weakVerbHits,
+            basicWordHits,
+            repeatedWords,
+            stopWordRatio,
+            issues,
+            blockIssues,
+            warnIssues,
+            passForMission: blockIssues.length === 0,
+            score
+        };
+    }
+
+    function buildLocalReport(report, mode = "practice") {
+        const lines = [];
+
+        lines.push(mode === "mission" ? "Local Check Complete — before AI feedback" : "Practice Mode Local Check");
+        lines.push("");
+        lines.push(`Words: ${report.wordCount}`);
+        lines.push(`Sentences: ${report.sentences}`);
+        lines.push(`Local Score: ${report.score}/100`);
+        lines.push("");
+
+        if (report.issues.length === 0) {
+            lines.push("Booyar! This is strong enough to pass the local check.");
+            lines.push("Nice work here. Your paragraph looks ready.");
+        } else {
+            if (report.blockIssues.length) {
+                lines.push("Fix these first:");
+                report.blockIssues.forEach(issue => lines.push(`• ${issue.message}`));
+                lines.push("");
+            }
+
+            if (report.warnIssues.length) {
+                lines.push("Quick improvements:");
+                report.warnIssues.forEach(issue => lines.push(`• ${issue.message}`));
+                lines.push("");
+            }
+        }
+
+        if (report.repeatedWords.length) {
+            const sample = report.repeatedWords
+                .slice(0, 5)
+                .map(([word, count]) => `${word} (${count})`)
+                .join(", ");
+            lines.push(`Repeated words spotted: ${sample}`);
+            lines.push("");
+        }
+
+        lines.push(report.passForMission
+            ? "This paragraph passes the local gate."
+            : "This paragraph is not ready for Mr C's feedback yet.");
+
+        return lines.join("\n");
+    }
+
+    function showLocalOverlay(report, mode) {
+        document.getElementById("resultOverlay").style.display = "flex";
+        document.getElementById("resultOverlay").scrollTop = 0; 
+        document.getElementById("resultText").innerText = buildLocalReport(report, mode);
+        document.getElementById("copyBtn").style.display = "none";
+    }
+
+    /* --- FIREWORKS & CELEBRATION LOGIC --- */
+    function triggerCelebration(xp, isLevelUp) {
+        const overlay = document.getElementById("celebrationOverlay");
+        const box = document.getElementById("celebrationBox");
+        const text = document.getElementById("celebrationText");
+
+        overlay.style.display = "flex";
+        text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
+        box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
+        
+        let sprayTimer = setInterval(() => {
+            const buckets = ['20%', '50%', '80%']; 
+            buckets.forEach(position => {
+                for(let i=0; i<20; i++) { 
+                    createFirework(position); 
+                }
+            });
+        }, 50); 
+
+        setTimeout(() => clearInterval(sprayTimer), 3500);
+
+        setTimeout(() => {
+            overlay.style.opacity = "0";
+            setTimeout(() => {
+                overlay.style.display = "none";
+                overlay.style.opacity = "1";
+            }, 500);
+        }, 4500);
+    }
+
+    function createFirework(startX) {
+        const f = document.createElement('div');
+        f.className = 'firework';
+        
+        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9', '#ffffff'];
+        f.style.background = colors[Math.floor(Math.random()*colors.length)];
+        f.style.left = startX; 
+        
+        const spreadX = (Math.random() - 0.5) * 300; 
+        const shootY = -(Math.random() * 400 + 300); 
+        
+        f.style.setProperty('--x', `${spreadX}px`);
+        f.style.setProperty('--y', `${shootY}px`);
+        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.6}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
+        
+        document.getElementById("celebrationBox").appendChild(f);
+        setTimeout(() => f.remove(), 1500);
+    }
+
+    /* --- LOGIC ENGINE --- */
+    function renderCrowns() {
+        save();
+        
+        // Force-fix any glitched data from our 999 developer hack
+        if (appState.checksUsed < 0 || appState.checksUsed > 3) {
+            appState.checksUsed = 0;
+            save(); // ensure the fix is saved permanently
+        }
+
+        let totalXP = 0;
+        const grid = document.getElementById("crownGrid");
+        grid.innerHTML = skillDefs.map(def => {
+            const xp = appState.xp[def.id] || 0;
+            totalXP += xp;
+            const fill = xp > 0 ? "#ffd700" : "rgba(230, 210, 150, 0.3)";
+            return `
+            <div class="crown-wrapper">
+                <div class="crown-tooltip">${def.name}: ${xp} XP</div>
+                <svg class="crown-svg" viewBox="0 0 100 80">
+                    <path d="M5,25 L25,45 L50,10 L75,45 L95,25 L88,75 L12,75 Z" fill="${fill}" stroke="${xp > 0 ? '#b8860b' : '#8b6508'}" stroke-width="3" stroke-linejoin="round"/>
+                </svg>
+                <div class="crown-xp">${xp}</div>
+            </div>`;
+        }).join("");
+        
+        let currentTitle = titles[0];
+        let nextTitle = null;
+        for(let i = titles.length - 1; i >= 0; i--) {
+            if(totalXP >= titles[i].xp) {
+                currentTitle = titles[i];
+                nextTitle = titles[i+1] || null;
+                break;
+            }
+        }
+
+        document.getElementById("playerTitle").innerText = currentTitle.name;
+
+        if (nextTitle) {
+            const progress = totalXP - currentTitle.xp;
+            const percent = (progress / (nextTitle.xp - currentTitle.xp)) * 100;
+            document.getElementById("xpFill").style.width = `${percent}%`;
+            document.getElementById("xpText").innerText = `LEVEL UP IN ${nextTitle.xp - totalXP} XP`;
+        } else {
+            document.getElementById("xpFill").style.width = `100%`;
+            document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
+        }
+
+        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
+
+        if (currentMode === 'mission') {
+            document.getElementById("checksLeft").innerText = `${checksRemaining} Checks left this week`;
+        } else {
+            document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
+        }
+    }
+
+    function handleCheck() {
+        const text = document.getElementById("paragraph").value.trim();
+        const report = analyseLocalWriting(text);
+
+        if (currentMode === 'practice') {
+            showLocalOverlay(report, "practice");
+            maybeLevelUpPractice();
+            return;
+        }
+
+        if (appState.checksUsed >= 3) { 
+            showToast("No Mr C feedbacks left this week. Use Practice Mode.");
+            return;
+        }
+
+        if (!report.passForMission) {
+            showLocalOverlay(report, "mission");
+            showToast("Fix the weaknesses before using Mr C's feedback.");
+            return;
+        }
+
+        appState.checksUsed++;
+        save();
+        renderCrowns();
+        callAI(text);
+    }
+
+    async function callAI(text) {
+        const overlay = document.getElementById("resultOverlay");
+        const resText = document.getElementById("resultText");
+        const copyBtn = document.getElementById("copyBtn");
+
+        overlay.style.display = "flex";
+        document.getElementById("resultOverlay").scrollTop = 0;
+        copyBtn.style.display = "inline-flex";
+        resText.innerText = "Connecting to the Inkwell... 🧐";
+
+        try {
+            const response = await fetch("/api/feedback", {
+                method: "POST", 
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ text, topic: document.getElementById("topicText").innerText })
+            });
+            const data = await response.json();
+            resText.innerText = data.feedback;
+            
+            if (response.ok && data.feedback) {
+                let totalGained = 0;
+                let oldTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
+
+                skillDefs.forEach((def) => {
+                    const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
+                    const match = data.feedback.match(regex);
+                    if (match && match[1]) {
+                        const stars = match[1].length;
+                        appState.xp[def.id] = (appState.xp[def.id] || 0) + stars;
+                        totalGained += stars;
+                    }
+                });
+
+                if (totalGained > 0) {
+                    let newTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
+                    let leveledUp = titles.some(t => oldTotalXP < t.xp && newTotalXP >= t.xp);
+
+                    triggerCelebration(totalGained, leveledUp);
+
+                    setTimeout(() => {
+                        save();
+                        renderCrowns(); 
+                        showToast(`🌟 +${totalGained} XP Saved!`);
+
+                        setTimeout(() => {
+                            skillDefs.forEach((def, index) => {
+                                const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
+                                if (data.feedback.match(regex)) {
+                                    const crowns = document.querySelectorAll('.crown-wrapper');
+                                    if (crowns[index]) {
+                                        crowns[index].classList.add('crown-celebrate');
+                                        setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1200);
+                                    }
+                                }
+                            });
+                        }, 1000); 
+                    }, 4000); 
+                }
+            }
+        } catch (error) {
+            copyBtn.style.display = "none";
+            resText.innerText = "System offline. Keep writing!";
+        }
+    }
+
+    function maybeLevelUpPractice() {
+        const count = (document.getElementById("paragraph").value.trim().match(/[a-z']+/gi) || []).length;
+        if (count < 50 || count > 150) return;
+
+        const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
+        for (let i = 0; i < 2; i++) {
+            const targetIndex = skillDefs.findIndex(s => s.id === shuffled[i].id);
+            setTimeout(() => {
+                const crowns = document.querySelectorAll('.crown-wrapper');
+                if (crowns[targetIndex]) {
+                    crowns[targetIndex].classList.add('crown-celebrate');
+                    setTimeout(() => crowns[targetIndex].classList.remove('crown-celebrate'), 1200);
+                }
+            }, 150);
+        }
+        
+        showToast("Great practice! Skills sparkling! ✨");
+    }
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
+        document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
+        document.getElementById("topicText").innerText =
+            mode === 'mission'
+                ? "Weekly Mission: " + topics[Math.floor(new Date().getDate() % topics.length)]
+                : "Practice Mode: Local Writing Check";
+        renderCrowns();
+    }
+
+    /* --- THE NEW COPY BUTTON LOGIC --- */
+    function copyMission() {
+        const text = document.getElementById("paragraph").value.trim();
+        const feedback = document.getElementById("resultText").innerText;
+        const rank = document.getElementById("playerTitle").innerText;
+        
+        const totalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
+
+        const clipboardText = `--- MIGHTY PENS MISSION ---\n\n` +
+                              `AUTHOR RANK: ${rank} (${totalXP} XP)\n\n` +
+                              `MY WRITING:\n${text}\n\n` +
+                              `--- MR C'S FEEDBACK ---\n${feedback}`;
+
+        navigator.clipboard.writeText(clipboardText).then(() => {
+            showToast("Mission Copied! Ready to paste. 📋");
+        }).catch(err => {
+            showToast("Clipboard blocked! Please highlight and copy manually.");
+        });
+        
+        appState.emailSent = true;
+        save();
+    }
+
+    function toggleTools() {
+        document.getElementById("toolsDrawer").classList.toggle("open");
+    }
+
+    // Toggle Drawer Tabs Function
+    function switchDrawerTab(tab) {
+        document.getElementById('tabStory').classList.toggle('active', tab === 'story');
+        document.getElementById('tabDevices').classList.toggle('active', tab === 'devices');
+        document.getElementById('gridStory').classList.toggle('active-grid', tab === 'story');
+        document.getElementById('gridDevices').classList.toggle('active-grid', tab === 'devices');
+    }
+
+    function closeFeedback() {
+        document.getElementById("resultOverlay").style.display = "none";
+    }
+
+    function showToast(t) {
+        const area = document.getElementById("toastArea");
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerText = t;
+        area.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 3500);
+    }
+
+    function rotateLesson() {
+        const set = lessonSets[Math.floor(Math.random() * lessonSets.length)];
+        document.getElementById("starText").innerText = `"${set.example}"`;
+        document.getElementById("starAuthor").innerText = `- ${set.author}`;
+        document.getElementById("proTip").innerText = set.tip;
+    }
+
+    // Load auto-saved draft on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedDraft = localStorage.getItem(stateKey + "_draft");
+        if (savedDraft) {
+            const textArea = document.getElementById("paragraph");
+            textArea.value = savedDraft;
+            textArea.dispatchEvent(new Event('input')); 
+        }
+        
+        // Initialize the Spellbook content
+        initSpellbook();
+    });
+
+    document.getElementById("paragraph").addEventListener("input", function() {
+        const count = (this.value.trim().match(/[a-z']+/gi) || []).length;
+        document.getElementById("wordCount").innerText = "Words: " + count;
+        document.getElementById("wordCount").style.color = (count < 50 || count > 150) ? "red" : "var(--text-muted)";
+        
+        // Auto-save the draft
+        localStorage.setItem(stateKey + "_draft", this.value);
+    });
+
+    // Close Tools Drawer if clicking outside of it
+    document.addEventListener('click', function(event) {
+        const drawer = document.getElementById("toolsDrawer");
+        if (drawer.classList.contains('open') && !drawer.contains(event.target) && !event.target.closest('.drawer-tab')) {
+            drawer.classList.remove('open');
+        }
+    });
+
+    /* --- SPELLBOOK JAVASCRIPT --- */
+    function initSpellbook() {
+        const noviceContainer = document.getElementById("noviceSpells");
+        const masterContainer = document.getElementById("masterSpells");
 
         // Clear out previously rendered items if called more than once
         noviceContainer.innerHTML = '<h3>Apprentice Starts</h3>';
         masterContainer.innerHTML = '<h3>Master Starts</h3>';
 
-        authorStarts.novice.forEach(set => {
-            noviceContainer.appendChild(createSpellCategory(set.category, set.phrases));
-        });
+        authorStarts.novice.forEach(set => {
+            noviceContainer.appendChild(createSpellCategory(set.category, set.phrases));
+        });
 
-        authorStarts.master.forEach(set => {
-            masterContainer.appendChild(createSpellCategory(set.category, set.phrases));
-        });
-    }
+        authorStarts.master.forEach(set => {
+            masterContainer.appendChild(createSpellCategory(set.category, set.phrases));
+        });
+    }
 
-    function createSpellCategory(title, phrases) {
-        const catDiv = document.createElement("div");
-        catDiv.className = "spell-category";
-        
-        const titleDiv = document.createElement("div");
-        titleDiv.className = "spell-cat-title";
-        titleDiv.innerText = title;
-        catDiv.appendChild(titleDiv);
+    function createSpellCategory(title, phrases) {
+        const catDiv = document.createElement("div");
+        catDiv.className = "spell-category";
+        
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "spell-cat-title";
+        titleDiv.innerText = title;
+        catDiv.appendChild(titleDiv);
 
-        const listDiv = document.createElement("div");
-        listDiv.className = "spell-list";
-        
+        const listDiv = document.createElement("div");
+        listDiv.className = "spell-list";
+        
         if (Array.isArray(phrases)) {
-            phrases.forEach(phrase => {
-                const btn = document.createElement("button");
-                btn.className = "spell-item";
-                btn.innerText = phrase;
-                btn.onclick = () => injectSpell(phrase);
-                listDiv.appendChild(btn);
-            });
+            phrases.forEach(phrase => {
+                const btn = document.createElement("button");
+                btn.className = "spell-item";
+                btn.innerText = phrase;
+                btn.onclick = () => injectSpell(phrase);
+                listDiv.appendChild(btn);
+            });
         }
 
-        catDiv.appendChild(listDiv);
-        return catDiv;
-    }
+        catDiv.appendChild(listDiv);
+        return catDiv;
+    }
 
-    function openSpellbook() {
-        document.getElementById("spellbookOverlay").style.display = "flex";
-    }
+    function openSpellbook() {
+        document.getElementById("spellbookOverlay").style.display = "flex";
+    }
 
-    function closeSpellbook(event, force = false) {
-        if (force || event.target.id === "spellbookOverlay") {
-            document.getElementById("spellbookOverlay").style.display = "none";
-        }
-    }
-    
-    function injectSpell(phrase) {
-        const textarea = document.getElementById("paragraph");
-        let currentText = textarea.value;
-        
-        // Ensure there is a space before adding the spark if they are mid-sentence
-        if (currentText.length > 0 && !currentText.endsWith(' ') && !currentText.endsWith('\n')) {
-            currentText += ' ';
-        }
-        
-        textarea.value = currentText + phrase + ' ';
-        textarea.focus();
-        
-        // Trigger the input event to auto-save and update word count
-        textarea.dispatchEvent(new Event('input'));
-        
-        closeSpellbook(null, true);
-        showToast("⚡ Spark injected!");
-    }
+    function closeSpellbook(event, force = false) {
+        if (force || event.target.id === "spellbookOverlay") {
+            document.getElementById("spellbookOverlay").style.display = "none";
+        }
+    }
+    
+    function injectSpell(phrase) {
+        const textarea = document.getElementById("paragraph");
+        let currentText = textarea.value;
+        
+        // Ensure there is a space before adding the spark if they are mid-sentence
+        if (currentText.length > 0 && !currentText.endsWith(' ') && !currentText.endsWith('\n')) {
+            currentText += ' ';
+        }
+        
+        textarea.value = currentText + phrase + ' ';
+        textarea.focus();
+        
+        // Trigger the input event to auto-save and update word count
+        textarea.dispatchEvent(new Event('input'));
+        
+        closeSpellbook(null, true);
+        showToast("⚡ Spark injected!");
+    }
 
-    /* --- GOOGLE SHEETS FETCH LOGIC --- */
-    function parseCSV(text) {
-        const rows = [];
-        let row = [], inQuotes = false, val = '';
-        for (let i = 0; i < text.length; i++) {
-            let c = text[i];
-            if (c === '"') {
-                if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
-                else inQuotes = !inQuotes;
-            } else if (c === ',' && !inQuotes) {
-                row.push(val.trim()); val = '';
-            } else if (c === '\n' && !inQuotes) {
-                row.push(val.trim()); rows.push(row); row = []; val = '';
-            } else if (c !== '\r') { val += c; }
-        }
-        if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
-        return rows;
-    }
+    /* --- GOOGLE SHEETS FETCH LOGIC --- */
+    function parseCSV(text) {
+        const rows = [];
+        let row = [], inQuotes = false, val = '';
+        for (let i = 0; i < text.length; i++) {
+            let c = text[i];
+            if (c === '"') {
+                if (inQuotes && text[i+1] === '"') { val += '"'; i++; }
+                else inQuotes = !inQuotes;
+            } else if (c === ',' && !inQuotes) {
+                row.push(val.trim()); val = '';
+            } else if (c === '\n' && !inQuotes) {
+                row.push(val.trim()); rows.push(row); row = []; val = '';
+            } else if (c !== '\r') { val += c; }
+        }
+        if (val || row.length > 0) { row.push(val.trim()); rows.push(row); }
+        return rows;
+    }
 
-    async function loadGoogleSheetData() {
-        if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
-        try {
-            let fetchUrl = GOOGLE_SHEET_URL;
-            if (fetchUrl.includes('/pubhtml')) fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
-            const response = await fetch(fetchUrl);
-            if (!response.ok) throw new Error("Failed to fetch Google Sheet");
-            const text = await response.text();
-            const rows = parseCSV(text);
-            const newLessons = [];
-            rows.forEach((r, index) => {
-                if (index > 0 && r.length >= 3 && r[0]) {
-                    newLessons.push({ author: r[0], example: r[1], tip: r[2] });
-                }
-            });
-            if (newLessons.length > 0) {
-                lessonSets = newLessons;
-                rotateLesson();
-            }
-        } catch (error) {
-            console.warn("Fallback local lessons loaded.");
-        }
-    }
+    async function loadGoogleSheetData() {
+        if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('YOUR_GOOGLE_SHEET')) return;
+        try {
+            let fetchUrl = GOOGLE_SHEET_URL;
+            if (fetchUrl.includes('/pubhtml')) fetchUrl = fetchUrl.replace('/pubhtml', '/pub?output=csv');
+            const response = await fetch(fetchUrl);
+            if (!response.ok) throw new Error("Failed to fetch Google Sheet");
+            const text = await response.text();
+            const rows = parseCSV(text);
+            const newLessons = [];
+            rows.forEach((r, index) => {
+                if (index > 0 && r.length >= 3 && r[0]) {
+                    newLessons.push({ author: r[0], example: r[1], tip: r[2] });
+                }
+            });
+            if (newLessons.length > 0) {
+                lessonSets = newLessons;
+                rotateLesson();
+            }
+        } catch (error) {
+            console.warn("Fallback local lessons loaded.");
+        }
+    }
 
-    /* --- MASCOT EASTER EGG AUDIO --- */
-    const booyarSound = new Audio('booyar_duck.mp3');
-    const bubbleElement = document.getElementById('mascotBubble');
-    const mascotImg = document.querySelector('.mascot-img');
+    /* --- MASCOT EASTER EGG AUDIO --- */
+    const booyarSound = new Audio('booyar_duck.mp3');
+    const bubbleElement = document.getElementById('mascotBubble');
+    const mascotImg = document.querySelector('.mascot-img');
 
-    function triggerQuackAndWiggle() {
-        booyarSound.currentTime = 0; 
-        booyarSound.play().catch(e => console.log("Audio play failed:", e));
-        
-        mascotImg.classList.remove('wiggle');
-        void mascotImg.offsetWidth; 
-        mascotImg.classList.add('wiggle');
-    }
+    function triggerQuackAndWiggle() {
+        booyarSound.currentTime = 0; 
+        booyarSound.play().catch(e => console.log("Audio play failed:", e));
+        
+        mascotImg.classList.remove('wiggle');
+        void mascotImg.offsetWidth; 
+        mascotImg.classList.add('wiggle');
+    }
 
-    bubbleElement.addEventListener('click', triggerQuackAndWiggle);
-    bubbleElement.addEventListener('mouseenter', triggerQuackAndWiggle);
-    
-    setMode('mission');
-    renderCrowns();
-    rotateLesson();
-    loadGoogleSheetData();
+    bubbleElement.addEventListener('click', triggerQuackAndWiggle);
+    bubbleElement.addEventListener('mouseenter', triggerQuackAndWiggle);
+    
+    setMode('mission');
+    renderCrowns();
+    rotateLesson();
+    loadGoogleSheetData();
 </script>
 </body>
 </html>
