@@ -321,7 +321,7 @@
         position: relative; 
         width: 420px; 
         max-width: 20vw;
-        /* CHANGED: Removed flexbox. It's just a relative container now. */
+        /* No flexbox, no margins. Just the original container logic. */
         transform: translate(-300px, -200px) rotate(-15deg);
         opacity: 0; 
         animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
@@ -390,15 +390,15 @@
         100% { transform: scale(2) translateY(-60px); opacity: 0; } 
     }
 
- /* --- SPEECH BUBBLE --- */
+/* --- SPEECH BUBBLE --- */
     .speech-bubble {
-        position: absolute;        /* CHANGED: Back to absolute positioning */
+        position: absolute;
         
-        /* THE FIX: Anchor from the bottom right using percentages so it scales with the image */
-        bottom: 25%;               /* Adjust this % to move it up or down the pen's body */
-        right: 70%;                /* Adjust this % to move it closer or further left */
-        
-        margin: 0;                 /* Removed all fixed pixel margins */
+        /* THE TRUE ANCHORS: Locked to the top right */
+        top: 20%;       /* Puts it level with his mouth/eyes */
+        right: 40%;     /* Anchors it to the right, sitting just left of his face */
+        margin: 0;      /* Clears out my bad advice from earlier */
+
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -421,18 +421,13 @@
         transform: scale(0.95) translateX(0) !important;
     }
 
-    @keyframes bubblePop { 
-        from { transform: scale(0) translateX(-20px); opacity: 0; } 
-        to { transform: scale(1) translateX(0); opacity: 1; } 
-    }
-
-.speech-bubble::after {
+    .speech-bubble::after {
         content: ''; 
         position: absolute; 
-        top: 50%;                  
-        right: -15px;              
-        transform: translateY(-50%) rotate(15deg); 
-        border-width: 7px 0 7px 22px; 
+        top: 50%;
+        right: -18px;              /* Tail points out the right side */
+        transform: translateY(-50%) rotate(10deg); 
+        border-width: 7px 0 7px 20px; 
         border-style: solid; 
         border-color: transparent transparent transparent #333; 
         transform-origin: left center;
