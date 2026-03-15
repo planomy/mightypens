@@ -325,17 +325,16 @@
         padding-bottom: 20px;
     }
 
-    .mascot-area {
+.mascot-area {
         position: relative; 
-        width: 420px; 
-        max-width: 20vw;
-        margin-right: -80px;  /* THE FIX: This drags the mascot out of his column, closer to the white box */
+        width: 100%;             /* Let it scale naturally */
+        max-width: 300px;        /* THE IMAC FIX: Caps the maximum size so he doesn't become a giant */
+        margin-right: -60px !important; /* THE IPAD FIX: Overrides the media queries pushing him left */
         transform: translate(-300px, -200px) rotate(-15deg);
         opacity: 0; 
         animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
         z-index: 100;
     }
-
     @keyframes mascotSlide { 
         to { transform: translate(0, 0) rotate(0deg); opacity: 1; } 
     }
@@ -383,14 +382,11 @@
     }
 
     /* --- SPEECH BUBBLE --- */
-    .speech-bubble {
+.speech-bubble {
         position: absolute;
-        
-        /* THE FIX: Because the image and container are locked, these percentages will never fail */
-        top: 25%;         /* Puts the bubble level with the mouth */
-        right: 85%;       /* Anchors it safely to the left side of the pen's face */
-        margin: 0;        /* Stripped all my previous bad margin advice */
-
+        top: 25%;         
+        right: 85%;       
+        margin: 0;        
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -418,7 +414,7 @@
         to { transform: scale(1) translateX(0); opacity: 1; } 
     }
 
-    .speech-bubble::after {
+   .speech-bubble::after {
         content: ''; 
         position: absolute; 
         top: 50%;
