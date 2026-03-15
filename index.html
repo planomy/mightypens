@@ -386,11 +386,11 @@
         100% { transform: scale(2) translateY(-60px); opacity: 0; } 
     }
 
-    /* --- SPEECH BUBBLE (Shifted to the Right) --- */
+  /* --- SPEECH BUBBLE (Shifted to the Right) --- */
     .speech-bubble {
         position: relative;        /* CHANGED: Removes absolute positioning */
         margin-right: -40px;       /* NEW: Pulls the mascot over the bubble */
-        margin-top: 30px;          /* NEW: Pushes the bubble down to head level */
+        margin-top: 80px;          /* UPDATED: Increased to 80px to push the bubble lower */
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -421,9 +421,9 @@
     .speech-bubble::after {
         content: ''; 
         position: absolute; 
-        top: 60%;
+        top: 40%;                  /* UPDATED: Slid the tail slightly higher up the bubble's edge */
         right: -15px;              /* CHANGED: Moved tail to the right side */
-        transform: translateY(-50%) rotate(25deg); /* CHANGED: Angles down towards the pen */
+        transform: translateY(-50%) rotate(15deg); /* UPDATED: Shallower angle to point at the mouth */
         border-width: 7px 0 7px 22px; /* CHANGED: Reverses the triangle to point right */
         border-style: solid; 
         border-color: transparent transparent transparent #333; 
