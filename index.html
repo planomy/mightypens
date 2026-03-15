@@ -700,35 +700,43 @@
         font-weight: 900;
     }
     
-    /* --- TOOLTIP OFF-SCREEN FIX --- */
+  /* --- TOOLTIP OFF-SCREEN FIX & FLEX BREAK --- */
+    
+    .flex-break {
+        flex-basis: 100%;
+        height: 0;
+        margin: 0;
+    }
+
     /* 1. Left Edge Fix */
-    .tool-grid .tooltip-btn:nth-child(8n + 1) .tooltip-pop,
-    .tool-grid .tooltip-btn:nth-child(8n + 2) .tooltip-pop {
+    #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23), :nth-child(24)) .tooltip-pop,
+    #gridDevices .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(9), :nth-child(10)) .tooltip-pop {
         left: 0; 
         transform: translateX(-5px) translateY(10px);
     }
-    .tool-grid .tooltip-btn:nth-child(8n + 1):hover .tooltip-pop,
-    .tool-grid .tooltip-btn:nth-child(8n + 2):hover .tooltip-pop {
+    #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23), :nth-child(24)):hover .tooltip-pop,
+    #gridDevices .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(9), :nth-child(10)):hover .tooltip-pop {
         transform: translateX(-5px) translateY(0);
     }
-    .tool-grid .tooltip-btn:nth-child(8n + 1) .tooltip-pop::after,
-    .tool-grid .tooltip-btn:nth-child(8n + 2) .tooltip-pop::after {
+    #gridStory .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(8), :nth-child(9), :nth-child(15), :nth-child(16), :nth-child(23), :nth-child(24)) .tooltip-pop::after,
+    #gridDevices .tooltip-btn:is(:nth-child(1), :nth-child(2), :nth-child(9), :nth-child(10)) .tooltip-pop::after {
         left: 35px;
         transform: translateX(-50%);
     }
+
     /* 2. Right Edge Fix */
-    .tool-grid .tooltip-btn:nth-child(8n + 7) .tooltip-pop,
-    .tool-grid .tooltip-btn:nth-child(8n + 8) .tooltip-pop {
+    #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)) .tooltip-pop,
+    #gridDevices .tooltip-btn:is(:nth-child(7), :nth-child(8)) .tooltip-pop {
         left: auto;
         right: 0; 
         transform: translateX(5px) translateY(10px);
     }
-    .tool-grid .tooltip-btn:nth-child(8n + 7):hover .tooltip-pop,
-    .tool-grid .tooltip-btn:nth-child(8n + 8):hover .tooltip-pop {
+    #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)):hover .tooltip-pop,
+    #gridDevices .tooltip-btn:is(:nth-child(7), :nth-child(8)):hover .tooltip-pop {
         transform: translateX(5px) translateY(0);
     }
-    .tool-grid .tooltip-btn:nth-child(8n + 7) .tooltip-pop::after,
-    .tool-grid .tooltip-btn:nth-child(8n + 8) .tooltip-pop::after {
+    #gridStory .tooltip-btn:is(:nth-child(5), :nth-child(6), :nth-child(12), :nth-child(13), :nth-child(21), :nth-child(22)) .tooltip-pop::after,
+    #gridDevices .tooltip-btn:is(:nth-child(7), :nth-child(8)) .tooltip-pop::after {
         left: auto;
         right: 35px;
         transform: translateX(50%);
