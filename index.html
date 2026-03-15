@@ -316,13 +316,17 @@
         width: 100%;
     }
 
- /* --- MASCOT SLIDE & WIGGLE --- */
-    .mascot-col {
-        position: relative;
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-        padding-bottom: 20px;
+/* --- MASCOT SLIDE & WIGGLE --- */
+    .mascot-area {
+        position: relative; 
+        width: 420px; 
+        max-width: 20vw;
+        /* CHANGED: Removed flexbox. It's just a relative container now. */
+        transform: translate(-300px, -200px) rotate(-15deg);
+        opacity: 0; 
+        animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
+        z-index: 100;
+        margin-left: -50px;
     }
 
     .mascot-area {
@@ -386,11 +390,15 @@
         100% { transform: scale(2) translateY(-60px); opacity: 0; } 
     }
 
-  /* --- SPEECH BUBBLE (Shifted to the Right) --- */
+ /* --- SPEECH BUBBLE --- */
     .speech-bubble {
-        position: relative;        /* CHANGED: Removes absolute positioning */
-        margin-right: -40px;       /* NEW: Pulls the mascot over the bubble */
-        margin-top: 180px;          /* UPDATED: Increased to 80px to push the bubble lower */
+        position: absolute;        /* CHANGED: Back to absolute positioning */
+        
+        /* THE FIX: Anchor from the bottom right using percentages so it scales with the image */
+        bottom: 25%;               /* Adjust this % to move it up or down the pen's body */
+        right: 70%;                /* Adjust this % to move it closer or further left */
+        
+        margin: 0;                 /* Removed all fixed pixel margins */
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -418,13 +426,13 @@
         to { transform: scale(1) translateX(0); opacity: 1; } 
     }
 
-    .speech-bubble::after {
+.speech-bubble::after {
         content: ''; 
         position: absolute; 
-        top: 40%;                  /* UPDATED: Slid the tail slightly higher up the bubble's edge */
-        right: -15px;              /* CHANGED: Moved tail to the right side */
-        transform: translateY(-50%) rotate(15deg); /* UPDATED: Shallower angle to point at the mouth */
-        border-width: 7px 0 7px 22px; /* CHANGED: Reverses the triangle to point right */
+        top: 50%;                  
+        right: -15px;              
+        transform: translateY(-50%) rotate(15deg); 
+        border-width: 7px 0 7px 22px; 
         border-style: solid; 
         border-color: transparent transparent transparent #333; 
         transform-origin: left center;
