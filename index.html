@@ -2416,11 +2416,12 @@
             mascotSoundCooldown = true;
             booyarSound.currentTime = 0;
             booyarSound.play().catch(e => console.log("Audio fail:", e));
+            triggerWiggle();
             setTimeout(() => {
                 mascotSoundCooldown = false;
             }, 350);
         }
-        triggerWiggle();
+        
     }
 
     function triggerWiggle() {
@@ -2438,10 +2439,6 @@
             triggerSoundAndWiggle();
         }
     });
-
-    // Only wiggle (no sound) when interacting directly with the mascot
-    mascotImg.addEventListener('click', triggerWiggle);
-    mascotImg.addEventListener('mouseenter', triggerWiggle);
 
     setMode('mission');
     renderCrowns();
