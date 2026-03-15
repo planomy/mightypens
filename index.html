@@ -316,7 +316,7 @@
         width: 100%;
     }
 
-    /* --- MASCOT SLIDE & WIGGLE --- */
+ /* --- MASCOT SLIDE & WIGGLE --- */
     .mascot-col {
         position: relative;
         display: flex;
@@ -329,6 +329,8 @@
         position: relative; 
         width: 420px; 
         max-width: 20vw;
+        display: flex;             /* NEW: Flexbox to group mascot and bubble */
+        align-items: flex-start;   /* NEW: Aligns bubble to the top */
         transform: translate(-300px, -200px) rotate(-15deg);
         opacity: 0; 
         animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
@@ -386,9 +388,9 @@
 
     /* --- SPEECH BUBBLE (Shifted to the Right) --- */
     .speech-bubble {
-        position: absolute; 
-        top: 10%; 
-        left: clamp(140px, 70%, 200px);
+        position: relative;        /* CHANGED: Removes absolute positioning */
+        margin-right: -40px;       /* NEW: Pulls the mascot over the bubble */
+        margin-top: 30px;          /* NEW: Pushes the bubble down to head level */
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -419,15 +421,14 @@
     .speech-bubble::after {
         content: ''; 
         position: absolute; 
-        top: 68%;
-        left: -18px; 
-        transform: translateY(-50%) rotate(-25deg); 
-        border-width: 7px 22px 7px 0; 
+        top: 60%;
+        right: -15px;              /* CHANGED: Moved tail to the right side */
+        transform: translateY(-50%) rotate(25deg); /* CHANGED: Angles down towards the pen */
+        border-width: 7px 0 7px 22px; /* CHANGED: Reverses the triangle to point right */
         border-style: solid; 
-        border-color: transparent #333 transparent transparent; 
-        transform-origin: right center;
+        border-color: transparent transparent transparent #333; 
+        transform-origin: left center;
     }
-
     /* --- EDITOR --- */
     .editor-box {
         background: #ffffff; 
