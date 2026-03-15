@@ -507,9 +507,15 @@
     textarea:focus { outline: none; border-color: #d8b4fe; }
 
     .editor-controls {
-        background: #faf5ff; padding: 18px 30px; display: flex; 
-        justify-content: space-between; align-items: center; 
-        border-top: 2px solid #f3e8ff; border-radius: 0 0 36px 36px;
+    background: #faf5ff; 
+    padding: 18px 20px; /* Reduced side padding slightly */
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; /* NEW: Allows items to drop to a second line if they are crushed */
+    gap: 10px; /* NEW: Ensures they don't touch if they wrap */
+    border-top: 2px solid #f3e8ff; 
+    border-radius: 0 0 36px 36px;
     }
 
     /* --- SIDEBAR --- */
@@ -1045,8 +1051,7 @@
                 <div class="editor-controls">
                     <div style="display:flex; gap:10px; align-items:center;">
                         <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
-                        <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.9rem;"></div>
-                    </div>
+                        <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.8rem; white-space: nowrap;"></div>                    </div>
                     <div style="display:flex; gap:15px; align-items:center;">
                         <div class="mode-switch">
                             <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">WEEKLY MISSION</button>
