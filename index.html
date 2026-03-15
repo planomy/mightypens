@@ -386,22 +386,24 @@
 
     /* --- SPEECH BUBBLE (Shifted to the Right) --- */
     .speech-bubble {
-        position: absolute; 
-        top: 10%; 
-        left: clamp(140px, 70%, 200px);
-        background: #333; 
-        color: white;
-        padding: 14px 22px; 
-        border-radius: 20px; 
-        font-weight: 800;
-        font-size: clamp(0.9rem, 1.1vw, 1.1rem); 
-        white-space: nowrap;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
-        z-index: 500; 
-        opacity: 0; 
-        animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
-        cursor: pointer;
-        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+       .speech-bubble {
+    position: absolute; 
+    top: 50px; /* Use a fixed pixel value for height consistency */
+    left: 50%; /* Start at the center of the mascot area */
+    transform: translateX(20px); /* Nudge it exactly 20px to the right of his 'center' */
+    background: #333; 
+    color: white;
+    padding: 14px 22px; 
+    border-radius: 20px; 
+    font-weight: 800;
+    font-size: clamp(0.9rem, 1.1vw, 1.1rem); 
+    white-space: nowrap;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2); 
+    z-index: 500; 
+    opacity: 0; 
+    animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 1.5s; 
+    cursor: pointer;
+}
     }
 
     .speech-bubble:hover {
@@ -417,15 +419,14 @@
     }
 
     .speech-bubble::after {
-        content: ''; 
-        position: absolute; 
-        top: 68%;
-        left: -18px; 
-        transform: translateY(-50%) rotate(-25deg); 
-        border-width: 7px 22px 7px 0; 
-        border-style: solid; 
-        border-color: transparent #333 transparent transparent; 
-        transform-origin: right center;
+    content: ''; 
+    position: absolute; 
+    top: 60%;
+    left: -15px; /* Keeps the tail pointing back at his head */
+    border-width: 7px 15px 7px 0; 
+    border-style: solid; 
+    border-color: transparent #333 transparent transparent; 
+}
     }
 
     /* --- EDITOR --- */
