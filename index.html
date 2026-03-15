@@ -291,14 +291,15 @@
     }
 
     .logo-img {
-        width: clamp(300px, 35vw, 600px); 
-        height: auto;
-        filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
-        margin-top: -20px; 
-        margin-right: -10px; 
-        position: relative; 
-        z-index: 200;
-    }
+    width: clamp(250px, 25vw, 500px); /* Reduced the max and min size slightly for safety */
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.3));
+    margin-top: -10px; 
+    margin-right: 0px; /* Reset this so it stays against the right edge */
+    position: relative; 
+    z-index: 200;
+    pointer-events: none; /* Allows clicks to pass through to the text if it still overlaps slightly */
+}
 
     /* --- DASHBOARD GRID --- */
     .dashboard-grid {
