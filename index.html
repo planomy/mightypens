@@ -382,11 +382,11 @@
         100% { transform: scale(2) translateY(-60px); opacity: 0; } 
     }
 
-    /* --- SPEECH BUBBLE --- */
+    /* --- SPEECH BUBBLE (UPDATED: Shifted to Left) --- */
     .speech-bubble {
         position: absolute; 
         top: 22%; 
-        left: 80%; 
+        right: 75%; /* Changed from left: 80% to right: 75% */
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -410,7 +410,7 @@
     }
 
     @keyframes bubblePop { 
-        from { transform: scale(0) translateX(-20px); opacity: 0; } 
+        from { transform: scale(0) translateX(20px); opacity: 0; } /* Popping from right now */
         to { transform: scale(1) translateX(0); opacity: 1; } 
     }
 
@@ -418,12 +418,12 @@
         content: ''; 
         position: absolute; 
         top: 68%;
-        left: -18px;
-        transform: translateY(-50%) rotate(-25deg);
-        border-width: 7px 22px 7px 0;
+        right: -18px; /* Changed from left: -18px to right: -18px */
+        transform: translateY(-50%) rotate(25deg); /* Adjusted rotation to face right */
+        border-width: 7px 0 7px 22px; /* Mirrored border logic */
         border-style: solid; 
-        border-color: transparent #333 transparent transparent;
-        transform-origin: right center;
+        border-color: transparent transparent transparent #333; /* Point to left */
+        transform-origin: left center;
     }
 
     /* --- EDITOR --- */
@@ -462,11 +462,11 @@
         to { transform: translateX(-50%) translateY(0); opacity: 1; } 
     }
 
-    /* --- THE SPELLBOOK BUTTON --- */
-    @keyframes pulseGlow {
-        0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
-        70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+    /* --- THE SPELLBOOK BUTTON (UPDATED: 2 Fast Pulses on Load) --- */
+    @keyframes quickGlow {
+        0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 1); }
+        30% { box-shadow: 0 0 0 25px rgba(251, 191, 36, 0); }
+        50%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
     }
     
     .spell-btn {
@@ -484,11 +484,10 @@
         transition: all 0.2s;
         z-index: 100;
         display: flex; justify-content: center; align-items: center;
-        animation: pulseGlow 2s infinite;
+        animation: quickGlow 0.6s ease-out 2 forwards; /* Run twice on load then stop */
     }
     
     .spell-btn:hover {
-        animation: none;
         transform: scale(1.1) rotate(10deg);
         background: #f59e0b;
     }
