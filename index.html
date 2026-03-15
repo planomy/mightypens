@@ -328,11 +328,12 @@
     .mascot-area {
         position: relative; 
         width: 420px; 
-        max-width: 24vw;
+        max-width: 20vw;
         transform: translate(-300px, -200px) rotate(-15deg);
         opacity: 0; 
         animation: mascotSlide 1s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.5s; 
         z-index: 100;
+        margin-left: -50px;
     }
 
     @keyframes mascotSlide { 
@@ -387,7 +388,7 @@
     .speech-bubble {
         position: absolute; 
         top: 22%; 
-        left: 85%; 
+        left: 75%; 
         background: #333; 
         color: white;
         padding: 14px 22px; 
@@ -901,12 +902,12 @@
        ========================================================= */
     @media (max-width: 1600px) { 
         .logo-img { margin-top: -15px; } 
-        .dashboard-grid { margin-top: -18vh; gap: 25px; } 
+        .dashboard-grid { margin-top: -18vh; gap: 60px; } 
         .mascot-area { width: 360px; }
         .sidebar-col { margin-top: 40px; } 
     }
     @media (max-width: 1440px), (max-height: 950px) { 
-        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -14vh; gap: 30px; } 
+        .dashboard-grid { grid-template-columns: 1.2fr 2.5fr 1fr; margin-top: -14vh; gap: 60px; } 
         .logo-img { margin-top: -10px; width: clamp(280px, 30vw, 450px); }
         .player-dashboard { min-width: 300px; padding: 0; }
         .mascot-area { width: 240px; margin-right: 4vw; } 
