@@ -866,12 +866,23 @@
     .spell-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
     .spell-col h3 { margin: 0 0 10px 0; color: white; font-weight: 900; font-size: 1.4rem; border-bottom: 2px solid #334155; padding-bottom: 10px;}
     
-    .spell-category { background: #334155; border-radius: 15px; overflow: hidden; margin-bottom: 15px; }
+    .spell-category { background: #334155; border-radius: 15px; overflow: hidden; margin-bottom: 15px; transition: all 0.3s; }
+    
     .spell-cat-title {
         background: #475569; padding: 10px 15px; font-weight: 900; font-size: 1rem;
         color: var(--peach-light); letter-spacing: 0.5px; text-transform: uppercase;
+        cursor: pointer; display: flex; justify-content: space-between; align-items: center;
     }
-    .spell-list { display: flex; flex-direction: column; width: 100%; }
+    
+    /* Adds the little dropdown arrow */
+    .spell-cat-title::after { content: '▼'; font-size: 0.8rem; transition: transform 0.3s; color: #cbd5e1; }
+    
+    /* Hides the list by default */
+    .spell-list { display: none; flex-direction: column; width: 100%; }
+    
+    /* When the 'open' class is added via JS, show the list and flip the arrow */
+    .spell-category.open .spell-list { display: flex; }
+    .spell-category.open .spell-cat-title::after { transform: rotate(180deg); color: var(--star-gold); }
     .spell-item {
         background: none; border: none; border-bottom: 1px solid #475569; display: block; width: 100%;
         color: #cbd5e1; padding: 12px 15px; text-align: left; font-size: 1.05rem;
@@ -1849,6 +1860,9 @@
         const titleDiv = document.createElement("div");
         titleDiv.className = "spell-cat-title";
         titleDiv.innerText = title;
+// This is the new line that toggles the accordion open and closed!
+        titleDiv.onclick = () => catDiv.classList.toggle("open");
+        
         catDiv.appendChild(titleDiv);
 
         const listDiv = document.createElement("div");
