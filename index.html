@@ -348,7 +348,6 @@
         filter: drop-shadow(0 20px 35px rgba(0,0,0,0.25)); 
     }
 
-    /* Mascot Audio Wiggle Effect */
     @keyframes mascotWiggle {
         0% { transform: rotate(0deg); }
         25% { transform: rotate(-8deg) scale(1.05); }
@@ -461,6 +460,37 @@
 
     @keyframes topicDrop { 
         to { transform: translateX(-50%) translateY(0); opacity: 1; } 
+    }
+
+    /* --- THE SPELLBOOK BUTTON --- */
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7); }
+        70% { box-shadow: 0 0 0 15px rgba(251, 191, 36, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0); }
+    }
+    
+    .spell-btn {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        width: 45px; height: 45px;
+        border-radius: 50%;
+        background: var(--star-gold);
+        color: white;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(251, 191, 36, 0.4);
+        transition: all 0.2s;
+        z-index: 100;
+        display: flex; justify-content: center; align-items: center;
+        animation: pulseGlow 2s infinite;
+    }
+    
+    .spell-btn:hover {
+        animation: none;
+        transform: scale(1.1) rotate(10deg);
+        background: #f59e0b;
     }
 
     textarea {
@@ -649,7 +679,7 @@
         background: var(--purple-tooltip); color: white; border: none; 
         padding: 8px 12px; 
         border-radius: 12px; 
-        font-weight: 900; font-size: 0.55rem; 
+        font-weight: 900; font-size: 0.65rem; 
         cursor: help;
         position: relative; text-transform: uppercase; 
         flex: 0 1 calc(12.5% - 8px);
@@ -700,7 +730,7 @@
         font-weight: 900;
     }
     
-  /* --- TOOLTIP OFF-SCREEN FIX & FLEX BREAK --- */
+    /* --- TOOLTIP OFF-SCREEN FIX & FLEX BREAK --- */
     
     .flex-break {
         flex-basis: 100%;
@@ -814,6 +844,46 @@
         font-family: monospace; letter-spacing: 2px;
     }
 
+    /* --- SPELLBOOK MODAL (NEW!) --- */
+    .spellbook-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px);
+        z-index: 4000; display: none; justify-content: center; align-items: center;
+    }
+    .spellbook-modal {
+        background: #1e293b; color: white; width: 90%; max-width: 1000px; max-height: 85vh;
+        border-radius: 30px; padding: 40px; box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+        display: flex; flex-direction: column; position: relative; border: 4px solid #334155;
+    }
+    .spellbook-modal h2 { margin-top: 0; color: var(--star-gold); text-align: center; font-family: 'Lilita One', sans-serif; font-size: 2.5rem; letter-spacing: 1px; }
+    .spellbook-modal p { text-align: center; color: #94a3b8; margin-bottom: 30px; font-weight: 700; font-size: 1.1rem; }
+    .close-spellbook {
+        position: absolute; top: 20px; right: 25px; background: none; border: none;
+        color: #94a3b8; font-size: 1.5rem; cursor: pointer; transition: color 0.2s;
+    }
+    .close-spellbook:hover { color: white; }
+    
+    .spellbook-cols { display: flex; gap: 30px; overflow-y: auto; padding-right: 10px; }
+    .spell-col { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+    .spell-col h3 { margin: 0 0 10px 0; color: white; font-weight: 900; font-size: 1.4rem; border-bottom: 2px solid #334155; padding-bottom: 10px;}
+    
+    .spell-category { background: #334155; border-radius: 15px; overflow: hidden; }
+    .spell-cat-title {
+        background: #475569; padding: 10px 15px; font-weight: 900; font-size: 1rem;
+        color: var(--peach-light); letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .spell-list { display: flex; flex-direction: column; }
+    .spell-item {
+        background: none; border: none; border-bottom: 1px solid #475569;
+        color: #cbd5e1; padding: 12px 15px; text-align: left; font-size: 1.05rem;
+        cursor: pointer; transition: all 0.2s; font-family: inherit;
+    }
+    .spell-item:last-child { border-bottom: none; }
+    .spell-item:hover { background: var(--purple-main); color: white; padding-left: 20px; font-weight: bold; }
+    
+    .spellbook-cols::-webkit-scrollbar { width: 8px; }
+    .spellbook-cols::-webkit-scrollbar-track { background: #1e293b; }
+    .spellbook-cols::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+
     /* =========================================================
        RESPONSIVE DESIGN 
        ========================================================= */
@@ -847,14 +917,8 @@
         .sidebar-col { margin-top: 70px; }
         .player-dashboard { min-width: 250px; }
         .crown-wrapper { width: 35px; }
+        .spellbook-cols { flex-direction: column; gap: 20px; }
     }
-    #gridStory .tooltip-btn:nth-child(7) {
-    grid-column: 1;
-}
-
-#gridStory .tooltip-btn:nth-child(13) {
-    grid-column: 1;
-}
 </style>
 </head>
 <body>
@@ -862,6 +926,22 @@
 <div id="celebrationOverlay" class="celebration-overlay">
     <div id="celebrationBox" class="celebration-box">
         <h1 id="celebrationText">XP EXPLOSION!</h1>
+    </div>
+</div>
+
+<div class="spellbook-overlay" id="spellbookOverlay" onclick="closeSpellbook(event)">
+    <div class="spellbook-modal">
+        <button class="close-spellbook" onclick="closeSpellbook(event, true)">✖</button>
+        <h2>⚡ The Author's Spellbook</h2>
+        <p>Click an author's start to instantly inject it into your mission report!</p>
+        <div class="spellbook-cols">
+            <div class="spell-col" id="noviceSpells">
+                <h3>Apprentice Starts</h3>
+                </div>
+            <div class="spell-col" id="masterSpells">
+                <h3>Master Starts</h3>
+                </div>
+        </div>
     </div>
 </div>
 
@@ -935,6 +1015,8 @@
             <div class="editor-box">
                 <div id="topicText" class="topic-pill">Topic: Loading...</div>
                 
+                <button class="spell-btn" onclick="openSpellbook()" title="Need a Start?">⚡</button>
+                
                 <div class="result-overlay" id="resultOverlay">
                     <div class="result-content-container">
                         <div id="resultText" style="font-size: 1.1rem; font-weight: 700; color: var(--purple-main); max-width: 800px; line-height: 1.6; white-space: pre-wrap; text-align: left;"></div>
@@ -995,41 +1077,46 @@
                 <button class="tooltip-btn">WHERE <div class="tooltip-pop"><strong>The WHERE paragraph</strong>Paragraph 2. Introduce the setting. Make it interesting. Add location and history. Example: Stepping onto the cracked jetty, Isla looked across the silent lake. Rusted posts leaned in the water, and locals still whispered about the fishing boat that vanished here years ago.</div></button>
                 <button class="tooltip-btn">WHAT <div class="tooltip-pop"><strong>The WHAT paragraph</strong>Paragraph 3. Why is the character here? There must be a good reason. Example: Unfolding the creased map, Tyler felt a flicker of doubt. His grandfather’s last message had pointed to this exact place.</div></button>
                 <button class="tooltip-btn">TENSION <div class="tooltip-pop"><strong>The Problem</strong>Paragraph 4. Introduce the problem. Example: Pausing beside the gate, Ruby heard metal scrape behind her. The abandoned yard had always been quiet until tonight.</div></button>
-                <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">COMPLIC <div class="tooltip-pop"><strong>The Complication</strong>Paragraph 5. Make the problem worse. Example: Shoving the door open, Liam froze. The footprints he had followed through the dust suddenly stopped.</div></button>
                 <button class="tooltip-btn">RESOLUT <div class="tooltip-pop"><strong>The Resolution</strong>Paragraph 6. Finish your story. The reader must care about your character. Example: Folding the letter carefully, Ava slipped it into her pocket. At last, she could sleep again.</div></button>
-                
-                <div class="flex-break"></div>
-                
                 <button class="tooltip-btn">ACTION <div class="tooltip-pop"><strong>Action sentences</strong>Avoid: went, got, did, made, saw etc. Use: lunged, sprinted, grabbed. Example: Mason lunged forward, snatched the rope, and hauled himself onto the moving trailer.</div></button>
                 <button class="tooltip-btn">DESCRIP <div class="tooltip-pop"><strong>Description sentences</strong>Help the reader see the character and scene with precise words. Example: Sunlight spilled across the dusty oval like molten gold.</div></button>
-                <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
-                <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
-                <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. <strong>Was the gate locked?</strong></div></button>
-                <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
-
-                <div class="flex-break"></div>
                 
-                <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
-                <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: <strong>Marcus</strong> sprinted down the alley. <strong>Marcus</strong> scrambled over the fence. Not good!</div></button>
-                <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
-                <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
+                <div class="flex-break"></div> <button class="tooltip-btn">STORY <div class="tooltip-pop"><strong>Story sentences</strong>Interesting <strong>unseen</strong> details. Add depth about childhood, accomplishments, memories, fears, or secret hopes. Example: For years, Eli had avoided the old lighthouse because his brother disappeared there.</div></button>
+                <button class="tooltip-btn">ATMOSPH <div class="tooltip-pop"><strong>Atmosphere sentences</strong>Show what is happening around the character. Example: Wind hissed through the tall grass while storm clouds crept across the hills and wolves crept towards the village.</div></button>
+                <button class="tooltip-btn">THINK/FEEL <div class="tooltip-pop"><strong>Thinking/Feeling sentences</strong>Show the character's reactions to the situation with thoughts or feelings. Don't use the word “thought”. Example: For one uneasy moment, Harper halted. Was the gate locked?</div></button>
+                <button class="tooltip-btn">DIALOGUE <div class="tooltip-pop"><strong>Speech</strong>Keep it to just one strong line of dialogue. Example: “This is the wrong way,” whispered Maya.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">QUAD VERB <div class="tooltip-pop"><strong>Quadruple Verb</strong>-ing opener + 3 past tense verbs. Example: <strong>Grinning</strong> wildly, Leo <strong>vaulted</strong> the fence, <strong>grabbed</strong> the rail, and <strong>swung</strong> onto the ferry.</div></button>
                 <button class="tooltip-btn">3x DESC <div class="tooltip-pop"><strong>Triple Descriptor</strong>"With" opener + 3 vivid details. Example: With <u>muddy boots</u>, a <u>torn sleeve</u>, and <u>blood</u> pounding in his ears, Tyler staggered into the shed.</div></button>
                 <button class="tooltip-btn">EM-DASH <div class="tooltip-pop"><strong>Em-dash Descriptor</strong>Add detail using spaced em-dashes — like this! Example: As she approached the dark alley, all sounds <strong>- the drone of traffic, the babble of tourists -</strong> ceased, and the figure emerged from the shadows.</div></button>
+                <button class="tooltip-btn">STARTS <div class="tooltip-pop"><strong>Bad Starts</strong>Avoid overusing The, It, A, An, He, She, His, Her, This, These, Those, They, Then, There, Suddenly, I, My, We, Our. Start with WHERE, WHEN, WHY, VERBS, EMOTIONS also.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">REPEAT <div class="tooltip-pop"><strong>Repetition</strong>Vary nouns and verbs to keep energy high. Do not repeat key words nearby. Example: Marcus sprinted down the alley. Marcus scrambled over the fence. Not good!</div></button>
+                <button class="tooltip-btn">ADJECTIVE <div class="tooltip-pop"><strong>Aim for 12%</strong>Use strong adjectives in singles, doubles or triples. Example: A wide, narrow rusted gate blocked the path.</div></button>
+                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions. Example: The old house groaned as wind shoved against the tired walls.</div></button>
+                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Use repeated “and” for intensity. Example: Smoke curled and drifted and thickened across the burning paddock.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">ASYND <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed and punch. Example: Along the track, boots pounded, breath burned, fear surged.</div></button>
+                <button class="tooltip-btn">DUAL VIEW <div class="tooltip-pop"><strong>Dual Perspective</strong>Show the same moment from two viewpoints. Example: <strong>From above</strong>, the city glittered like scattered jewels; <strong>from below</strong>, traffic roared through narrow streets.</div></button>
                 <button class="tooltip-btn">NEST WHO <div class="tooltip-pop"><strong>Nested Who</strong>Add extra information using a who-clause. Example: The old propspector, <strong>who spent his days beside the tranquil river where he once found a rare gem</strong>, smiled at memories it bought him.</div></button>
                 <button class="tooltip-btn">2X WITH <div class="tooltip-pop"><strong>Double With Hand</strong>Anchor 2 details to the character. Example: With the <strong>document</strong> he retrieved from the solicitor's office in one hand, and <strong>a renewed sense of purpose</strong> in the other, Thomas rode home through the busy streets.</div></button>
             </div>
 
             <div class="tool-grid" id="gridDevices">
-                <button class="tooltip-btn">SIMILE <div class="tooltip-pop"><strong>Simile</strong>Compare using “like” or “as”.<br><br>&bull; The moon hung above the paddock <strong>like</strong> a silver coin.<br>&bull; Cold wind cut across the field like a sharpened blade.<br>&bull; The playground roared like a stadium after the bell rang.<br>&bull; Dust rose behind the bike like a ghostly cloud.<br>&bull; His voice cracked like dry wood in a fire.</div></button>
-                <button class="tooltip-btn">METAPHOR <div class="tooltip-pop"><strong>Metaphor</strong>Say one thing is another.<br><br>&bull; The city at night <strong>was</strong> a river of light.<br>&bull; The classroom was a pressure cooker before the exam.<br>&bull; Her mind was a locked vault.<br>&bull; The desert was an endless ocean of sand.<br>&bull; His anger was a storm building on the horizon.</div></button>
+                <button class="tooltip-btn">SIMILE <div class="tooltip-pop"><strong>Simile</strong>Compare using “like” or “as”.<br><br>&bull; The moon hung above the paddock like a silver coin.<br>&bull; Cold wind cut across the field like a sharpened blade.<br>&bull; The playground roared like a stadium after the bell rang.<br>&bull; Dust rose behind the bike like a ghostly cloud.<br>&bull; His voice cracked like dry wood in a fire.</div></button>
+                <button class="tooltip-btn">METAPHOR <div class="tooltip-pop"><strong>Metaphor</strong>Say one thing is another.<br><br>&bull; The city at night was a river of light.<br>&bull; The classroom was a pressure cooker before the exam.<br>&bull; Her mind was a locked vault.<br>&bull; The desert was an endless ocean of sand.<br>&bull; His anger was a storm building on the horizon.</div></button>
                 <button class="tooltip-btn">IMAGERY <div class="tooltip-pop"><strong>Imagery</strong>Use strong sensory description.<br><br>&bull; Warm sunlight spilled across the dusty oval.<br>&bull; Salt wind stung his face as waves hammered the rocks.<br>&bull; The forest floor smelled of wet leaves and dark soil.<br>&bull; Frost glittered on the fence wires in the pale morning light.<br>&bull; The engine coughed, rattled, and shuddered to life.</div></button>
-                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions.<br><br>&bull; The old house <strong>groaned</strong> as wind shoved against the walls.<br>&bull; The river whispered over the smooth stones.<br>&bull; The storm clouds marched across the sky.<br>&bull; The rusty gate complained every time it opened.<br>&bull; The shadows crept across the empty road.</div></button>
-                <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Repeat “and” for intensity.<br><br>&bull; Smoke curled <strong>and</strong> drifted <strong>and</strong> thickened across the paddock.<br>&bull; He ran and stumbled and scrambled up the hill.<br>&bull; The wind howled and rattled and slammed the loose shutters.<br>&bull; The crowd shouted and pushed and surged toward the gate.<br>&bull; Rain hammered the roof and the windows and the tin gutters.</div></button>
-                <button class="tooltip-btn">ASYNDETON <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed.<br><br>&bull; <strong>Boots pounded, breath burned, fear surged</strong>.<br>&bull; The siren wailed, doors slammed, engines roared.<br>&bull; Leaves rustled, branches cracked, footsteps approached.<br>&bull; He turned, ran, vanished into the fog.<br>&bull; Wind rose, clouds gathered, thunder rolled.</div></button>
-                <button class="tooltip-btn">SYNECDOCHE <div class="tooltip-pop"><strong>Synecdoche</strong>A part represents the whole.<br><br>&bull; <strong>All eyes</strong> turned to the stage.<br>&bull; New wheels rolled into the driveway.<br>&bull; More hands were needed to lift the boat.<br>&bull; The captain called for every head on deck.<br>&bull; The crowd waited for fresh legs to enter the game.</div></button>
-                <button class="tooltip-btn">HYPERBOLE <div class="tooltip-pop"><strong>Hyperbole</strong>Extreme exaggeration.<br><br>&bull; The backpack weighed <strong>a ton</strong>.<br>&bull; I waited a thousand years for the bell.<br>&bull; The heat could melt the road.<br>&bull; He ran faster than lightning across the field.<br>&bull; The queue stretched to the end of the world.</div></button>
-                <button class="tooltip-btn">ALLITERAT <div class="tooltip-pop"><strong>Alliteration</strong>Repeated starting sounds.<br><br>&bull; <strong>Silent shadows slid across the street</strong>.<br>&bull; Blazing bonfires burned beside the beach.<br>&bull; Wild wind whipped across the water.<br>&bull; Cold clouds crept over the canyon.<br>&bull; Dusty dirt drifted down the track.</div></button>
-                <button class="tooltip-btn">CONTRAST <div class="tooltip-pop"><strong>Contrast (Antithesis)</strong>Opposing ideas side-by-side.<br><br>&bull; <strong>Above</strong>, the stars glittered; <strong>below</strong>, the city roared.<br>&bull; Outside, the storm raged; inside, the room stayed silent.<br>&bull; Some ran forward, others froze in fear.<br>&bull; The road ahead glowed, the forest behind darkened.<br>&bull; Hope rose, fear lingered.</div></button>
+                <button class="tooltip-btn">PERSONIFY <div class="tooltip-pop"><strong>Personification</strong>Give objects human actions.<br><br>&bull; The old house groaned as wind shoved against the walls.<br>&bull; The river whispered over the smooth stones.<br>&bull; The storm clouds marched across the sky.<br>&bull; The rusty gate complained every time it opened.<br>&bull; The shadows crept across the empty road.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">POLYSYND <div class="tooltip-pop"><strong>Polysyndeton</strong>Repeat “and” for intensity.<br><br>&bull; Smoke curled and drifted and thickened across the paddock.<br>&bull; He ran and stumbled and scrambled up the hill.<br>&bull; The wind howled and rattled and slammed the loose shutters.<br>&bull; The crowd shouted and pushed and surged toward the gate.<br>&bull; Rain hammered the roof and the windows and the tin gutters.</div></button>
+                <button class="tooltip-btn">ASYNDETON <div class="tooltip-pop"><strong>Asyndeton</strong>Remove conjunctions for speed.<br><br>&bull; Boots pounded, breath burned, fear surged.<br>&bull; The siren wailed, doors slammed, engines roared.<br>&bull; Leaves rustled, branches cracked, footsteps approached.<br>&bull; He turned, ran, vanished into the fog.<br>&bull; Wind rose, clouds gathered, thunder rolled.</div></button>
+                <button class="tooltip-btn">SYNECDOCHE <div class="tooltip-pop"><strong>Synecdoche</strong>A part represents the whole.<br><br>&bull; All eyes turned to the stage.<br>&bull; New wheels rolled into the driveway.<br>&bull; More hands were needed to lift the boat.<br>&bull; The captain called for every head on deck.<br>&bull; The crowd waited for fresh legs to enter the game.</div></button>
+                <button class="tooltip-btn">HYPERBOLE <div class="tooltip-pop"><strong>Hyperbole</strong>Extreme exaggeration.<br><br>&bull; The backpack weighed a ton.<br>&bull; I waited a thousand years for the bell.<br>&bull; The heat could melt the road.<br>&bull; He ran faster than lightning across the field.<br>&bull; The queue stretched to the end of the world.</div></button>
+                
+                <div class="flex-break"></div> <button class="tooltip-btn">ALLITERAT <div class="tooltip-pop"><strong>Alliteration</strong>Repeated starting sounds.<br><br>&bull; Silent shadows slid across the street.<br>&bull; Blazing bonfires burned beside the beach.<br>&bull; Wild wind whipped across the water.<br>&bull; Cold clouds crept over the canyon.<br>&bull; Dusty dirt drifted down the track.</div></button>
+                <button class="tooltip-btn">CONTRAST <div class="tooltip-pop"><strong>Contrast (Antithesis)</strong>Opposing ideas side-by-side.<br><br>&bull; Above, the stars glittered; below, the city roared.<br>&bull; Outside, the storm raged; inside, the room stayed silent.<br>&bull; Some ran forward, others froze in fear.<br>&bull; The road ahead glowed, the forest behind darkened.<br>&bull; Hope rose, fear lingered.</div></button>
             </div>
             
         </div>
@@ -1082,6 +1169,30 @@
         { xp: 1300, name: "Master of the Inkwell" },
         { xp: 2000, name: "Grandmaster Pen" }
     ];
+
+    /* --- SPELLBOOK DATA --- */
+    const authorStarts = {
+        novice: [
+            { category: "Time shifts", phrases: ["After a long pause,", "In that moment,", "Moments later,", "Within seconds,", "Before anyone noticed,"] },
+            { category: "Discovery", phrases: ["From the edge of the clearing,", "Just beyond the gate,", "Out of the corner of his eye,", "Beneath the broken fence,", "Across the empty yard,"] },
+            { category: "Realisation", phrases: ["Suddenly aware that,", "For the first time,", "Only then did he realise,", "At last he understood,", "Without warning,"] },
+            { category: "Movement", phrases: ["Stepping forward,", "Racing across the yard,", "Gripping the handle tightly,", "Ducking beneath the branch,", "Pushing the door open,"] },
+            { category: "Atmosphere", phrases: ["In the fading light,", "Beneath the dark clouds,", "In the heavy silence,", "Through the drifting fog,", "Under the pale moon,"] },
+            { category: "Suspense", phrases: ["For one uneasy moment,", "With a sudden jolt of fear,", "Heart pounding wildly,", "Holding his breath,", "Listening carefully,"] },
+            { category: "Character emotion", phrases: ["With growing confidence,", "With quiet determination,", "With a nervous glance,", "With a burst of courage,", "With a sinking feeling,"] },
+            { category: "Reaction", phrases: ["Without thinking,", "Almost immediately,", "Before he could stop himself,", "In a flash of panic,", "With a startled gasp,"] }
+        ],
+        master: [
+            { category: "Reflective", phrases: ["As if waking from a dream,", "For reasons he could not explain,", "With the strange certainty that,", "Against every instinct,", "In a way that felt inevitable,"] },
+            { category: "Observation", phrases: ["From where she stood,", "Across the silent valley,", "Between the leaning buildings,", "Along the narrow track,", "At the far end of the corridor,"] },
+            { category: "Memory", phrases: ["For years he had avoided,", "Since that distant summer,", "Long before anyone realised,", "Ever since that day,", "From childhood onward,"] },
+            { category: "Thought", phrases: ["If there was one thing he knew,", "For a brief uneasy second,", "Though he hated to admit it,", "Whether he liked it or not,", "As the realisation settled in,"] },
+            { category: "Contrast", phrases: ["Despite the growing danger,", "Even as the wind rose,", "Though the street seemed empty,", "While the others celebrated,", "Although nothing appeared wrong,"] },
+            { category: "Slow tension", phrases: ["With careful, deliberate steps,", "With the quiet patience of a hunter,", "With a growing sense of dread,", "With every nerve alert,", "With the world suddenly very still,"] },
+            { category: "Setting depth", phrases: ["Beyond the rusted gate,", "Beneath the towering cliffs,", "Along the abandoned railway line,", "At the edge of the forest,", "Under the flickering streetlight,"] },
+            { category: "Climactic moment", phrases: ["In a moment of desperation,", "With nothing left to lose,", "As the final seconds slipped away,", "Just before everything changed,", "At the last possible moment,"] }
+        ]
+    };
 
     /* --- PERSISTENT STATE --- */
     let currentMode = 'mission';
@@ -1392,7 +1503,7 @@
         }
 
         lines.push(report.passForMission
-            ? "This paragraph sure has some booyar!"
+            ? "This paragraph passes the local gate."
             : "This paragraph is not ready for Mr C's feedback yet.");
 
         return lines.join("\n");
@@ -1402,7 +1513,7 @@
         document.getElementById("resultOverlay").style.display = "flex";
         document.getElementById("resultOverlay").scrollTop = 0; 
         document.getElementById("resultText").innerText = buildLocalReport(report, mode);
-        document.getElementById("emailBtn").style.display = "none";
+        document.getElementById("copyBtn").style.display = "none";
     }
 
     /* --- FIREWORKS & CELEBRATION LOGIC --- */
@@ -1499,10 +1610,7 @@
         const checksRemaining = Math.max(0, 3 - appState.checksUsed);
 
         if (currentMode === 'mission') {
-            document.getElementById("checksLeft").innerText =
-                appState.emailSent
-                    ? `${checksRemaining} Checks left • Weekly email already sent`
-                    : `${checksRemaining} Checks left this week`;
+            document.getElementById("checksLeft").innerText = `${checksRemaining} Checks left this week`;
         } else {
             document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
         }
@@ -1538,14 +1646,12 @@
     async function callAI(text) {
         const overlay = document.getElementById("resultOverlay");
         const resText = document.getElementById("resultText");
-        const copyBtn = document.getElementById("copyBtn"); // Changed to copyBtn
+        const copyBtn = document.getElementById("copyBtn");
 
         overlay.style.display = "flex";
         document.getElementById("resultOverlay").scrollTop = 0;
-        copyBtn.style.display = "inline-flex"; // Changed to copyBtn
+        copyBtn.style.display = "inline-flex";
         resText.innerText = "Connecting to the Inkwell... 🧐";
-        
-        // ... rest of the function stays exactly the same
 
         try {
             const response = await fetch("/api/feedback", {
@@ -1597,7 +1703,7 @@
                 }
             }
         } catch (error) {
-            emailBtn.style.display = "none";
+            copyBtn.style.display = "none";
             resText.innerText = "System offline. Keep writing!";
         }
     }
@@ -1632,26 +1738,27 @@
         renderCrowns();
     }
 
-   function copyMission() {
+    /* --- THE NEW COPY BUTTON LOGIC --- */
+    function copyMission() {
         const text = document.getElementById("paragraph").value.trim();
         const feedback = document.getElementById("resultText").innerText;
         const rank = document.getElementById("playerTitle").innerText;
         
-        // Calculate their total XP to include in the copy paste!
         const totalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
 
-        // Format it nicely for when they paste it into a doc
         const clipboardText = `--- MIGHTY PENS MISSION ---\n\n` +
                               `AUTHOR RANK: ${rank} (${totalXP} XP)\n\n` +
                               `MY WRITING:\n${text}\n\n` +
                               `--- MR C'S FEEDBACK ---\n${feedback}`;
 
-        // Copy to clipboard
         navigator.clipboard.writeText(clipboardText).then(() => {
             showToast("Mission Copied! Ready to paste. 📋");
         }).catch(err => {
             showToast("Clipboard blocked! Please highlight and copy manually.");
         });
+        
+        appState.emailSent = true;
+        save();
     }
 
     function toggleTools() {
@@ -1694,6 +1801,9 @@
             textArea.value = savedDraft;
             textArea.dispatchEvent(new Event('input')); 
         }
+        
+        // Initialize the Spellbook content
+        initSpellbook();
     });
 
     document.getElementById("paragraph").addEventListener("input", function() {
@@ -1712,6 +1822,73 @@
             drawer.classList.remove('open');
         }
     });
+
+    /* --- SPELLBOOK JAVASCRIPT --- */
+    function initSpellbook() {
+        const noviceContainer = document.getElementById("noviceSpells");
+        const masterContainer = document.getElementById("masterSpells");
+
+        authorStarts.novice.forEach(set => {
+            noviceContainer.appendChild(createSpellCategory(set.category, set.phrases));
+        });
+
+        authorStarts.master.forEach(set => {
+            masterContainer.appendChild(createSpellCategory(set.category, set.phrases));
+        });
+    }
+
+    function createSpellCategory(title, phrases) {
+        const catDiv = document.createElement("div");
+        catDiv.className = "spell-category";
+        
+        const titleDiv = document.createElement("div");
+        titleDiv.className = "spell-cat-title";
+        titleDiv.innerText = title;
+        catDiv.appendChild(titleDiv);
+
+        const listDiv = document.createElement("div");
+        listDiv.className = "spell-list";
+        
+        phrases.forEach(phrase => {
+            const btn = document.createElement("button");
+            btn.className = "spell-item";
+            btn.innerText = phrase;
+            btn.onclick = () => injectSpell(phrase);
+            listDiv.appendChild(btn);
+        });
+
+        catDiv.appendChild(listDiv);
+        return catDiv;
+    }
+
+    function openSpellbook() {
+        document.getElementById("spellbookOverlay").style.display = "flex";
+    }
+
+    function closeSpellbook(event, force = false) {
+        if (force || event.target.id === "spellbookOverlay") {
+            document.getElementById("spellbookOverlay").style.display = "none";
+        }
+    }
+    
+    function injectSpell(phrase) {
+        const textarea = document.getElementById("paragraph");
+        let currentText = textarea.value;
+        
+        // Ensure there is a space before adding the spark if they are mid-sentence
+        if (currentText.length > 0 && !currentText.endsWith(' ') && !currentText.endsWith('\n')) {
+            currentText += ' ';
+        }
+        
+        textarea.value = currentText + phrase + ' ';
+        textarea.focus();
+        
+        // Trigger the input event to auto-save and update word count
+        textarea.dispatchEvent(new Event('input'));
+        
+        closeSpellbook(null, true);
+        showToast("⚡ Spark injected!");
+    }
 
     /* --- GOOGLE SHEETS FETCH LOGIC --- */
     function parseCSV(text) {
