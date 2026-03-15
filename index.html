@@ -388,9 +388,9 @@
     .speech-bubble {
        .speech-bubble {
     position: absolute; 
-    top: 50px; /* Use a fixed pixel value for height consistency */
-    left: 50%; /* Start at the center of the mascot area */
-    transform: translateX(20px); /* Nudge it exactly 20px to the right of his 'center' */
+    top: 50px; 
+    right: 40%; /* Start at the center of the mascot area */
+    transform: none; 
     background: #333; 
     color: white;
     padding: 14px 22px; 
@@ -422,8 +422,9 @@
     content: ''; 
     position: absolute; 
     top: 60%;
-    left: -15px; /* Keeps the tail pointing back at his head */
-    border-width: 7px 15px 7px 0; 
+    left: -18px; /* Keeps the tail pointing back at his head */
+    right: auto;
+    border-width: 7px 22px 7px 0; 
     border-style: solid; 
     border-color: transparent #333 transparent transparent; 
 }
