@@ -61,61 +61,6 @@
         transition: all 0.3s;
     }
 
-    /* --- CELEBRATION OVERLAY --- */
-    .celebration-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(8px);
-        pointer-events: none;
-    }
-
-    .celebration-box {
-        background: white;
-        padding: 40px 80px;
-        border-radius: 40px;
-        text-align: center;
-        box-shadow: 0 0 50px var(--star-gold);
-        transform: scale(0);
-        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-        border: 8px solid var(--star-gold);
-        position: relative;
-    }
-
-    .celebration-box h1 {
-        font-family: 'Lilita One', sans-serif;
-        font-size: 4rem;
-        margin: 0;
-        color: var(--purple-main);
-        text-shadow: 3px 3px 0px var(--bg-yellow);
-        white-space: nowrap;
-    }
-
-    .firework {
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        pointer-events: none;
-        bottom: 0px;
-        z-index: 100;
-        box-shadow: 0 0 6px currentColor;
-    }
-
-    @keyframes popIn {
-        to { transform: scale(1); }
-    }
-
-    @keyframes fireworkSpray {
-        0% { transform: translate(-50%, 0) scale(1); opacity: 1; }
-        60% { opacity: 1; }
-        100% { transform: translate(calc(-50% + var(--x)), var(--y)) scale(0.2); opacity: 0; }
-    }
-
     /* --- BACKGROUND STAGING --- */
     .bg-shape {
         position: absolute;
@@ -588,14 +533,13 @@
         background: #faf5ff;
         padding: 18px 30px;
         display: grid;
-        grid-template-columns: 1fr auto 1fr;
+        grid-template-columns: 1fr auto;
         align-items: center;
         border-top: 2px solid #f3e8ff;
         border-radius: 0 0 36px 36px;
     }
 
     .controls-left { justify-self: start; }
-    .controls-center { justify-self: center; }
     .controls-right { justify-self: end; }
 
     /* --- THE STACKED ACTION BUTTON --- */
@@ -603,40 +547,6 @@
         position: relative;
         display: flex;
         justify-content: center;
-    }
-
-    /* --- iOS STYLE TOGGLE SWITCH --- */
-    .mode-switch {
-        display: flex;
-        background: #e2e8f0;
-        padding: 4px;
-        border-radius: 100px;
-        height: 48px;
-    }
-
-    .mode-btn {
-        border: 2px solid transparent;
-        width: 110px;
-        padding: 0;
-        border-radius: 100px;
-        font-weight: 900;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
-        cursor: pointer;
-        transition: all 0.2s ease-out;
-        background: transparent;
-        color: #64748b;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .mode-btn.active {
-        background: white;
-        color: var(--purple-main);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        border: 2px solid transparent;
     }
 
     /* --- SIDEBAR --- */
@@ -1380,18 +1290,6 @@
         margin-top: 30px; /* OVERRIDE zero margin */
         }
 
-        .mode-switch {
-            flex-direction: column;
-            gap: 2px;
-            height: auto;
-        }
-
-        .mode-btn {
-            padding: 6px 10px;
-            font-size: 0.75rem;
-            height: auto;
-        }
-
         #checkBtn {
             height: auto;
             padding: 10px 20px;
@@ -1433,17 +1331,11 @@
 </head>
 <body>
 
-<div id="celebrationOverlay" class="celebration-overlay">
-    <div id="celebrationBox" class="celebration-box">
-        <h1 id="celebrationText">XP EXPLOSION!</h1>
-    </div>
-</div>
-
 <div class="spellbook-overlay" id="spellbookOverlay" onclick="closeSpellbook(event)">
     <div class="spellbook-modal">
         <button class="close-spellbook" onclick="closeSpellbook(event, true)">✖</button>
         <h2>⚡ The Author's Spellbook</h2>
-        <p>Click an author's start to instantly inject it into your mission report!</p>
+        <p>Click an author's start to instantly add it to your writing!</p>
         <div class="spellbook-cols">
             <div class="spell-col" id="noviceSpells">
                 <h3>Apprentice Starts</h3>
@@ -1535,28 +1427,19 @@
                     </div>
                     <div class="result-buttons-container">
                         <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
-                        <button class="btn-submit" style="background: #10b981; display: none;" id="copyBtn" onclick="copyMission()">Copy Final Mission</button>
                     </div>
                 </div>
 
-                <textarea id="paragraph" placeholder="Type your mission report here..."></textarea>
+                <textarea id="paragraph" placeholder="Write your story here..."></textarea>
 
                 <div class="editor-controls">
                     <div class="controls-left">
                         <div id="wordCount" style="font-weight: 800; color: var(--text-muted); background: #fff; padding: 6px 16px; border-radius: 20px; border: 2px solid #f3e8ff;">Words: 0</div>
                     </div>
 
-                    <div class="controls-center">
-                        <div class="mode-switch">
-                            <button class="mode-btn active" id="modeMission" onclick="setMode('mission')">MISSION</button>
-                            <button class="mode-btn" id="modePractice" onclick="setMode('practice')">PRACTICE</button>
-                        </div>
-                    </div>
-
                     <div class="controls-right">
                         <div class="action-group">
-                            <button class="btn-submit" id="checkBtn" onclick="handleCheck()">CHECK WRITING</button>
-                            <div id="checksLeft" style="font-weight: 800; color: var(--purple-main); font-size: 0.75rem; white-space: nowrap; position: absolute; top: 100%; margin-top: 6px;"></div>
+                            <button class="btn-submit" id="checkBtn" onclick="handleCheck()">SCORE MY WRITING</button>
                         </div>
                     </div>
                 </div>
@@ -1662,14 +1545,14 @@
     ];
 
     const skillDefs = [
-        { id: "starts", name: "Sentence Starts", match: /Sentence Starts/i },
-        { id: "verbs", name: "Active Verbs", match: /Active Verbs/i },
-        { id: "vocab", name: "Vocabulary", match: /Vocabulary Strength/i },
-        { id: "variety", name: "Sentence Variety", match: /Sentence Variety/i },
-        { id: "structure", name: "Story Structure", match: /Story Structure/i },
-        { id: "repetition", name: "Word Choice", match: /Word Choice/i },
-        { id: "stopwords", name: "Stop Words", match: /Stop Word/i },
-        { id: "grammar", name: "Punctuation", match: /Punctuation/i }
+        { id: "starts", name: "Sentence Starts" },
+        { id: "verbs", name: "Active Verbs" },
+        { id: "vocab", name: "Vocabulary" },
+        { id: "variety", name: "Sentence Variety" },
+        { id: "structure", name: "Story Structure" },
+        { id: "repetition", name: "Word Choice" },
+        { id: "stopwords", name: "Stop Words" },
+        { id: "grammar", name: "Punctuation" }
     ];
 
     const titles = [
@@ -1706,34 +1589,15 @@
     };
 
     /* --- PERSISTENT STATE --- */
-    let currentMode = 'mission';
     const stateKey = "mrCMightyPens_v17_xp";
 
-    function getWeekKey() {
-        const now = new Date();
-        const start = new Date(now);
-        const day = start.getDay();
-        const diff = start.getDate() - day + (day === 0 ? -6 : 1);
-        start.setDate(diff);
-        start.setHours(0, 0, 0, 0);
-        return start.toISOString().slice(0, 10);
-    }
-
     let appState = JSON.parse(localStorage.getItem(stateKey)) || {
-        xp: {},
-        checksUsed: 0,
-        emailSent: false,
-        lastReset: getWeekKey()
+        xp: {}
     };
 
     skillDefs.forEach(s => { if(appState.xp[s.id] === undefined) appState.xp[s.id] = 0; });
 
     function save() {
-        if (appState.lastReset !== getWeekKey()) {
-            appState.checksUsed = 0;
-            appState.emailSent = false;
-            appState.lastReset = getWeekKey();
-        }
         localStorage.setItem(stateKey, JSON.stringify(appState));
     }
 
@@ -1993,12 +1857,12 @@
             issues,
             blockIssues,
             warnIssues,
-            passForMission: blockIssues.length === 0,
+            passesCheck: blockIssues.length === 0,
             score
         };
     }
 
-    function buildLocalReport(report, mode = "practice") {
+    function buildLocalReport(report) {
         const lines = [];
         const strengths = [];
         const nextSteps = [...report.issues]
@@ -2008,7 +1872,7 @@
             })
             .slice(0, 3);
 
-        lines.push(mode === "mission" ? "MISSION WRITING CHECK" : "PRACTICE WRITING CHECK");
+        lines.push("WRITING SCORE");
         lines.push("");
         lines.push(`CHECKLIST SCORE: ${report.score}/100`);
         lines.push(`${report.wordCount} words • ${report.sentences} sentences`);
@@ -2046,8 +1910,8 @@
             lines.push("");
         }
 
-        if (!report.passForMission) {
-            lines.push("Make these changes, then press CHECK WRITING again.");
+        if (!report.passesCheck) {
+            lines.push("Make these changes, then press SCORE MY WRITING again.");
         } else if (report.warnIssues.length) {
             lines.push("Your paragraph passes. Try the quick changes above to make it even stronger.");
         } else {
@@ -2057,70 +1921,15 @@
         return lines.join("\n");
     }
 
-    function showLocalOverlay(report, mode) {
+    function showLocalOverlay(report) {
         document.getElementById("resultOverlay").style.display = "flex";
         document.getElementById("resultOverlay").scrollTop = 0;
-        document.getElementById("resultText").innerText = buildLocalReport(report, mode);
-        document.getElementById("copyBtn").style.display = "none";
-    }
-
-    /* --- FIREWORKS & CELEBRATION LOGIC --- */
-    function triggerCelebration(xp, isLevelUp) {
-        const overlay = document.getElementById("celebrationOverlay");
-        const box = document.getElementById("celebrationBox");
-        const text = document.getElementById("celebrationText");
-
-        overlay.style.display = "flex";
-        text.innerText = isLevelUp ? "BOOYAR! LEVEL UP AUTHOR!" : `+${xp} XP EXPLOSION!`;
-        box.style.borderColor = isLevelUp ? "var(--purple-main)" : "var(--star-gold)";
-
-        let sprayTimer = setInterval(() => {
-            const buckets = ['20%', '50%', '80%'];
-            buckets.forEach(position => {
-                for(let i=0; i<20; i++) {
-                    createFirework(position);
-                }
-            });
-        }, 50);
-
-        setTimeout(() => clearInterval(sprayTimer), 3500);
-
-        setTimeout(() => {
-            overlay.style.opacity = "0";
-            setTimeout(() => {
-                overlay.style.display = "none";
-                overlay.style.opacity = "1";
-            }, 500);
-        }, 4500);
-    }
-
-    function createFirework(startX) {
-        const f = document.createElement('div');
-        f.className = 'firework';
-
-        const colors = ['#7b2cbf', '#FF7B00', '#FF5757', '#FF9F1C', '#0ea5e9', '#ffffff'];
-        f.style.background = colors[Math.floor(Math.random()*colors.length)];
-        f.style.left = startX;
-
-        const spreadX = (Math.random() - 0.5) * 300;
-        const shootY = -(Math.random() * 400 + 300);
-
-        f.style.setProperty('--x', `${spreadX}px`);
-        f.style.setProperty('--y', `${shootY}px`);
-        f.style.animation = `fireworkSpray ${0.8 + Math.random() * 0.6}s cubic-bezier(0.25, 1, 0.5, 1) forwards`;
-
-        document.getElementById("celebrationBox").appendChild(f);
-        setTimeout(() => f.remove(), 1500);
+        document.getElementById("resultText").innerText = buildLocalReport(report);
     }
 
     /* --- LOGIC ENGINE --- */
     function renderCrowns() {
         save();
-
-        if (appState.checksUsed < 0 || appState.checksUsed > 3) {
-            appState.checksUsed = 0;
-            save();
-        }
 
         let totalXP = 0;
         const grid = document.getElementById("crownGrid");
@@ -2159,111 +1968,19 @@
             document.getElementById("xpFill").style.width = `100%`;
             document.getElementById("xpText").innerText = `${totalXP} XP - ULTIMATE MASTER!`;
         }
-
-        const checksRemaining = Math.max(0, 3 - appState.checksUsed);
-
-        if (currentMode === 'mission') {
-            document.getElementById("checksLeft").innerText = `${checksRemaining} Checks left this week`;
-        } else {
-            document.getElementById("checksLeft").innerText = "Practice Mode • Unlimited local checks";
-        }
     }
 
     function handleCheck() {
         const text = document.getElementById("paragraph").value.trim();
         const report = analyseLocalWriting(text);
 
-        if (currentMode === 'practice') {
-            showLocalOverlay(report, "practice");
-            maybeLevelUpPractice(report);
-            return;
-        }
-
-        if (appState.checksUsed >= 3) {
-            showToast("No Mr C feedbacks left this week. Use Practice Mode.");
-            return;
-        }
-
-        if (!report.passForMission) {
-            showLocalOverlay(report, "mission");
-            showToast("Fix the weaknesses before using Mr C's feedback.");
-            return;
-        }
-
-        appState.checksUsed++;
-        save();
-        renderCrowns();
-        callAI(text);
+        showLocalOverlay(report);
+        celebrateWritingScore(report);
     }
 
-    async function callAI(text) {
-        const overlay = document.getElementById("resultOverlay");
-        const resText = document.getElementById("resultText");
-        const copyBtn = document.getElementById("copyBtn");
-
-        overlay.style.display = "flex";
-        document.getElementById("resultOverlay").scrollTop = 0;
-        copyBtn.style.display = "inline-flex";
-        resText.innerText = "Connecting to the Inkwell... 🧐";
-
-        try {
-            const response = await fetch("/api/feedback", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ text, topic: document.getElementById("topicText").innerText })
-            });
-            const data = await response.json();
-            resText.innerText = data.feedback;
-
-            if (response.ok && data.feedback) {
-                let totalGained = 0;
-                let oldTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-
-                skillDefs.forEach((def) => {
-                    const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
-                    const match = data.feedback.match(regex);
-                    if (match && match[1]) {
-                        const stars = match[1].length;
-                        appState.xp[def.id] = (appState.xp[def.id] || 0) + stars;
-                        totalGained += stars;
-                    }
-                });
-
-                if (totalGained > 0) {
-                    let newTotalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-                    let leveledUp = titles.some(t => oldTotalXP < t.xp && newTotalXP >= t.xp);
-
-                    triggerCelebration(totalGained, leveledUp);
-
-                    setTimeout(() => {
-                        save();
-                        renderCrowns();
-                        showToast(`🌟 +${totalGained} XP Saved!`);
-
-                        setTimeout(() => {
-                            skillDefs.forEach((def, index) => {
-                                const regex = new RegExp(`${def.match.source}.*?([★]+)`, 'i');
-                                if (data.feedback.match(regex)) {
-                                    const crowns = document.querySelectorAll('.crown-wrapper');
-                                    if (crowns[index]) {
-                                        crowns[index].classList.add('crown-celebrate');
-                                        setTimeout(() => crowns[index].classList.remove('crown-celebrate'), 1200);
-                                    }
-                                }
-                            });
-                        }, 1000);
-                    }, 4000);
-                }
-            }
-        } catch (error) {
-            copyBtn.style.display = "none";
-            resText.innerText = "System offline. Keep writing!";
-        }
-    }
-
-    function maybeLevelUpPractice(report) {
-        if (!report.passForMission || report.score < 70) {
-            showToast("Practice checked — use the feedback and try again. ✍️");
+    function celebrateWritingScore(report) {
+        if (!report.passesCheck || report.score < 70) {
+            showToast("Writing scored — use the feedback and try again. ✍️");
             return;
         }
 
@@ -2279,40 +1996,12 @@
             }, 150);
         }
 
-        showToast("Great practice! Skills sparkling! ✨");
+        showToast("Great writing! Skills sparkling! ✨");
     }
 
-    function setMode(mode) {
-        currentMode = mode;
-        document.getElementById("modeMission").classList.toggle("active", mode === 'mission');
-        document.getElementById("modePractice").classList.toggle("active", mode === 'practice');
-        document.getElementById("topicText").innerText =
-            mode === 'mission'
-                ? "Weekly Mission: " + topics[Math.floor(new Date().getDate() % topics.length)]
-                : "Practice Mode: Local Writing Check";
-        renderCrowns();
-    }
-
-    function copyMission() {
-        const text = document.getElementById("paragraph").value.trim();
-        const feedback = document.getElementById("resultText").innerText;
-        const rank = document.getElementById("playerTitle").innerText;
-
-        const totalXP = Object.values(appState.xp).reduce((a, b) => a + Number(b), 0);
-
-        const clipboardText = `--- MIGHTY PENS MISSION ---\n\n` +
-                              `AUTHOR RANK: ${rank} (${totalXP} XP)\n\n` +
-                              `MY WRITING:\n${text}\n\n` +
-                              `--- MR C'S FEEDBACK ---\n${feedback}`;
-
-        navigator.clipboard.writeText(clipboardText).then(() => {
-            showToast("Mission Copied! Ready to paste. 📋");
-        }).catch(err => {
-            showToast("Clipboard blocked! Please highlight and copy manually.");
-        });
-
-        appState.emailSent = true;
-        save();
+    function setWritingTopic() {
+        const topic = topics[Math.floor(new Date().getDate() % topics.length)];
+        document.getElementById("topicText").innerText = "Writing Topic: " + topic;
     }
 
     function toggleTools() {
@@ -2479,7 +2168,7 @@
         }
     });
 
-    setMode('mission');
+    setWritingTopic();
     renderCrowns();
     rotateLesson();
     loadGoogleSheetData();
