@@ -1850,11 +1850,17 @@
         const sentences = splitSentences(text);
         const wordCount = words.length;
 
-        const sentenceStarts = sentences.map(sentence => {
-            return getLowerWords(sentence)[0] || "";
+        const sentenceDetails = sentences.map(sentence => {
+            const originalWords = getWords(sentence);
+            return {
+                start: (originalWords[0] || "").toLocaleLowerCase("en"),
+                preview: originalWords.slice(0, 6).join(" ")
+            };
         });
+        const sentenceStarts = sentenceDetails.map(detail => detail.start);
+        const badStartDetails = sentenceDetails.filter(detail => BAD_STARTS.includes(detail.start));
 
-        const badStarts = sentenceStarts.filter(w => BAD_STARTS.includes(w));
+        const badStarts = badStartDetails.map(detail => detail.start);
         const weakVerbHits = words.filter(w => WEAK_VERBS.includes(w));
         const basicWordHits = words.filter(w => BASIC_WORDS.includes(w));
         const stopWordHits = words.filter(w => STOP_WORDS.includes(w));
@@ -1902,11 +1908,16 @@
         }
 
         if (badStarts.length >= 4 && badStartRatio > LOCAL_RULES.blockBadStartRatio) {
+            const examples = badStartDetails
+                .slice(0, 2)
+                .map(detail => `“${detail.preview}…”`)
+                .join(" and ");
             addIssue("bad-starts", "block",
-                `Rewrite at least two of your ${badStarts.length} weak openings. Instead of The, He or She, try a time, place or action opener such as “Without warning,” or “Gripping the rail,”.`, 15);
+                `Change these weak openings: ${examples}. Begin with time, place or action instead—for example, “Without warning,” or “Gripping the rail,”.`, 15);
         } else if (badStarts.length >= 2 && badStartRatio >= LOCAL_RULES.warnBadStartRatio) {
+            const example = badStartDetails[0];
             addIssue("bad-starts-warning", "warn",
-                `Rewrite one of your ${badStarts.length} weak openings. Try beginning with when, where or how the action happens.`, 7);
+                `Change this weak opening: “${example.preview}…”. Begin with when, where or how the action happens.`, 7);
         }
 
         if (sentences.length >= LOCAL_RULES.minSentenceCount &&
