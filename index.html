@@ -1888,55 +1888,55 @@
 
         if (wordCount < LOCAL_RULES.minWords) {
             addIssue("length-short", "block",
-                `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`, 20);
+                `Add ${LOCAL_RULES.minWords - wordCount} or more words. Show what the character notices, thinks or does next.`, 20);
         }
 
         if (wordCount > LOCAL_RULES.maxWords) {
             addIssue("length-long", "block",
-                `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`, 20);
+                `Cut at least ${wordCount - LOCAL_RULES.maxWords} words. Remove repeated actions or details that do not move the moment forward.`, 20);
         }
 
         if (sentences.length < LOCAL_RULES.minSentenceCount) {
             addIssue("sentence-count", "block",
-                `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`, 18);
+                `Add ${LOCAL_RULES.minSentenceCount - sentences.length} complete sentence${LOCAL_RULES.minSentenceCount - sentences.length === 1 ? "" : "s"}. Try one action sentence and one thought, feeling or setting sentence.`, 18);
         }
 
         if (badStarts.length >= 4 && badStartRatio > LOCAL_RULES.blockBadStartRatio) {
             addIssue("bad-starts", "block",
-                `${badStarts.length} of ${sentences.length} sentences have weak starts. Cut back on starts like The, It, A, An, I, My, We and They.`, 15);
+                `Rewrite at least two of your ${badStarts.length} weak openings. Instead of The, He or She, try a time, place or action opener such as “Without warning,” or “Gripping the rail,”.`, 15);
         } else if (badStarts.length >= 2 && badStartRatio >= LOCAL_RULES.warnBadStartRatio) {
             addIssue("bad-starts-warning", "warn",
-                `${badStarts.length} of ${sentences.length} sentences have weak starts. Try stronger openings.`, 7);
+                `Rewrite one of your ${badStarts.length} weak openings. Try beginning with when, where or how the action happens.`, 7);
         }
 
         if (sentences.length >= LOCAL_RULES.minSentenceCount &&
             uniqueStartRatio < LOCAL_RULES.minUniqueStartRatio) {
             addIssue("start-variety", "warn",
-                "Your sentence openings are too similar. Mix them up more.", 7);
+                "Change one repeated sentence opening. Try an action word ending in -ing, a place phrase or a short emotion opener.", 7);
         }
 
         if (weakVerbHits.length >= 7 && helperVerbRatio > LOCAL_RULES.blockHelperVerbRatio) {
             addIssue("weak-verbs", "block",
-                `${percent(helperVerbRatio)}% of your words are helper verbs. Cut back on repeated was, were, is, are, has and had.`, 14);
+                `Replace at least three helper verbs (${[...new Set(weakVerbHits)].slice(0, 5).join(", ")}). For example, change “the wind was loud” to “the wind howled”.`, 14);
         } else if (weakVerbHits.length >= 5 && helperVerbRatio > LOCAL_RULES.warnHelperVerbRatio) {
             addIssue("weak-verbs-warning", "warn",
-                "You are leaning on helper verbs. Where it fits, replace them with precise action verbs.", 7);
+                `Replace one or two helper verbs (${[...new Set(weakVerbHits)].slice(0, 5).join(", ")}) with a precise action verb.`, 7);
         }
 
         if (basicWordHits.length >= 4 && basicWordRatio > LOCAL_RULES.blockBasicWordRatio) {
             addIssue("basic-words", "block",
-                `Basic words make up ${percent(basicWordRatio)}% of the paragraph. Replace words like got, went, very, really, stuff and things.`, 12);
+                `Upgrade at least three basic words: ${[...new Set(basicWordHits)].slice(0, 5).join(", ")}. Choose verbs that show the exact action, such as sprinted, snatched or crept.`, 12);
         } else if (basicWordHits.length >= 2 && basicWordRatio > LOCAL_RULES.warnBasicWordRatio) {
             addIssue("basic-words-warning", "warn",
-                `Sharpen these basic words: ${[...new Set(basicWordHits)].slice(0, 5).join(", ")}.`, 6);
+                `Upgrade one of these basic words: ${[...new Set(basicWordHits)].slice(0, 5).join(", ")}. Pick a word that shows the exact action or detail.`, 6);
         }
 
         if (wordCount >= 30 && stopWordRatio > LOCAL_RULES.blockStopWordRatio) {
             addIssue("stop-words", "block",
-                `${percent(stopWordRatio)}% of the paragraph uses common connecting words. Tighten repeated phrases and choose more precise expression.`, 15);
+                `Tighten two sentences: ${percent(stopWordRatio)}% of the paragraph uses common connecting words. Remove an extra and, the or to only when the sentence still sounds right, then add a precise noun or verb.`, 15);
         } else if (wordCount >= 30 && stopWordRatio > LOCAL_RULES.warnStopWordRatio) {
             addIssue("stop-words-warning", "warn",
-                `${percent(stopWordRatio)}% of the paragraph uses common connecting words. Check for phrases you can tighten.`, 7);
+                `Tighten one sentence: ${percent(stopWordRatio)}% of the paragraph uses common connecting words. Read it aloud and remove any and, the or to that the sentence does not need.`, 7);
         }
 
         if (overusedPhrases.length) {
@@ -1945,7 +1945,7 @@
                 .map(item => `"${item.label}" (${item.count})`)
                 .join(", ");
             addIssue("filler-phrases", "warn",
-                `Repeated filler pattern${overusedPhrases.length === 1 ? "" : "s"}: ${phraseList}. Rework some of these for better flow.`, 7);
+                `Rewrite one repeated filler pattern: ${phraseList}. Join actions smoothly or begin the next sentence with time, place or emotion.`, 7);
         }
 
         if (repeatedWords.length > 0) {
@@ -1956,10 +1956,10 @@
 
             if (hasHeavyRepeat) {
                 addIssue("repetition", "block",
-                    `Too much repetition: ${repeatedList}. Keep a character's name where clarity needs it, but vary other repeated nouns and verbs.`, 12);
+                    `Replace at least two repeated words: ${repeatedList}. Keep a character's name when readers need it, but vary other nouns and verbs.`, 12);
             } else {
                 addIssue("repetition-warning", "warn",
-                    `Watch repetition: ${repeatedList}. Keep necessary names, but vary repeated nouns and verbs.`, 6);
+                    `Check these repeated words: ${repeatedList}. Replace one if it is not needed for clarity.`, 6);
             }
         }
 
@@ -1989,44 +1989,59 @@
 
     function buildLocalReport(report, mode = "practice") {
         const lines = [];
+        const strengths = [];
+        const nextSteps = [...report.issues]
+            .sort((a, b) => {
+                if (a.severity !== b.severity) return a.severity === "block" ? -1 : 1;
+                return b.penalty - a.penalty;
+            })
+            .slice(0, 3);
 
-        lines.push(mode === "mission" ? "Local Check Complete — before AI feedback" : "Practice Mode Local Check");
+        lines.push(mode === "mission" ? "MISSION WRITING CHECK" : "PRACTICE WRITING CHECK");
         lines.push("");
-        lines.push(`Words: ${report.wordCount}`);
-        lines.push(`Sentences: ${report.sentences}`);
-        lines.push(`Checklist Score: ${report.score}/100`);
-        lines.push(`Common connecting words: ${percent(report.stopWordRatio)}%`);
+        lines.push(`CHECKLIST SCORE: ${report.score}/100`);
+        lines.push(`${report.wordCount} words • ${report.sentences} sentences`);
         lines.push("");
 
-        if (report.issues.length === 0) {
-            lines.push("Booyar! This is strong enough to pass the local check.");
-            lines.push("Nice work here. Your paragraph looks ready.");
-        } else {
-            if (report.blockIssues.length) {
-                lines.push("Fix these first:");
-                report.blockIssues.forEach(issue => lines.push(`• ${issue.message}`));
-                lines.push("");
-            }
-
-            if (report.warnIssues.length) {
-                lines.push("Quick improvements:");
-                report.warnIssues.forEach(issue => lines.push(`• ${issue.message}`));
-                lines.push("");
-            }
+        if (report.wordCount >= LOCAL_RULES.minWords && report.wordCount <= LOCAL_RULES.maxWords) {
+            strengths.push("Your paragraph is a useful length for this task.");
+        }
+        if (report.sentences >= LOCAL_RULES.minSentenceCount && report.badStarts.length < 2) {
+            strengths.push("You have built several sentences without overusing weak openings.");
+        }
+        if (report.stopWordRatio <= LOCAL_RULES.warnStopWordRatio) {
+            strengths.push("Your wording is focused rather than crowded with connecting words.");
+        }
+        if (!report.repeatedWords.length) {
+            strengths.push("You have avoided heavy word repetition.");
         }
 
-        if (report.repeatedWords.length) {
-            const sample = report.repeatedWords
-                .slice(0, 5)
-                .map(item => `${item.word} (${item.count})`)
-                .join(", ");
-            lines.push(`Repeated words spotted: ${sample}`);
+        if (strengths.length) {
+            lines.push("WHAT'S WORKING");
+            strengths.slice(0, 2).forEach(strength => lines.push(`✓ ${strength}`));
             lines.push("");
         }
 
-        lines.push(report.passForMission
-            ? "This paragraph passes the local gate."
-            : "This paragraph is not ready for Mr C's feedback yet.");
+        if (nextSteps.length) {
+            lines.push("TRY THIS NOW");
+            nextSteps.forEach((issue, index) => lines.push(`${index + 1}. ${issue.message}`));
+            if (report.issues.length > nextSteps.length) {
+                lines.push(`Start with these ${nextSteps.length}. Then check your writing again for the next step.`);
+            }
+            lines.push("");
+        } else {
+            lines.push("BOOYAR — NICE WORK!");
+            lines.push("Read your paragraph aloud once. If every sentence sounds clear, it is ready.");
+            lines.push("");
+        }
+
+        if (!report.passForMission) {
+            lines.push("Make these changes, then press CHECK WRITING again.");
+        } else if (report.warnIssues.length) {
+            lines.push("Your paragraph passes. Try the quick changes above to make it even stronger.");
+        } else {
+            lines.push("Your paragraph passes the writing check.");
+        }
 
         return lines.join("\n");
     }
