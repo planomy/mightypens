@@ -1771,13 +1771,18 @@
     const LOCAL_RULES = {
         minWords: 50,
         maxWords: 150,
-        maxBadStarts: 3,
-        maxWeakVerbs: 8,
-        maxBasicWords: 4,
-        maxRepeatWords: 6,
-        maxStopWordRatio: 0.45,
         minSentenceCount: 3,
-        minUniqueStarts: 3
+        warnBadStartRatio: 0.4,
+        blockBadStartRatio: 0.55,
+        warnHelperVerbRatio: 0.09,
+        blockHelperVerbRatio: 0.14,
+        warnBasicWordRatio: 0.02,
+        blockBasicWordRatio: 0.05,
+        warnStopWordRatio: 0.42,
+        blockStopWordRatio: 0.5,
+        warnRepeatRatio: 0.035,
+        blockRepeatRatio: 0.07,
+        minUniqueStartRatio: 0.6
     };
 
     const BAD_STARTS = [
@@ -1800,19 +1805,44 @@
         "i", "my", "we", "our", "there", "then"
     ];
 
+    const OVERUSED_PHRASES = [
+        { label: "and then", pattern: /\band\s+then\b/gi },
+        { label: "there was/were", pattern: /\bthere\s+(?:was|were)\b/gi },
+        { label: "it was", pattern: /\bit\s+was\b/gi },
+        { label: "started/began to", pattern: /\b(?:started|began)\s+to\b/gi },
+        { label: "a lot", pattern: /\ba\s+lot\b/gi }
+    ];
+
     function splitSentences(text) {
+        if (typeof Intl !== "undefined" && Intl.Segmenter) {
+            const segmenter = new Intl.Segmenter("en", { granularity: "sentence" });
+            return Array.from(segmenter.segment(text), part => part.segment.trim()).filter(Boolean);
+        }
+
         return text
-            .split(/[.!?]+/)
+            .split(/(?<=[.!?])(?:["'’”)]*)\s+|\n+/)
             .map(s => s.trim())
             .filter(Boolean);
     }
 
     function getWords(text) {
-        return text.match(/[a-zA-Z']+/g) || [];
+        return text.match(/[\p{L}\p{M}]+(?:['’][\p{L}\p{M}]+)*/gu) || [];
     }
 
     function getLowerWords(text) {
-        return getWords(text).map(w => w.toLowerCase());
+        return getWords(text).map(w => w.toLocaleLowerCase("en").replaceAll("’", "'"));
+    }
+
+    function ratio(part, whole) {
+        return whole ? part / whole : 0;
+    }
+
+    function percent(value) {
+        return Math.round(value * 100);
+    }
+
+    function countMatches(text, pattern) {
+        return (text.match(pattern) || []).length;
     }
 
     function analyseLocalWriting(text) {
@@ -1821,15 +1851,21 @@
         const wordCount = words.length;
 
         const sentenceStarts = sentences.map(sentence => {
-            const firstWord = (sentence.match(/[a-zA-Z']+/) || [""])[0].toLowerCase();
-            return firstWord;
+            return getLowerWords(sentence)[0] || "";
         });
 
         const badStarts = sentenceStarts.filter(w => BAD_STARTS.includes(w));
         const weakVerbHits = words.filter(w => WEAK_VERBS.includes(w));
         const basicWordHits = words.filter(w => BASIC_WORDS.includes(w));
         const stopWordHits = words.filter(w => STOP_WORDS.includes(w));
-        const stopWordRatio = wordCount ? stopWordHits.length / wordCount : 0;
+        const stopWordRatio = ratio(stopWordHits.length, wordCount);
+        const helperVerbRatio = ratio(weakVerbHits.length, wordCount);
+        const basicWordRatio = ratio(basicWordHits.length, wordCount);
+        const badStartRatio = ratio(badStarts.length, sentences.length);
+
+        const overusedPhrases = OVERUSED_PHRASES
+            .map(({ label, pattern }) => ({ label, count: countMatches(text, pattern) }))
+            .filter(item => item.count >= 2);
 
         const freq = {};
         for (const w of words) {
@@ -1839,126 +1875,98 @@
         }
 
         const repeatedWords = Object.entries(freq)
-            .filter(([, count]) => count >= 3)
-            .sort((a, b) => b[1] - a[1]);
+            .map(([word, count]) => ({ word, count, share: ratio(count, wordCount) }))
+            .filter(item => item.count >= 3 && item.share >= LOCAL_RULES.warnRepeatRatio)
+            .sort((a, b) => b.count - a.count);
 
         const uniqueStarts = new Set(sentenceStarts.filter(Boolean)).size;
+        const uniqueStartRatio = ratio(uniqueStarts, sentenceStarts.length);
         const issues = [];
+        const addIssue = (key, severity, message, penalty) => {
+            issues.push({ key, severity, message, penalty });
+        };
 
         if (wordCount < LOCAL_RULES.minWords) {
-            issues.push({
-                key: "length-short",
-                severity: "block",
-                message: `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`
-            });
+            addIssue("length-short", "block",
+                `Too short: ${wordCount} words. Aim for at least ${LOCAL_RULES.minWords}.`, 20);
         }
 
         if (wordCount > LOCAL_RULES.maxWords) {
-            issues.push({
-                key: "length-long",
-                severity: "block",
-                message: `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`
-            });
+            addIssue("length-long", "block",
+                `Too long: ${wordCount} words. Keep it under ${LOCAL_RULES.maxWords}.`, 20);
         }
 
         if (sentences.length < LOCAL_RULES.minSentenceCount) {
-            issues.push({
-                key: "sentence-count",
-                severity: "block",
-                message: `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`
-            });
+            addIssue("sentence-count", "block",
+                `Too few sentences. Try writing at least ${LOCAL_RULES.minSentenceCount} sentences.`, 18);
         }
 
-        if (badStarts.length > LOCAL_RULES.maxBadStarts) {
-            issues.push({
-                key: "bad-starts",
-                severity: "block",
-                message: `Too many weak sentence starts (${badStarts.length}). Cut back on starts like The, It, A, An, I, My, We and They.`
-            });
-        } else if (badStarts.length > 0) {
-            issues.push({
-                key: "bad-starts-warning",
-                severity: "warn",
-                message: `You have ${badStarts.length} weak sentence start${badStarts.length === 1 ? "" : "s"}. Try stronger openings.`
-            });
+        if (badStarts.length >= 4 && badStartRatio > LOCAL_RULES.blockBadStartRatio) {
+            addIssue("bad-starts", "block",
+                `${badStarts.length} of ${sentences.length} sentences have weak starts. Cut back on starts like The, It, A, An, I, My, We and They.`, 15);
+        } else if (badStarts.length >= 2 && badStartRatio >= LOCAL_RULES.warnBadStartRatio) {
+            addIssue("bad-starts-warning", "warn",
+                `${badStarts.length} of ${sentences.length} sentences have weak starts. Try stronger openings.`, 7);
         }
 
-        if (uniqueStarts < LOCAL_RULES.minUniqueStarts) {
-            issues.push({
-                key: "start-variety",
-                severity: "warn",
-                message: `Your sentence openings are too similar. Mix them up more.`
-            });
+        if (sentences.length >= LOCAL_RULES.minSentenceCount &&
+            uniqueStartRatio < LOCAL_RULES.minUniqueStartRatio) {
+            addIssue("start-variety", "warn",
+                "Your sentence openings are too similar. Mix them up more.", 7);
         }
 
-        if (weakVerbHits.length > LOCAL_RULES.maxWeakVerbs) {
-            issues.push({
-                key: "weak-verbs",
-                severity: "block",
-                message: `Too many helper verbs (${weakVerbHits.length}). Cut back on was, were, is, are, has and had.`
-            });
-        } else if (weakVerbHits.length > 4) {
-            issues.push({
-                key: "weak-verbs-warning",
-                severity: "warn",
-                message: `You are leaning on helper verbs a bit too much. Try stronger action verbs.`
-            });
+        if (weakVerbHits.length >= 7 && helperVerbRatio > LOCAL_RULES.blockHelperVerbRatio) {
+            addIssue("weak-verbs", "block",
+                `${percent(helperVerbRatio)}% of your words are helper verbs. Cut back on repeated was, were, is, are, has and had.`, 14);
+        } else if (weakVerbHits.length >= 5 && helperVerbRatio > LOCAL_RULES.warnHelperVerbRatio) {
+            addIssue("weak-verbs-warning", "warn",
+                "You are leaning on helper verbs. Where it fits, replace them with precise action verbs.", 7);
         }
 
-        if (basicWordHits.length > LOCAL_RULES.maxBasicWords) {
-            issues.push({
-                key: "basic-words",
-                severity: "block",
-                message: `Too many basic words (${basicWordHits.length}). Replace words like got, went, very, really, stuff and things.`
-            });
-        } else if (basicWordHits.length > 1) {
-            issues.push({
-                key: "basic-words-warning",
-                severity: "warn",
-                message: `Some vocabulary is too basic. Try sharper words.`
-            });
+        if (basicWordHits.length >= 4 && basicWordRatio > LOCAL_RULES.blockBasicWordRatio) {
+            addIssue("basic-words", "block",
+                `Basic words make up ${percent(basicWordRatio)}% of the paragraph. Replace words like got, went, very, really, stuff and things.`, 12);
+        } else if (basicWordHits.length >= 2 && basicWordRatio > LOCAL_RULES.warnBasicWordRatio) {
+            addIssue("basic-words-warning", "warn",
+                `Sharpen these basic words: ${[...new Set(basicWordHits)].slice(0, 5).join(", ")}.`, 6);
         }
 
-        if (stopWordRatio > LOCAL_RULES.maxStopWordRatio) {
-            issues.push({
-                key: "stop-words",
-                severity: "block",
-                message: `Too many stop words. Tighten the paragraph to make it stronger.`
-            });
-        } else if (stopWordRatio > 0.38) {
-            issues.push({
-                key: "stop-words-warning",
-                severity: "warn",
-                message: `This paragraph could be tightened. There are quite a lot of common filler words.`
-            });
+        if (wordCount >= 30 && stopWordRatio > LOCAL_RULES.blockStopWordRatio) {
+            addIssue("stop-words", "block",
+                `${percent(stopWordRatio)}% of the paragraph uses common connecting words. Tighten repeated phrases and choose more precise expression.`, 15);
+        } else if (wordCount >= 30 && stopWordRatio > LOCAL_RULES.warnStopWordRatio) {
+            addIssue("stop-words-warning", "warn",
+                `${percent(stopWordRatio)}% of the paragraph uses common connecting words. Check for phrases you can tighten.`, 7);
+        }
+
+        if (overusedPhrases.length) {
+            const phraseList = overusedPhrases
+                .slice(0, 3)
+                .map(item => `"${item.label}" (${item.count})`)
+                .join(", ");
+            addIssue("filler-phrases", "warn",
+                `Repeated filler pattern${overusedPhrases.length === 1 ? "" : "s"}: ${phraseList}. Rework some of these for better flow.`, 7);
         }
 
         if (repeatedWords.length > 0) {
             const topRepeated = repeatedWords.slice(0, 3);
-            const totalHeavyRepeats = topRepeated.reduce((sum, [, count]) => sum + count, 0);
+            const hasHeavyRepeat = topRepeated.some(item =>
+                item.count >= 4 && item.share > LOCAL_RULES.blockRepeatRatio);
+            const repeatedList = topRepeated.map(item => `${item.word} (${item.count})`).join(", ");
 
-            if (totalHeavyRepeats > LOCAL_RULES.maxRepeatWords) {
-                issues.push({
-                    key: "repetition",
-                    severity: "block",
-                    message: `Too much repetition. Words such as ${topRepeated.map(([w]) => w).join(", ")} appear too often.`
-                });
+            if (hasHeavyRepeat) {
+                addIssue("repetition", "block",
+                    `Too much repetition: ${repeatedList}. Keep a character's name where clarity needs it, but vary other repeated nouns and verbs.`, 12);
             } else {
-                issues.push({
-                    key: "repetition-warning",
-                    severity: "warn",
-                    message: `Watch repetition. You use ${topRepeated.map(([w]) => w).join(", ")} several times.`
-                });
+                addIssue("repetition-warning", "warn",
+                    `Watch repetition: ${repeatedList}. Keep necessary names, but vary repeated nouns and verbs.`, 6);
             }
         }
 
         const blockIssues = issues.filter(i => i.severity === "block");
         const warnIssues = issues.filter(i => i.severity === "warn");
 
-        let score = 100;
-        score -= blockIssues.length * 18;
-        score -= warnIssues.length * 7;
-        score = Math.max(0, score);
+        const score = Math.max(0, issues.reduce((total, issue) => total - issue.penalty, 100));
 
         return {
             wordCount,
@@ -1969,6 +1977,8 @@
             basicWordHits,
             repeatedWords,
             stopWordRatio,
+            helperVerbRatio,
+            overusedPhrases,
             issues,
             blockIssues,
             warnIssues,
@@ -1984,7 +1994,8 @@
         lines.push("");
         lines.push(`Words: ${report.wordCount}`);
         lines.push(`Sentences: ${report.sentences}`);
-        lines.push(`Local Score: ${report.score}/100`);
+        lines.push(`Checklist Score: ${report.score}/100`);
+        lines.push(`Common connecting words: ${percent(report.stopWordRatio)}%`);
         lines.push("");
 
         if (report.issues.length === 0) {
@@ -2007,7 +2018,7 @@
         if (report.repeatedWords.length) {
             const sample = report.repeatedWords
                 .slice(0, 5)
-                .map(([word, count]) => `${word} (${count})`)
+                .map(item => `${item.word} (${item.count})`)
                 .join(", ");
             lines.push(`Repeated words spotted: ${sample}`);
             lines.push("");
@@ -2138,7 +2149,7 @@
 
         if (currentMode === 'practice') {
             showLocalOverlay(report, "practice");
-            maybeLevelUpPractice();
+            maybeLevelUpPractice(report);
             return;
         }
 
@@ -2224,9 +2235,11 @@
         }
     }
 
-    function maybeLevelUpPractice() {
-        const count = (document.getElementById("paragraph").value.trim().match(/[a-z']+/gi) || []).length;
-        if (count < 50 || count > 150) return;
+    function maybeLevelUpPractice(report) {
+        if (!report.passForMission || report.score < 70) {
+            showToast("Practice checked — use the feedback and try again. ✍️");
+            return;
+        }
 
         const shuffled = [...skillDefs].sort(() => 0.5 - Math.random());
         for (let i = 0; i < 2; i++) {
