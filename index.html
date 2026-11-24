@@ -911,6 +911,51 @@
         border-radius: 0 0 40px 40px;
     }
 
+    .spell-start-review {
+        max-width: 800px;
+        margin-top: 28px;
+        padding: 22px;
+        border: 2px solid #fde68a;
+        border-radius: 18px;
+        background: #fffbeb;
+        color: var(--text-main);
+    }
+
+    .spell-start-review h3 {
+        margin: 0 0 6px;
+        color: #92400e;
+        font-size: 1rem;
+        font-weight: 900;
+        letter-spacing: 0.6px;
+    }
+
+    .spell-start-summary {
+        margin: 0 0 16px;
+        color: #78350f;
+        font-weight: 800;
+    }
+
+    .highlighted-writing {
+        padding: 16px;
+        border-radius: 12px;
+        background: white;
+        color: #334155;
+        font-size: 1.05rem;
+        font-weight: 600;
+        line-height: 1.8;
+        white-space: pre-wrap;
+    }
+
+    .highlighted-writing mark {
+        background: transparent;
+        color: inherit;
+        text-decoration-line: underline;
+        text-decoration-color: #f59e0b;
+        text-decoration-thickness: 4px;
+        text-underline-offset: 4px;
+        font-weight: 900;
+    }
+
     .toastArea {
         position: fixed;
         top: 30px;
@@ -1484,6 +1529,11 @@
                 <div class="result-overlay" id="resultOverlay">
                     <div class="result-content-container">
                         <div id="resultText" style="font-size: 1.1rem; font-weight: 700; color: var(--purple-main); max-width: 800px; line-height: 1.6; white-space: pre-wrap; text-align: left;"></div>
+                        <section class="spell-start-review" id="spellStartReview" hidden>
+                            <h3>SPELLBOOK STARTS SPOTTED</h3>
+                            <p class="spell-start-summary" id="spellStartSummary"></p>
+                            <div class="highlighted-writing" id="highlightedWriting"></div>
+                        </section>
                     </div>
                     <div class="result-buttons-container">
                         <button class="btn-submit" onclick="closeFeedback()">Continue Writing</button>
@@ -1769,6 +1819,58 @@
         return (text.match(pattern) || []).length;
     }
 
+    function findSpellbookStarts(text) {
+        const spellbookPhrases = Object.values(authorStarts)
+            .flat()
+            .flatMap(set => set.phrases.map(phrase => ({
+                phrase,
+                words: getLowerWords(phrase)
+            })))
+            .sort((a, b) => b.words.length - a.words.length);
+
+        const segments = (typeof Intl !== "undefined" && Intl.Segmenter)
+            ? Array.from(new Intl.Segmenter("en", { granularity: "sentence" }).segment(text),
+                part => ({ text: part.segment, start: part.index }))
+            : (() => {
+                const results = [];
+                const pattern = /[^.!?\n]+(?:[.!?]+["'’”)]*)?|\n+/g;
+                let match;
+                while ((match = pattern.exec(text)) !== null) {
+                    if (match[0].trim()) results.push({ text: match[0], start: match.index });
+                }
+                return results;
+            })();
+
+        const matches = [];
+        segments.forEach(segment => {
+            const wordPattern = /[\p{L}\p{M}]+(?:['’][\p{L}\p{M}]+)*/gu;
+            const words = Array.from(segment.text.matchAll(wordPattern));
+            if (!words.length) return;
+
+            const normalisedWords = words.map(match =>
+                match[0].toLocaleLowerCase("en").replaceAll("’", "'"));
+            const matchedPhrase = spellbookPhrases.find(candidate =>
+                candidate.words.length <= normalisedWords.length &&
+                candidate.words.every((word, index) => word === normalisedWords[index]));
+
+            if (!matchedPhrase) return;
+
+            const lastWord = words[matchedPhrase.words.length - 1];
+            let localEnd = lastWord.index + lastWord[0].length;
+            while (localEnd < segment.text.length && /[,;:!?—–-]/.test(segment.text[localEnd])) {
+                localEnd++;
+            }
+
+            matches.push({
+                start: segment.start + words[0].index,
+                end: segment.start + localEnd,
+                phrase: matchedPhrase.phrase
+            });
+        });
+
+        return matches;
+    }
+
     function analyseLocalWriting(text) {
         const words = getLowerWords(text);
         const sentences = splitSentences(text);
@@ -1914,6 +2016,7 @@
             stopWordRatio,
             helperVerbRatio,
             overusedPhrases,
+            spellbookStarts: findSpellbookStarts(text),
             issues,
             blockIssues,
             warnIssues,
@@ -1981,10 +2084,39 @@
         return lines.join("\n");
     }
 
-    function showLocalOverlay(report) {
+    function renderSpellbookStartReview(text, matches) {
+        const review = document.getElementById("spellStartReview");
+        const summary = document.getElementById("spellStartSummary");
+        const writing = document.getElementById("highlightedWriting");
+
+        if (!matches.length) {
+            review.hidden = true;
+            writing.replaceChildren();
+            return;
+        }
+
+        summary.innerText = `${matches.length} Spellbook start${matches.length === 1 ? "" : "s"} underlined in gold.`;
+        writing.replaceChildren();
+        let cursor = 0;
+
+        matches.forEach(match => {
+            writing.append(document.createTextNode(text.slice(cursor, match.start)));
+            const mark = document.createElement("mark");
+            mark.innerText = text.slice(match.start, match.end);
+            mark.title = `Spellbook start: ${match.phrase}`;
+            writing.append(mark);
+            cursor = match.end;
+        });
+
+        writing.append(document.createTextNode(text.slice(cursor)));
+        review.hidden = false;
+    }
+
+    function showLocalOverlay(report, text) {
         document.getElementById("resultOverlay").style.display = "flex";
         document.getElementById("resultOverlay").scrollTop = 0;
         document.getElementById("resultText").innerText = buildLocalReport(report);
+        renderSpellbookStartReview(text, report.spellbookStarts);
     }
 
     /* --- LOGIC ENGINE --- */
@@ -2034,7 +2166,7 @@
         const text = document.getElementById("paragraph").value.trim();
         const report = analyseLocalWriting(text);
 
-        showLocalOverlay(report);
+        showLocalOverlay(report, text);
         celebrateWritingScore(report);
     }
 
