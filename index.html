@@ -1108,8 +1108,8 @@
     .spellbook-modal {
         background: #1e293b;
         color: white;
-        width: 90%;
-        max-width: 800px;
+        width: 94%;
+        max-width: 1080px;
         max-height: 85vh;
         border-radius: 30px;
         padding: 40px;
@@ -1154,49 +1154,83 @@
     }
 
     .spellbook-content {
-        overflow-y: auto;
-        padding-right: 10px;
+        overflow: hidden;
         flex: 1;
         min-height: 0;
     }
 
-    .spellbook-toolbar {
+    .spellbook-layout {
+        display: grid;
+        grid-template-columns: 430px minmax(0, 1fr);
+        gap: 26px;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .spell-category-sidebar,
+    .spellbook-results-panel {
+        min-height: 0;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #475569 #1e293b;
+    }
+
+    .spell-category-sidebar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-content: start;
+        gap: 14px;
+        padding-right: 10px;
+        border-right: 2px solid #334155;
+    }
+
+    .spell-category-group + .spell-category-group {
+        margin-top: 0;
+    }
+
+    .spell-category-group h3 {
+        margin: 0 0 10px;
+        color: white;
+        font-size: 1rem;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+    }
+
+    .spell-category-list {
+        display: grid;
+        gap: 7px;
+    }
+
+    .spellbook-results-panel {
+        padding-right: 10px;
+    }
+
+    .spellbook-detail-header {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-bottom: 24px;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
     }
 
-    .spellbook-tabs {
-        display: flex;
-        background: #334155;
-        border-radius: 14px;
-        padding: 4px;
-        flex: 1;
-    }
-
-    .spellbook-tab {
-        flex: 1;
-        border: none;
-        border-radius: 10px;
-        padding: 11px 14px;
-        background: transparent;
-        color: #cbd5e1;
-        cursor: pointer;
+    .spellbook-detail-level {
+        display: block;
+        margin-bottom: 3px;
+        color: var(--star-gold);
+        font-size: 0.75rem;
         font-weight: 900;
-        font-family: inherit;
-        font-size: 1rem;
-        transition: all 0.2s;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
     }
 
-    .spellbook-tab.active {
-        background: var(--purple-main);
+    .spellbook-detail-header h3 {
+        margin: 0;
         color: white;
-        box-shadow: 0 4px 12px rgba(88, 28, 135, 0.35);
+        font-size: 1.5rem;
+        font-weight: 900;
     }
 
-    .spell-surprise,
-    .spellbook-back {
+    .spell-surprise {
         border: 2px solid #475569;
         border-radius: 12px;
         padding: 9px 14px;
@@ -1210,13 +1244,11 @@
         transition: all 0.2s;
     }
 
-    .spell-surprise:hover,
-    .spellbook-back:hover {
+    .spell-surprise:hover {
         background: #475569;
         border-color: var(--star-gold);
     }
 
-    .spell-category-grid,
     .spell-phrase-grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1226,14 +1258,14 @@
     .spell-category-card {
         background: #475569;
         border: 2px solid transparent;
-        border-radius: 15px;
-        padding: 18px;
+        border-radius: 10px;
+        padding: 9px 11px;
         color: var(--peach-light);
         cursor: pointer;
         font-family: inherit;
         font-weight: 900;
-        font-size: 1rem;
-        letter-spacing: 0.5px;
+        font-size: 0.82rem;
+        letter-spacing: 0.35px;
         text-align: left;
         text-transform: uppercase;
         display: flex;
@@ -1245,27 +1277,18 @@
     .spell-category-card::after {
         content: '→';
         color: #cbd5e1;
-        font-size: 1.2rem;
+        font-size: 0.95rem;
     }
 
-    .spell-category-card:hover {
+    .spell-category-card:hover,
+    .spell-category-card.active {
         background: #52627a;
         border-color: var(--star-gold);
-        transform: translateY(-2px);
     }
 
-    .spellbook-detail-header {
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        margin-bottom: 18px;
-    }
-
-    .spellbook-detail-header h3 {
-        margin: 0;
+    .spell-category-card.active {
+        background: var(--purple-main);
         color: white;
-        font-size: 1.4rem;
-        font-weight: 900;
     }
 
     .spell-item {
@@ -1291,9 +1314,12 @@
         font-weight: bold;
     }
 
-    .spellbook-content::-webkit-scrollbar { width: 8px; }
-    .spellbook-content::-webkit-scrollbar-track { background: #1e293b; }
-    .spellbook-content::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+    .spell-category-sidebar::-webkit-scrollbar,
+    .spellbook-results-panel::-webkit-scrollbar { width: 8px; }
+    .spell-category-sidebar::-webkit-scrollbar-track,
+    .spellbook-results-panel::-webkit-scrollbar-track { background: #1e293b; }
+    .spell-category-sidebar::-webkit-scrollbar-thumb,
+    .spellbook-results-panel::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
 
     /* =========================================================
        RESPONSIVE DESIGN
@@ -1445,14 +1471,17 @@
             width: 35px;
         }
 
-        .spellbook-toolbar {
-            align-items: stretch;
-            flex-direction: column;
+        .spellbook-layout {
+            grid-template-columns: 380px minmax(0, 1fr);
+            gap: 14px;
         }
 
-        .spell-category-grid,
         .spell-phrase-grid {
             grid-template-columns: 1fr;
+        }
+
+        .spell-category-card {
+            font-size: 0.75rem;
         }
 
         .editor-box {
@@ -1483,23 +1512,28 @@
         <button class="close-spellbook" onclick="closeSpellbook(event, true)">✖</button>
         <h2>⚡ The Author's Spellbook</h2>
         <p>Click an author's start to instantly add it to your writing!</p>
-        <div class="spellbook-toolbar">
-            <div class="spellbook-tabs" role="tablist" aria-label="Sentence start level">
-                <button class="spellbook-tab active" id="noviceSpellTab" role="tab" aria-selected="true" onclick="setSpellbookLevel('novice')">Apprentice</button>
-                <button class="spellbook-tab" id="masterSpellTab" role="tab" aria-selected="false" onclick="setSpellbookLevel('master')">Master</button>
-            </div>
-            <button class="spell-surprise" onclick="injectRandomSpell()">⚡ Surprise me</button>
-        </div>
         <div class="spellbook-content">
-            <div class="spellbook-view" id="spellbookCategoryView">
-                <div class="spell-category-grid" id="spellbookCategories"></div>
-            </div>
-            <div class="spellbook-view" id="spellbookPhraseView" hidden>
+            <div class="spellbook-layout">
+                <aside class="spell-category-sidebar" aria-label="Sentence start topics">
+                    <section class="spell-category-group">
+                        <h3>Apprentice Starts</h3>
+                        <div class="spell-category-list" id="noviceSpellCategories"></div>
+                    </section>
+                    <section class="spell-category-group">
+                        <h3>Master Starts</h3>
+                        <div class="spell-category-list" id="masterSpellCategories"></div>
+                    </section>
+                </aside>
+                <section class="spellbook-results-panel" aria-live="polite">
                 <div class="spellbook-detail-header">
-                    <button class="spellbook-back" onclick="showSpellbookCategories()">← BACK</button>
-                    <h3 id="spellbookCategoryTitle"></h3>
+                        <div>
+                            <span class="spellbook-detail-level" id="spellbookCategoryLevel"></span>
+                            <h3 id="spellbookCategoryTitle"></h3>
+                        </div>
+                        <button class="spell-surprise" onclick="injectRandomSpell()">⚡ Surprise me</button>
                 </div>
                 <div class="spell-phrase-grid" id="spellbookPhrases"></div>
+                </section>
             </div>
         </div>
     </div>
@@ -2367,46 +2401,40 @@
     });
 
     let activeSpellbookLevel = "novice";
+    let activeSpellbookCategory = 0;
 
     function initSpellbook() {
-        setSpellbookLevel(activeSpellbookLevel);
+        ["novice", "master"].forEach(level => {
+            const categoryList = document.getElementById(level + "SpellCategories");
+            categoryList.innerHTML = "";
+            authorStarts[level].forEach((set, index) => {
+                const btn = document.createElement("button");
+                btn.className = "spell-category-card";
+                btn.id = `spellCategory-${level}-${index}`;
+                btn.innerText = set.category;
+                btn.setAttribute("aria-pressed", "false");
+                btn.onclick = () => showSpellbookCategory(level, index);
+                categoryList.appendChild(btn);
+            });
+        });
+        showSpellbookCategory(activeSpellbookLevel, activeSpellbookCategory);
     }
 
-    function setSpellbookLevel(level) {
+    function showSpellbookCategory(level, index) {
         activeSpellbookLevel = level;
-        ["novice", "master"].forEach(tabLevel => {
-            const tab = document.getElementById(tabLevel + "SpellTab");
-            const isActive = tabLevel === level;
-            tab.classList.toggle("active", isActive);
-            tab.setAttribute("aria-selected", isActive);
-        });
-        showSpellbookCategories();
-    }
-
-    function showSpellbookCategories() {
-        const categoryView = document.getElementById("spellbookCategoryView");
-        const phraseView = document.getElementById("spellbookPhraseView");
-        const categoryGrid = document.getElementById("spellbookCategories");
-        categoryGrid.innerHTML = "";
-
-        authorStarts[activeSpellbookLevel].forEach((set, index) => {
-            const btn = document.createElement("button");
-            btn.className = "spell-category-card";
-            btn.innerText = set.category;
-            btn.onclick = () => showSpellbookCategory(index);
-            categoryGrid.appendChild(btn);
-        });
-
-        categoryView.hidden = false;
-        phraseView.hidden = true;
-        document.querySelector(".spellbook-content").scrollTop = 0;
-    }
-
-    function showSpellbookCategory(index) {
-        const set = authorStarts[activeSpellbookLevel][index];
+        activeSpellbookCategory = index;
+        const set = authorStarts[level][index];
         const phraseGrid = document.getElementById("spellbookPhrases");
+        document.getElementById("spellbookCategoryLevel").innerText =
+            level === "novice" ? "Apprentice Starts" : "Master Starts";
         document.getElementById("spellbookCategoryTitle").innerText = set.category;
         phraseGrid.innerHTML = "";
+
+        document.querySelectorAll(".spell-category-card").forEach(btn => {
+            const isActive = btn.id === `spellCategory-${level}-${index}`;
+            btn.classList.toggle("active", isActive);
+            btn.setAttribute("aria-pressed", String(isActive));
+        });
 
         set.phrases.forEach(phrase => {
             const btn = document.createElement("button");
@@ -2416,9 +2444,7 @@
             phraseGrid.appendChild(btn);
         });
 
-        document.getElementById("spellbookCategoryView").hidden = true;
-        document.getElementById("spellbookPhraseView").hidden = false;
-        document.querySelector(".spellbook-content").scrollTop = 0;
+        document.querySelector(".spellbook-results-panel").scrollTop = 0;
     }
 
     function injectRandomSpell() {
@@ -2428,7 +2454,7 @@
     }
 
     function openSpellbook() {
-        showSpellbookCategories();
+        showSpellbookCategory(activeSpellbookLevel, activeSpellbookCategory);
         document.getElementById("spellbookOverlay").style.display = "flex";
     }
     function closeSpellbook(event, force = false) { if (force || event.target.id === "spellbookOverlay") document.getElementById("spellbookOverlay").style.display = "none"; }
